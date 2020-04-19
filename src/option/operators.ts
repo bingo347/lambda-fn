@@ -1,4 +1,6 @@
-import {Some, Option, isSome, assert, some, none} from './index';
+import {Some, Option} from './types';
+import {isSome, assert} from './guards';
+import {some, none} from './builders';
 import {get} from '../_util';
 
 export function expect<T>(option: Option<T>, msg: string): T {
@@ -10,12 +12,12 @@ export function unwrap<T>(option: Option<T>): T {
     return expect(option, 'Called unwrap for Option on a None value');
 }
 
-export function unwrapOr<T>(option: Option<T>, defaultValue: T): T {
-    return isSome(option) ? get(option) : defaultValue;
+export function unwrapOr<T>(defaultValue: T) {
+    return (option: Option<T>): T => (isSome(option) ? get(option) : defaultValue);
 }
 
-export function unwrapOrElse<T>(option: Option<T>, lazy: () => T): T {
-    return isSome(option) ? get(option) : lazy();
+export function unwrapOrElse<T>(lazy: () => T) {
+    return (option: Option<T>): T => (isSome(option) ? get(option) : lazy());
 }
 
 export function and<T1, T2>(o1: Option<T1>, o2: Option<T2>): Option<[T1, T2]>;
@@ -38,8 +40,8 @@ export function and(...options: Option<any>[]) {
     );
 }
 
-export function andThen<T, R>(option: Option<T>, f: (value: T) => Option<R>): Option<R> {
-    return (isSome(option)
+export function andThen<T, R>(f: (value: T) => Option<R>) {
+    return (option: Option<T>): Option<R> => (isSome(option)
         ? f(get(option))
         : none
     );
@@ -55,8 +57,8 @@ export function or<T>(left: Option<T>, right: Option<T>): Option<T> {
     );
 }
 
-export function orElse<T>(option: Option<T>, f: () => Option<T>): Option<T> {
-    return (isSome(option)
+export function orElse<T>(f: () => Option<T>) {
+    return (option: Option<T>): Option<T> => (isSome(option)
         ? some(get(option))
         : f()
     );
@@ -75,16 +77,16 @@ export function xor<T>(left: Option<T>, right: Option<T>): Option<T> {
     );
 }
 
-export function contains<T>(option: Option<T>, value: T): boolean {
-    return isSome(option) ? get(option) === value : false;
+export function contains<T>(value: T) {
+    return (option: Option<T>): boolean => (isSome(option) ? get(option) === value : false);
 }
 
-export function filter<T>(option: Option<T>, predicate: (value: T) => boolean): Option<T> {
-    return isSome(option) && predicate(get(option)) ? some(get(option)) : none;
+export function filter<T>(predicate: (value: T) => boolean) {
+    return (option: Option<T>): Option<T> => (isSome(option) && predicate(get(option)) ? some(get(option)) : none);
 }
 
-export function map<T, R>(option: Option<T>, mapper: (value: T) => R): Option<R> {
-    return isSome(option) ? some(mapper(get(option))) : none;
+export function map<T, R>(mapper: (value: T) => R) {
+    return (option: Option<T>): Option<R> => (isSome(option) ? some(mapper(get(option))) : none);
 }
 
 export function flat<T>(option: Option<Option<T>>): Option<T> {
@@ -94,8 +96,8 @@ export function flat<T>(option: Option<Option<T>>): Option<T> {
     );
 }
 
-export function match<T, R>(option: Option<T>, onSome: (value: T) => R, onNone: () => R): R {
-    return (isSome(option)
+export function match<T, R>(onSome: (value: T) => R, onNone: () => R) {
+    return (option: Option<T>): R => (isSome(option)
         ? onSome(get(option))
         : onNone()
     );
