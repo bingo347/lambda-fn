@@ -25,8 +25,7 @@ module.exports = {
         'eslint:recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking',
-        'plugin:jest/recommended'
+        'plugin:@typescript-eslint/recommended-requiring-type-checking'
     ],
     overrides: [{
         files: ['*.test.ts'],
@@ -34,6 +33,7 @@ module.exports = {
             jest: true
         },
         rules: {
+            ...require('eslint-plugin-jest').configs.recommended.rules,
             'fp/no-nil': 0,
             '@typescript-eslint/no-empty-function': 0
         }

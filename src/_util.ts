@@ -3,6 +3,6 @@ export type InferTag<Tagger extends (entity: any) => any> = ReturnType<Tagger> e
 export function makeTag<Tag extends string>(tag: Tag) {
     return assign(
         <T>(entity: T): T & {$: Tag} => freeze(assign(entity, {$: tag})),
-        {$: (v: any) => v.$ === tag}
+        {$: (v: any) => v && v.$ === tag}
     );
 }

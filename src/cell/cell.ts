@@ -4,7 +4,7 @@ import {makeTag, InferTag} from '../_util';
 const tagger = makeTag('Cell');
 
 export type Cell<T> = {
-    $: InferTag<typeof tagger>;
+    readonly $: InferTag<typeof tagger>;
     (): T;
     (v: T): void;
 };
