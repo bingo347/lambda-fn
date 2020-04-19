@@ -10,7 +10,7 @@ export default [
     makeConfig('cell', '1.0.2', '', [
         'type-guards'
     ]),
-    makeConfig('option', '1.0.1', 'maybe,monad', [
+    makeConfig('option', '1.0.2', 'maybe,monad', [
         'type-guards'
     ])
 ];
