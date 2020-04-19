@@ -47,7 +47,7 @@ export function andThen<T, R>(f: (value: T) => Option<R>) {
     );
 }
 
-export function or<T>(left: Option<T>, right: Option<T>): Option<T> {
+export function or<T, U>(left: Option<T>, right: Option<U>): Option<T | U> {
     return (isSome(left)
         ? some(get(left))
         : (isSome(right)
@@ -57,14 +57,14 @@ export function or<T>(left: Option<T>, right: Option<T>): Option<T> {
     );
 }
 
-export function orElse<T>(f: () => Option<T>) {
-    return (option: Option<T>): Option<T> => (isSome(option)
+export function orElse<U>(f: () => Option<U>) {
+    return <T>(option: Option<T>): Option<T | U> => (isSome(option)
         ? some(get(option))
         : f()
     );
 }
 
-export function xor<T>(left: Option<T>, right: Option<T>): Option<T> {
+export function xor<T, U>(left: Option<T>, right: Option<U>): Option<T | U> {
     return (isSome(left)
         ? (isSome(right)
             ? none
