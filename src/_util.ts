@@ -6,3 +6,5 @@ export function makeTag<Tag extends string>(tag: Tag) {
         {$: (v: any) => v && v.$ === tag}
     );
 }
+
+export const get = <T extends {v: any}>(container: T): T['v'] => container.v;

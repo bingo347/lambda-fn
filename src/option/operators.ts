@@ -1,6 +1,5 @@
 import {Some, Option, isSome, assert, some, none} from './index';
-
-const get = <T>(option: Some<T>) => option.v;
+import {get} from '../_util';
 
 export function expect<T>(option: Option<T>, msg: string): T {
     assert(option, msg);

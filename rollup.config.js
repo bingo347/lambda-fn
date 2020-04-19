@@ -6,7 +6,7 @@ import pkg from './package.json';
 const pkgVersions = {};
 
 export default [
-    makeConfig('type-guards', '1.0.0'),
+    makeConfig('type-guards', '1.0.1'),
     makeConfig('cell', '1.0.1', '', [
         'type-guards'
     ])
