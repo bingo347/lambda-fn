@@ -15,7 +15,10 @@
         "strictFunctionTypes": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
-        "baseUrl": "./"
+        "baseUrl": "./",
+        "paths": {
+            "@lambda-fn/*": ["./src/*"]
+        }
     },
     "include": [
         "src/**/*.ts"

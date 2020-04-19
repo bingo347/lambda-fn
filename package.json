@@ -6,8 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup -c",
-    "test": "jest",
-    "prepublish": "npm run build"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
