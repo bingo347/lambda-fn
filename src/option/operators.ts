@@ -30,6 +30,7 @@ export function and<T1, T2, T3, T4, T5, T6, T7, T8>(o1: Option<T1>, o2: Option<T
     o6: Option<T6>, o7: Option<T7>, o8: Option<T8>): Option<[T1, T2, T3, T4, T5, T6, T7, T8]>;
 export function and<T1, T2, T3, T4, T5, T6, T7, T8, T9>(o1: Option<T1>, o2: Option<T2>, o3: Option<T3>, o4: Option<T4>, o5: Option<T5>,
     o6: Option<T6>, o7: Option<T7>, o8: Option<T8>, o9: Option<T9>): Option<[T1, T2, T3, T4, T5, T6, T7, T8, T9]>;
+export function and<TS extends any[]>(...options: Option<TS[number]>[]): Option<TS>;
 export function and(...options: Option<any>[]) {
     return (options.every(isSome)
         ? some((options as Some<any>[]).map(get))
@@ -98,4 +99,8 @@ export function match<T, R>(option: Option<T>, onSome: (value: T) => R, onNone: 
         ? onSome(get(option))
         : onNone()
     );
+}
+
+export function clone<T>(option: Option<T>): Option<T> {
+    return isSome(option) ? some(get(option)) : none;
 }
