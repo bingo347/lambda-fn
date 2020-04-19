@@ -21,7 +21,10 @@ function makeConfig(name, version, keywords = '', dependencies = []) {
         },
         external: dependencies.map(dep => `@lambda-fn/${dep}`),
         plugins: [
-            makePackage(name, version, ['fp', name, ...keywords.split(',')], dependencies),
+            makePackage(name, version, [
+                'fp', name,
+                ...keywords.split(',')
+            ].map(v => v.trim()).filter(v => !!v), dependencies),
             tsPlugin()
         ]
     };
