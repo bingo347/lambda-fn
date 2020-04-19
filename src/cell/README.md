@@ -1,6 +1,7 @@
 # @lambda-fn/cell
 
-Simple container for store mutable value [inspired by std::cell::Cell from Rust](https://doc.rust-lang.org/std/cell/struct.Cell.html)
+Simple container for store mutable value
+[inspired by std::cell::Cell from Rust](https://doc.rust-lang.org/std/cell/struct.Cell.html)
 
 ## Install
 
