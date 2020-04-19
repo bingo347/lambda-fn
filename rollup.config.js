@@ -55,7 +55,7 @@ function makePackage(name, version, keywords, dependencies) {
                     homepage: pkg.homepage,
                     dependencies: dependencies.reduce((acc, dep) => ({
                         ...acc,
-                        [`@lambda-fn/${dep}`]: pkgVersions[dep]
+                        [`@lambda-fn/${dep}`]: `^${pkgVersions[dep]}`
                     }), {})
                 }, null, 2)
             );
