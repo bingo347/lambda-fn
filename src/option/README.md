@@ -36,7 +36,7 @@ function and<TS extends any[]>(...options: Option<TS[number]>[]): Option<TS>; //
 function andThen<T, R>(f: (value: T) => Option<R>): (option: Option<T>) => Option<R>;
 function or<T, U>(left: Option<T>, right: Option<U>): Option<T | U>;
 function orElse<U>(f: () => Option<U>): <T>(option: Option<T>) => Option<U | T>;
-function xor<T, U>(left: Option<T>, right: Option<U>): Option<T, U>;
+function xor<T, U>(left: Option<T>, right: Option<U>): Option<T | U>;
 function contains<T>(value: T): (option: Option<T>) => boolean;
 function filter<T>(predicate: (value: T) => boolean): (option: Option<T>) => Option<T>;
 function map<T, R>(mapper: (value: T) => R): (option: Option<T>) => Option<R>;
