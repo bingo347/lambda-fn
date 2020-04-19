@@ -7,7 +7,7 @@ const pkgVersions = {};
 
 export default [
     makeConfig('type-guards', '1.0.0'),
-    makeConfig('cell', '1.0.0', '', [
+    makeConfig('cell', '1.0.1', '', [
         'type-guards'
     ])
 ];
