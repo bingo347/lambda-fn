@@ -22,6 +22,7 @@ function isBigInt(v: unknown): v is bigint;
 function isSymbol(v: unknown): v is symbol;
 function isObject(v: unknown): v is Record<string | number | symbol, unknown>;
 function isFunction(v: unknown): v is (...args: unknown[]) => unknown;
+function isNull(v: unknown): v is null;
 ```
 
 ## License
