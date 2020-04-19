@@ -1,9 +1,11 @@
 {
   "name": "lambda-fn",
   "version": "0.0.0",
+  "type": "module",
   "private": true,
   "description": "Typescript utilities for functional programming inspired by Rust std library",
-  "main": "index.js",
+  "main": "index.mjs",
+  "types": "index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "test": "jest"

@@ -30,4 +30,4 @@ export const set = <T>(cell: Cell<T>, value: T) => cell(value);
 export const update = <T>(cell: Cell<T>, updater: (value: T) => T) => cell(updater(cell()));
 export const clone = <T>(cell: Cell<T>) => makeCell(cell());
 export const map = <T, U>(mapper: (value: T) => U) => (cell: Cell<T>) => makeCell(mapper(cell()));
-export const fold = <T, U>(flexor: (value: T) => U) => (cell: Cell<T>) => flexor(cell());
+export const fold = <T, U>(fld: (value: T) => U) => (cell: Cell<T>) => fld(cell());
