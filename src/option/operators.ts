@@ -19,9 +19,21 @@ export function unwrapOrElse<T>(option: Option<T>, lazy: () => T): T {
     return isSome(option) ? get(option) : lazy();
 }
 
-export function and<T, U>(left: Option<T>, right: Option<U>): Option<[T, U]> {
-    return (isSome(left) && isSome(right)
-        ? some([get(left), get(right)])
+export function and<T1, T2>(o1: Option<T1>, o2: Option<T2>): Option<[T1, T2]>;
+export function and<T1, T2, T3>(o1: Option<T1>, o2: Option<T2>, o3: Option<T3>): Option<[T1, T2, T3]>;
+export function and<T1, T2, T3, T4>(o1: Option<T1>, o2: Option<T2>, o3: Option<T3>, o4: Option<T4>): Option<[T1, T2, T3, T4]>;
+export function and<T1, T2, T3, T4, T5>(o1: Option<T1>, o2: Option<T2>, o3: Option<T3>, o4: Option<T4>, o5: Option<T5>): Option<[T1, T2, T3, T4, T5]>;
+export function and<T1, T2, T3, T4, T5, T6>(o1: Option<T1>, o2: Option<T2>, o3: Option<T3>, o4: Option<T4>, o5: Option<T5>,
+    o6: Option<T6>): Option<[T1, T2, T3, T4, T5, T6]>;
+export function and<T1, T2, T3, T4, T5, T6, T7>(o1: Option<T1>, o2: Option<T2>, o3: Option<T3>, o4: Option<T4>, o5: Option<T5>,
+    o6: Option<T6>, o7: Option<T7>): Option<[T1, T2, T3, T4, T5, T6, T7]>;
+export function and<T1, T2, T3, T4, T5, T6, T7, T8>(o1: Option<T1>, o2: Option<T2>, o3: Option<T3>, o4: Option<T4>, o5: Option<T5>,
+    o6: Option<T6>, o7: Option<T7>, o8: Option<T8>): Option<[T1, T2, T3, T4, T5, T6, T7, T8]>;
+export function and<T1, T2, T3, T4, T5, T6, T7, T8, T9>(o1: Option<T1>, o2: Option<T2>, o3: Option<T3>, o4: Option<T4>, o5: Option<T5>,
+    o6: Option<T6>, o7: Option<T7>, o8: Option<T8>, o9: Option<T9>): Option<[T1, T2, T3, T4, T5, T6, T7, T8, T9]>;
+export function and(...options: Option<any>[]) {
+    return (options.every(isSome)
+        ? some((options as Some<any>[]).map(get))
         : none
     );
 }
