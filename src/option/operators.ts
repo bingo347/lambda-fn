@@ -19,9 +19,9 @@ export function unwrapOrElse<T>(option: Option<T>, lazy: () => T): T {
     return isSome(option) ? get(option) : lazy();
 }
 
-export function and<T, R>(left: Option<T>, right: Option<R>): Option<R> {
+export function and<T, U>(left: Option<T>, right: Option<U>): Option<[T, U]> {
     return (isSome(left) && isSome(right)
-        ? some(get(right))
+        ? some([get(left), get(right)])
         : none
     );
 }
