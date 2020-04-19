@@ -1,6 +1,7 @@
 {
-  "name": "easy-fp",
+  "name": "lambda-fn",
   "version": "0.0.0",
+  "private": true,
   "description": "Typescript utilities for functional programming inspired by Rust std library",
   "main": "index.js",
   "scripts": {
@@ -10,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bingo347/easy-fp.git"
+    "url": "git+https://github.com/bingo347/lambda-fn.git"
   },
   "keywords": [
     "fp",
@@ -23,9 +24,9 @@
   "author": "Dmitriy Belyaev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bingo347/easy-fp/issues"
+    "url": "https://github.com/bingo347/lambda-fn/issues"
   },
-  "homepage": "https://github.com/bingo347/easy-fp#readme",
+  "homepage": "https://github.com/bingo347/lambda-fn#readme",
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
