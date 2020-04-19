@@ -22,3 +22,4 @@ export const isBigInt = makeGuard('bigint');
 export const isSymbol = makeGuard('symbol');
 export const isObject = makeGuard('object');
 export const isFunction = makeGuard('function');
+export const isNull = (v: unknown): v is null => v === null;
