@@ -1,24 +1,24 @@
 import {isFunction} from '@lambda-fn/type-guards';
+import {makeTag, InferTag} from '../_util';
 
-const Tag = 'Cell';
-type Tag = typeof Tag;
+const tagger = makeTag('Cell');
 
 export type Cell<T> = {
-    $: Tag;
+    $: InferTag<typeof tagger>;
     (): T;
     (v: T): void;
 };
 
 export function makeCell<T>(initialValue: T): Cell<T> {
     let value = initialValue;
-    return Object.freeze(Object.assign((v?: T) => (v
+    return tagger((v?: T) => (v
         ? (value = v) // eslint-disable-line fp/no-mutation
         : value
-    ), {$: Tag} as {$: Tag}));
+    ));
 }
 
 export function isCell(maybeCell: unknown): maybeCell is Cell<unknown> {
-    return isFunction(maybeCell) && (maybeCell as any).$ === Tag;
+    return isFunction(maybeCell) && tagger.$(maybeCell);
 }
 
 export function isCellWith<T>(guard: (v: unknown) => v is T): (maybeCell: unknown) => maybeCell is Cell<T> {
