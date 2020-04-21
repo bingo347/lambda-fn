@@ -1,33 +1,39 @@
 {
   "name": "lambda-fn",
   "version": "0.0.0",
-  "type": "module",
   "private": true,
   "description": "Typescript utilities for functional programming inspired by Rust std library",
-  "main": "index.mjs",
-  "types": "index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "test": "jest"
+  },
+  "packages": {
+    "type-guards": {
+      "version": "1.0.2"
+    },
+    "cell": {
+      "version": "1.0.2",
+      "dependencies": [
+        "type-guards"
+      ]
+    },
+    "option": {
+      "version": "1.0.2",
+      "additionalKeywords": ["maybe", "monad"],
+      "dependencies": [
+        "type-guards"
+      ]
+    }
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bingo347/lambda-fn.git"
   },
-  "keywords": [
-    "fp",
-    "monads",
-    "functors",
-    "result",
-    "option",
-    "cell"
-  ],
   "author": "Dmitriy Belyaev",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bingo347/lambda-fn/issues"
   },
-  "homepage": "https://github.com/bingo347/lambda-fn#readme",
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",

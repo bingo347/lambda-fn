@@ -3,19 +3,16 @@ import path from 'path';
 import tsPlugin from '@wessberg/rollup-plugin-ts';
 import pkg from './package.json';
 
-const pkgVersions = {};
+const pkgNames = Object.keys(pkg.packages);
+const pkgVersions = pkgNames.reduce((acc, name) => ({
+    ...acc,
+    [name]: pkg.packages[name].version
+}), {});
 
-export default [
-    makeConfig('type-guards', '1.0.2'),
-    makeConfig('cell', '1.0.2', '', [
-        'type-guards'
-    ]),
-    makeConfig('option', '1.0.2', 'maybe,monad', [
-        'type-guards'
-    ])
-];
+export default pkgNames.map(makeConfig);
 
-function makeConfig(name, version, keywords = '', dependencies = []) {
+function makeConfig(name) {
+    const {dependencies = []} = pkg.packages[name];
     return {
         input: `src/${name}/index.ts`,
         output: {
@@ -24,19 +21,21 @@ function makeConfig(name, version, keywords = '', dependencies = []) {
         },
         external: dependencies.map(dep => `@lambda-fn/${dep}`),
         plugins: [
-            makePackage(name, version, [
-                'fp', name,
-                ...keywords.split(',')
-            ].map(v => v.trim()).filter(v => !!v), dependencies),
+            makePackage(name),
             tsPlugin()
         ]
     };
 }
 
-function makePackage(name, version, keywords, dependencies) {
+function makePackage(name) {
+    const {
+        version,
+        additionalKeywords = [],
+        dependencies = []
+    } = pkg.packages[name];
+    const keywords = ['fp', name, ...additionalKeywords];
     const inputDir = path.join(__dirname, 'src', name);
     const outDir = path.join(__dirname, 'dist', name);
-    pkgVersions[name] = version;
     return {
         name: 'makePackage',
         async writeBundle() {
@@ -55,7 +54,7 @@ function makePackage(name, version, keywords, dependencies) {
                     author: pkg.author,
                     license: pkg.license,
                     bugs: pkg.bugs,
-                    homepage: pkg.homepage,
+                    homepage: `https://github.com/bingo347/lambda-fn/blob/master/src/${name}/README.md`,
                     dependencies: dependencies.reduce((acc, dep) => ({
                         ...acc,
                         [`@lambda-fn/${dep}`]: `^${pkgVersions[dep]}`
