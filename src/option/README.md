@@ -1,4 +1,4 @@
-# @lambda-fn/cell
+# @lambda-fn/option
 
 Option type for represents an optional value
 \

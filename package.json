@@ -23,6 +23,13 @@
       "dependencies": [
         "type-guards"
       ]
+    },
+    "result": {
+      "version": "1.0.0",
+      "additionalKeywords": ["either", "monad"],
+      "dependencies": [
+        "type-guards"
+      ]
     }
   },
   "repository": {
