@@ -82,7 +82,7 @@ const sumParts = pipe(
     map(([a, b, c]: [number, number, number]) => a + b + c),
     unwrapOr(0)
 );
-const sumStorageParts = (...keys: [string, string, string]) => sumParts(...keys.map(parseStorageIfLess100));
+const sumStorageParts = (...keys: [string, string, string]) => sumParts(keys.map(parseStorageIfLess100));
 
 /* In storage:
 part1: 10
