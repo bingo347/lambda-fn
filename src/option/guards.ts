@@ -18,5 +18,5 @@ export function assert<T>(option: Option<T>, msg?: string): asserts option is So
         // eslint-disable-next-line fp/no-throw
         throw new TypeError(msg || 'Called assert for Option on a None value');
     }
-    return void 0;
+    return true as any as void;
 }
