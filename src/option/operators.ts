@@ -85,7 +85,7 @@ export function xor<T, U>(left: Option<T>, right: Option<U>): Option<T | U> {
 }
 
 export function contains<T>(value: T) {
-    return (option: Option<T>): boolean => (isSome(option) ? get(option) === value : false);
+    return (option: Option<T>): boolean => (isSome(option) && get(option) === value);
 }
 
 export function filter<T>(predicate: (value: T) => boolean) {
