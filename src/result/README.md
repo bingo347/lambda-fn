@@ -49,13 +49,49 @@ function clone<T, E>(result: Result<T, E>): Result<T, E>;
 ## Example
 
 ```typescript
+import {ok, err, tryCatch, unwrap, expect} from '@lambda-fn/result';
 
+tryCatch(() => {
+    throw 'oops';
+}); // Err( Error: oops )
+tryCatch(() => {
+    throw new TypeError('oops');
+}); // Err( TypeError: oops )
+tryCatch(() => {
+    return 1;
+}); // Ok( 1 )
+
+unwrap(err(new Error('oops'))); // throw Error: oops
+unwrap(ok(1)); // 1
+expect(ok(1), 'It cannot be Err never'); // 1 - the same as unwrap, but with custom error message
 ```
 
 You can combine it with [pipe](https://ramdajs.com/docs/#pipe) or [compose](https://ramdajs.com/docs/#compose) from ramda:
 
 ```typescript
+import {ok, err, tryCatch, andThen, unwrapOrElse} from '@lambda-fn/result';
+import {pipe} from 'ramda';
 
+const parseJSON = (json: string) => tryCatch(() => JSON.parse(json));
+const parseArrayFromJSONAndGetFirst = pipe(
+    parseJSON,
+    andThen((data: unknown) => (Array.isArray(data) && data.length > 0
+        ? ok(data[0])
+        : err(new Error('Data must be non empty array'))
+    ))
+);
+const parseFromJSONOrGetDefaultObject = pipe(
+    parseJSON,
+    unwrapOrElse(() => ({default: true}))
+);
+
+parseJSON('{}'); // Ok( {} )
+parseJSON('{'); // Err( SyntaxError: Unexpected end of JSON input )
+parseArrayFromJSONAndGetFirst('[1]'); // Ok( 1 )
+parseArrayFromJSONAndGetFirst('[]'); // Err( Error: Data must be non empty array )
+parseArrayFromJSONAndGetFirst('['); // Err( SyntaxError: Unexpected end of JSON input )
+parseFromJSONOrGetDefaultObject('{"parsed":true}'); // { parsed: true }
+parseFromJSONOrGetDefaultObject('{parsed:true}'); // { default: true } - because without " it is invalid JSON
 ```
 
 ## License
