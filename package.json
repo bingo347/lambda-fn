@@ -26,10 +26,7 @@
     },
     "result": {
       "version": "1.0.0",
-      "additionalKeywords": ["either", "monad"],
-      "dependencies": [
-        "type-guards"
-      ]
+      "additionalKeywords": ["either", "monad"]
     }
   },
   "repository": {
