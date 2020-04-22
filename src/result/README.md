@@ -28,6 +28,22 @@ function isOkWith<T>(guard: (v: unknown) => v is T): (maybeOk: unknown) => maybe
 function isErrWith<E>(guard: (e: unknown) => e is E): (maybeErr: unknown) => maybeErr is Err<E>;
 function isResultWith<T, E>(guardOk: (v: unknown) => v is T, guardErr: (e: unknown) => e is E): (maybeResult: unknown) => maybeResult is Result<T, E>;
 function assert<T>(result: Result<T, any>): asserts result is Ok<T>;
+function expect<T>(result: Result<T, any>, msg: string): T;
+function unwrap<T, E>(result: Result<T, E>): T;
+function unwrapOr<T>(defaultValue: T): <E>(result: Result<T, E>) => T;
+function unwrapOrElse<T>(lazy: () => T): <E>(result: Result<T, E>) => T;
+function and<TS extends any[], E>(...results: [Result<TS[number], E>, Result<TS[number], E>, ...Result<TS[number], E>[]]): Result<TS, E>; // simplified, it overloaded for better type checking
+function andThen<T, E, R>(f: (value: T) => Result<R, E>): (result: Result<T, E>) => Result<R, E>;
+function or<TS extends any[], E>(...results: [Result<TS[number], E>, Result<TS[number], E>, ...Result<TS[number], E>[]]): Result<TS[number], E>; // simplified, it overloaded for better type checking
+function orElse<T, E, O>(f: (error: E) => Result<T, O>): (result: Result<T, E>) => Result<T, O>;
+function contains<T>(value: T): (result: Result<T, any>) => boolean;
+function containsErr<E>(error: E): (result: Result<any, E>) => boolean;
+function map<T, R>(mapper: (value: T) => R): <E>(result: Result<T, E>) => Result<R, E>;
+function mapErr<E, O>(mapper: (error: E) => O): <T>(result: Result<T, E>) => Result<T, O>;
+function mapOr<T, R>(defaultValue: R, mapper: (value: T) => R): <E>(result: Result<T, E>) => R;
+function flat<T, E>(result: Result<Result<T, E>, E>): Result<T, E>;
+function match<T, E, R>(onOk: (value: T) => R, onErr: (error: E) => R): (result: Result<T, E>) => R;
+function clone<T, E>(result: Result<T, E>): Result<T, E>;
 ```
 
 ## Example
