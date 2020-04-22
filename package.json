@@ -9,16 +9,16 @@
   },
   "packages": {
     "type-guards": {
-      "version": "1.0.2"
+      "version": "1.0.3"
     },
     "cell": {
-      "version": "1.0.2",
+      "version": "1.0.3",
       "dependencies": [
         "type-guards"
       ]
     },
     "option": {
-      "version": "1.0.2",
+      "version": "1.0.3",
       "additionalKeywords": ["maybe", "monad"],
       "dependencies": [
         "type-guards"
