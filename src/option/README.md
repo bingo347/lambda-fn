@@ -34,7 +34,7 @@ function unwrapOr<T>(defaultValue: T): (option: Option<T>) => T;
 function unwrapOrElse<T>(lazy: () => T): (option: Option<T>) => T;
 function and<TS extends any[]>(...options: Option<TS[number]>[]): Option<TS>; // simplified, it overloaded for better type checking
 function andThen<T, R>(f: (value: T) => Option<R>): (option: Option<T>) => Option<R>;
-function or<T, U>(left: Option<T>, right: Option<U>): Option<T | U>;
+function or<TS extends any[]>(...options: Option<TS[number]>[]): Option<TS[number]>; // simplified, it overloaded for better type checking
 function orElse<U>(f: () => Option<U>): <T>(option: Option<T>) => Option<U | T>;
 function xor<T, U>(left: Option<T>, right: Option<U>): Option<T | U>;
 function contains<T>(value: T): (option: Option<T>) => boolean;
