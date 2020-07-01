@@ -12,7 +12,7 @@
       "version": "1.0.3"
     },
     "cell": {
-      "version": "1.0.3",
+      "version": "1.0.4",
       "dependencies": [
         "type-guards"
       ]
