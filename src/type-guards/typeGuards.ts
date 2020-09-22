@@ -9,9 +9,9 @@ type TypesMap = {
     'function': (...args: unknown[]) => unknown;
 };
 
-function makeTypeofGuard<T extends keyof TypesMap>(type: T): (v: unknown) => v is TypesMap[T] {
-    return (v): v is TypesMap[T] => typeof v === type;
-}
+const makeTypeofGuard = <T extends keyof TypesMap>(type: T) => (
+    (v: unknown): v is TypesMap[T] => typeof v === type
+);
 
 export const isUndefined = makeTypeofGuard('undefined');
 export const isVoid = isUndefined as (v: unknown) => v is void;
