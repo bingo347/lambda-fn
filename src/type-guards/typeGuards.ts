@@ -23,6 +23,10 @@ const makeTypeofGuard = <T extends keyof TypesMap>(type: T) => (
 const makeInstanceofGuard = <C extends AnyConstructor>(constructor: C) => (
     (v: unknown): v is InstanceType<C> => v instanceof constructor
 );
+const everyGuard = <
+    V extends ArrayLike<any> | Iterable<any>,
+    G extends Guard<any>
+>(v: V, guard: G) => Array.prototype.every.call(v, guard);
 
 export const isFunction = makeTypeofGuard('function');
 export const isObject = makeTypeofGuard('object');
@@ -59,6 +63,8 @@ export const isTypedArray = (v: unknown): v is TypedArray => (
 );
 export const isPromiseLike = (v: unknown): v is PromiseLike<unknown> => isObject(v) && isFunction(v.then);
 export const isArray = (v: unknown): v is unknown[] => Array.isArray(v);
-export const isArrayWith = <T>(guard: Guard<T>, v: unknown): v is T[] => isArray(v) && v.every(guard);
+export const isArrayWith = <T>(guard: Guard<T>, v: unknown): v is T[] => isArray(v) && everyGuard(v, guard);
 export const isIterable = (v: unknown): v is Iterable<unknown> => isObject(v) && isFunction(v[Symbol.iterator as any]);
-export const isIterableWith = <T>(guard: Guard<T>, v: unknown): v is Iterable<T> => isIterable(v) && Array.prototype.every.call(v, guard);
+export const isIterableWith = <T>(guard: Guard<T>, v: unknown): v is Iterable<T> => isIterable(v) && everyGuard(v, guard);
+export const isSetWith = <T>(guard: Guard<T>, v: unknown): v is Set<T> => isSet(v) && everyGuard(v, guard);
+export const isMapWith = <K, V>(guard: Guard<[K, V]>, v: unknown): v is Map<K, V> => isMap(v) && everyGuard(Array.from(v), guard);
