@@ -10,6 +10,6 @@ export function makeTag<Tag extends string>(tag: Tag) {
 export const get = <T extends {v: any}>(container: T): T['v'] => container.v;
 
 function toString(this: {$: string; v?: unknown}) {
-    const {$, v} = this; // eslint-disable-line fp/no-this
+    const {$, v} = this;
     return v ? `${$}( ${v} )` : $;
 }
