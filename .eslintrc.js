@@ -11,7 +11,6 @@ module.exports = {
     plugins: [
         '@typescript-eslint',
         'array-func',
-        'fp',
         'promise',
         'jest',
         'eslint-comments'
@@ -129,16 +128,6 @@ module.exports = {
         'array-func/avoid-reverse': 2,
         'array-func/prefer-flat-map': 1,
         'array-func/prefer-flat': 1,
-        // fp
-        'fp/no-arguments': 2,
-        'fp/no-delete': 2,
-        'fp/no-loops': 2,
-        'fp/no-mutating-assign': 2,
-        'fp/no-mutating-methods': 2,
-        'fp/no-mutation': 2,
-        'fp/no-nil': 2,
-        'fp/no-this': 2,
-        'fp/no-throw': 2,
         // promise
         'promise/catch-or-return': 2,
         'promise/param-names': 2,

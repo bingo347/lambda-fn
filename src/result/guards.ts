@@ -20,7 +20,6 @@ export function isResultWith<T, E>(guardOk: (v: unknown) => v is T, guardErr: (e
 
 export function assert<T>(result: Result<T, any>): asserts result is Ok<T> {
     if(isErr(result)) {
-        // eslint-disable-next-line fp/no-throw
         throw result.v;
     }
     return true as any as void;

@@ -15,7 +15,6 @@ export function isOptionWith<T>(guard: (v: unknown) => v is T) {
 
 export function assert<T>(option: Option<T>, msg?: string): asserts option is Some<T> {
     if(isNone(option)) {
-        // eslint-disable-next-line fp/no-throw
         throw new TypeError(msg || 'Called assert for Option on a None value');
     }
     return true as any as void;

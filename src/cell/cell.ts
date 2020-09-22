@@ -12,7 +12,7 @@ export type Cell<T> = {
 export function makeCell<T>(initialValue: T): Cell<T> {
     let value = initialValue;
     return tagger<(v?: T) => T>((...args) => (args.length !== 0
-        ? (value = args[0]!) // eslint-disable-line fp/no-mutation
+        ? (value = args[0]!)
         : value
     ));
 }
