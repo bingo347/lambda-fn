@@ -13,7 +13,11 @@ yarn add @lambda-fn/type-guards
 ## Exports
 
 ```typescript
-type Guard<T> = (v: unknown) => v is T;
+type TypeGuard<T extends A, A = unknown> = (v: A) => v is T;
+
+// for create type guards from your classes
+function makeInstanceofGuard<C extends {new (...args: any): any}>(constructor: C) => (v: unknown) => v is InstanceType<C>;
+
 function isFunction(v: unknown): v is (...args: unknown[]) => unknown;
 function isObject(v: unknown): v is Record<string | number | symbol, unknown>;
 function isSymbol(v: unknown): v is symbol;
@@ -45,11 +49,12 @@ function isFloat64Array(v: unknown): v is Float64Array;
 function isTypedArray(v: unknown): v is Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | BigInt64Array | BigUint64Array | Float32Array | Float64Array;
 function isPromiseLike(v: unknown): v is PromiseLike<unknown>;
 function isArray(v: unknown): v is unknown[];
-function isArrayWith<T>(guard: Guard<T>, v: unknown): v is T[];
+function isArrayWith<T>(guard: TypeGuard<T>, v: unknown): v is T[];
 function isIterable(v: unknown): v is Iterable<unknown>;
-function isIterableWith<T>(guard: Guard<T>, v: unknown): v is Iterable<T>;
-function isSetWith<T>(guard: Guard<T>, v: unknown): v is Set<T>;
-function isMapWith<K, V>(guard: Guard<[K, V]>, v: unknown): v is Map<K, V>;
+function isIterableWith<T>(guard: TypeGuard<T>, v: unknown): v is Iterable<T>;
+function isSetWith<T>(guard: TypeGuard<T>, v: unknown): v is Set<T>;
+function isMapWith<K, V>(guard: TypeGuard<[K, V]>, v: unknown): v is Map<K, V>;
+function isNonNullable<T>(v: T) => v is NonNullable<T>;
 ```
 
 ## License
