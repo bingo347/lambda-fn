@@ -38,6 +38,7 @@ export const Cell: CellStatic = Object.assign(<T>(initialValue: T): Cell<T> => {
     const update = (updater: ValueFN<T, T>) => set(updater(currentValue));
     const subscribe = (subscription: ValueFN<T, void>) => (
         subscriptions.add(subscription),
+        subscription(currentValue),
         () => void subscriptions.delete(subscription)
     );
     const clone = () => Cell(currentValue);
