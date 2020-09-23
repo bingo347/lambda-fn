@@ -1,3 +1,4 @@
+// @ts-check
 import {promises as fs} from 'fs';
 import path from 'path';
 import tsPlugin from '@wessberg/rollup-plugin-ts';
@@ -39,16 +40,17 @@ function makePackage(name) {
     return {
         name: 'makePackage',
         async writeBundle() {
+            await fs.mkdir(outDir, {recursive: true});
             const readme = await fs.readFile(path.join(inputDir, 'README.md'), 'utf-8');
             const pkgWritePromise = fs.writeFile(
                 path.join(outDir, 'package.json'),
                 JSON.stringify({
                     name: `@lambda-fn/${name}`,
-                    type: 'module',
                     version,
                     keywords,
                     description: readme.split('\n', 3)[2].trim(),
-                    main: 'index.mjs',
+                    main: 'index.cjs',
+                    module: 'index.mjs',
                     types: 'index.d.ts',
                     repository: pkg.repository,
                     author: pkg.author,
@@ -66,6 +68,26 @@ function makePackage(name) {
                 pkgWritePromise,
                 readmeWritePromise
             ]);
+        },
+        async renderChunk(code) {
+            await fs.mkdir(outDir, {recursive: true});
+            const cjsCode = code.split('\n').map(line => {
+                const trimLine = line.trim();
+                const isImport = trimLine.startsWith('import');
+                const isExport = trimLine.startsWith('export');
+                if(isImport) {
+                    //TODO: wildcard & default import
+                    return trimLine.replace(/import (.*) from (.*);/, 'const $1 = require($2);');
+                }
+                if(isExport) {
+                    return trimLine.replace('export', 'module.exports = ')
+                }
+                return line;
+            }).join('\n');
+            await fs.writeFile(
+                path.join(outDir, 'index.cjs'),
+                `${cjsCode}\nObject.defineProperty(module.exports,"__esModule",{value:true});`
+            );
         }
     };
 }
