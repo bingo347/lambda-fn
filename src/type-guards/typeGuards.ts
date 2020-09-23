@@ -1,4 +1,4 @@
-type Guard<T> = (v: unknown) => v is T;
+export type TypeGuard<T extends A, A = unknown> = (v: A) => v is T;
 type TypesMap = {
     'undefined': undefined;
     'boolean': boolean;
@@ -16,27 +16,30 @@ type TypedArray
     | Int32Array    | Uint32Array
     | BigInt64Array | BigUint64Array
     | Float32Array  | Float64Array;
+type NonNullableExtended<T> = T extends null | undefined | void ? never : T
 
 const makeTypeofGuard = <T extends keyof TypesMap>(type: T) => (
     (v: unknown): v is TypesMap[T] => typeof v === type
 );
-const makeInstanceofGuard = <C extends AnyConstructor>(constructor: C) => (
+export const makeInstanceofGuard = <C extends AnyConstructor>(constructor: C) => (
     (v: unknown): v is InstanceType<C> => v instanceof constructor
 );
 const everyGuard = <
     V extends ArrayLike<any> | Iterable<any>,
-    G extends Guard<any>
+    G extends TypeGuard<any>
 >(v: V, guard: G) => Array.prototype.every.call(v, guard);
 
 export const isFunction = makeTypeofGuard('function');
-export const isObject = makeTypeofGuard('object');
+export const isObject = (isObjectInternal => (
+    (v: unknown) => !isNull(v) && isObjectInternal(v)
+))(makeTypeofGuard('object')) as TypeGuard<TypesMap['object']>;
 export const isSymbol = makeTypeofGuard('symbol');
 export const isString = makeTypeofGuard('string');
 export const isNumber = makeTypeofGuard('number');
 export const isBigInt = makeTypeofGuard('bigint');
 export const isBoolean = makeTypeofGuard('boolean');
 export const isUndefined = makeTypeofGuard('undefined');
-export const isVoid = isUndefined as Guard<void>;
+export const isVoid = isUndefined as TypeGuard<void>;
 export const isNull = (v: unknown): v is null => v === null;
 export const isRegExp = makeInstanceofGuard(RegExp);
 export const isPromise = makeInstanceofGuard(Promise);
@@ -63,8 +66,9 @@ export const isTypedArray = (v: unknown): v is TypedArray => (
 );
 export const isPromiseLike = (v: unknown): v is PromiseLike<unknown> => isObject(v) && isFunction(v.then);
 export const isArray = (v: unknown): v is unknown[] => Array.isArray(v);
-export const isArrayWith = <T>(guard: Guard<T>, v: unknown): v is T[] => isArray(v) && everyGuard(v, guard);
+export const isArrayWith = <T>(guard: TypeGuard<T>, v: unknown): v is T[] => isArray(v) && everyGuard(v, guard);
 export const isIterable = (v: unknown): v is Iterable<unknown> => isObject(v) && isFunction(v[Symbol.iterator as any]);
-export const isIterableWith = <T>(guard: Guard<T>, v: unknown): v is Iterable<T> => isIterable(v) && everyGuard(v, guard);
-export const isSetWith = <T>(guard: Guard<T>, v: unknown): v is Set<T> => isSet(v) && everyGuard(v, guard);
-export const isMapWith = <K, V>(guard: Guard<[K, V]>, v: unknown): v is Map<K, V> => isMap(v) && everyGuard(Array.from(v), guard);
+export const isIterableWith = <T>(guard: TypeGuard<T>, v: unknown): v is Iterable<T> => isIterable(v) && everyGuard(v, guard);
+export const isSetWith = <T>(guard: TypeGuard<T>, v: unknown): v is Set<T> => isSet(v) && everyGuard(v, guard);
+export const isMapWith = <K, V>(guard: TypeGuard<[K, V]>, v: unknown): v is Map<K, V> => isMap(v) && everyGuard(Array.from(v), guard);
+export const isNonNullable = <T>(v: T): v is NonNullableExtended<T> => !(isNull(v) || isUndefined(v));
