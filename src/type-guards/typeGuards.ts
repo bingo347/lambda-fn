@@ -27,7 +27,7 @@ export const makeInstanceofGuard = <C extends AnyConstructor>(constructor: C) =>
 const everyGuard = <
     V extends ArrayLike<any> | Iterable<any>,
     G extends TypeGuard<any>
->(v: V, guard: G) => Array.prototype.every.call(v, guard);
+>(v: V, guard: G) => Array.from(v).every(guard);
 
 export const isFunction = makeTypeofGuard('function');
 export const isObject = (isObjectInternal => (
@@ -70,5 +70,5 @@ export const isArrayWith = <T>(guard: TypeGuard<T>, v: unknown): v is T[] => isA
 export const isIterable = (v: unknown): v is Iterable<unknown> => isObject(v) && isFunction(v[Symbol.iterator as any]);
 export const isIterableWith = <T>(guard: TypeGuard<T>, v: unknown): v is Iterable<T> => isIterable(v) && everyGuard(v, guard);
 export const isSetWith = <T>(guard: TypeGuard<T>, v: unknown): v is Set<T> => isSet(v) && everyGuard(v, guard);
-export const isMapWith = <K, V>(guard: TypeGuard<[K, V]>, v: unknown): v is Map<K, V> => isMap(v) && everyGuard(Array.from(v), guard);
+export const isMapWith = <K, V>(guard: TypeGuard<[K, V]>, v: unknown): v is Map<K, V> => isMap(v) && everyGuard(v, guard);
 export const isNonNullable = <T>(v: T): v is NonNullableExtended<T> => !(isNull(v) || isUndefined(v));
