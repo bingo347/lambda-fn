@@ -2,6 +2,7 @@ import {TypeGuard, isObject} from '@lambda-fn/type-guards';
 import {assign} from '../_util';
 
 type ValueFN<V, R> = (value: V) => R;
+const enum CellKind { Cell }
 const GUARD = Symbol();
 
 export interface CellStatic {
@@ -11,6 +12,7 @@ export interface CellStatic {
 }
 
 export interface Cell<T> {
+    [GUARD]: CellKind;
     get(): T;
     set(value: T): void;
     update(updater: (value: T) => T): void;
@@ -20,7 +22,7 @@ export interface Cell<T> {
     fold<U>(mapper: (value: T) => U): U;
 }
 
-export const isCell = (maybeCell: unknown): maybeCell is Cell<unknown> => isObject(maybeCell) && maybeCell[GUARD as any] === 1;
+export const isCell = (maybeCell: unknown): maybeCell is Cell<unknown> => isObject(maybeCell) && maybeCell[GUARD as any] === CellKind.Cell;
 export const isCellWith = <T>(guard: TypeGuard<T>, maybeCell: unknown): maybeCell is Cell<T> => isCell(maybeCell) && maybeCell.fold(guard);
 
 // eslint-disable-next-line max-lines-per-function
@@ -43,8 +45,5 @@ export const Cell: CellStatic = assign(<T>(initialValue: T): Cell<T> => {
     const fold = <U>(mapper: ValueFN<T, U>) => mapper(currentValue);
     const subscriptions = new Set<ValueFN<T, void>>();
     let currentValue = initialValue;
-    return {get, set, update, subscribe, clone, map, fold,
-        // @ts-ignore
-        [GUARD]: 1
-    };
+    return {get, set, update, subscribe, clone, map, fold, [GUARD]: CellKind.Cell};
 }, {isCell, isCellWith});
