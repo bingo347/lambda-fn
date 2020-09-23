@@ -12,6 +12,7 @@ export interface CellStatic {
 
 export interface Cell<T> {
     [GUARD]: CellKind;
+    value: T;
     get(): T;
     set(value: T): void;
     update(updater: ValueFN<T, T>): void;
@@ -44,5 +45,6 @@ export const Cell: CellStatic = Object.assign(<T>(initialValue: T): Cell<T> => {
     const fold = <U>(mapper: ValueFN<T, U>) => mapper(currentValue);
     const subscriptions = new Set<ValueFN<T, void>>();
     let currentValue = initialValue;
-    return {get, set, update, subscribe, clone, map, fold, [GUARD]: CellKind.Cell};
+    const cell: Omit<Cell<T>, 'value'> = {get, set, update, subscribe, clone, map, fold, [GUARD]: CellKind.Cell};
+    return Object.defineProperty(cell, 'value', {get, set});
 }, {isCell, isCellWith});
