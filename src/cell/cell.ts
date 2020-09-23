@@ -1,4 +1,5 @@
-import type {TypeGuard} from '@lambda-fn/type-guards';
+import {TypeGuard, isObject, isFunction} from '@lambda-fn/type-guards';
+import {assign} from '../_util';
 
 type ValueFN<V, R> = (value: V) => R;
 
@@ -18,8 +19,12 @@ export interface Cell<T> {
     fold<U>(mapper: (value: T) => U): U;
 }
 
+const cellMethods: readonly (keyof Cell<unknown>)[] = ['get', 'set', 'update', 'subscribe', 'clone', 'map', 'fold'];
+export const isCell = (maybeCell: unknown): maybeCell is Cell<unknown> => isObject(maybeCell) && cellMethods.every(m => isFunction(maybeCell[m]));
+export const isCellWith = <T>(guard: TypeGuard<T>, maybeCell: unknown): maybeCell is Cell<T> => isCell(maybeCell) && maybeCell.fold(guard);
+
 // eslint-disable-next-line max-lines-per-function
-export const Cell = <T>(initialValue: T): Cell<T> => {
+export const Cell: CellStatic = assign(<T>(initialValue: T): Cell<T> => {
     const get = () => currentValue;
     const set = (value: T) => {
         if(value === currentValue) { return; }
@@ -39,4 +44,4 @@ export const Cell = <T>(initialValue: T): Cell<T> => {
     const subscriptions = new Set<ValueFN<T, void>>();
     let currentValue = initialValue;
     return {get, set, update, subscribe, clone, map, fold};
-};
+}, {isCell, isCellWith});
