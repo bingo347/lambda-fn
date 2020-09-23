@@ -80,13 +80,16 @@ function makePackage(name) {
                     return trimLine.replace(/import (.*) from (.*);/, 'const $1 = require($2);');
                 }
                 if(isExport) {
-                    return trimLine.replace('export', 'module.exports = ')
+                    return (trimLine
+                        .replace(/export\s+default\s+(.*);/, 'Object.assign(exports,{default:$1});')
+                        .replace(/export\s+{(.*)};/, 'Object.assign(exports,{$1});')
+                    );
                 }
                 return line;
             }).join('\n');
             await fs.writeFile(
                 path.join(outDir, 'index.cjs'),
-                `${cjsCode}\nObject.defineProperty(module.exports,"__esModule",{value:true});`
+                `${cjsCode}\nObject.defineProperty(exports,"__esModule",{value:true});`
             );
         }
     };
