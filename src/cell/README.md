@@ -14,24 +14,58 @@ yarn add @lambda-fn/cell
 ## Exports
 
 ```typescript
-type Cell<T> = { /* fields omitted */ };
-function makeCell<T>(initialValue: T): Cell<T>;
+interface CellStatic {
+    isCell(maybeCell: unknown): maybeCell is Cell<unknown>;
+    isCellWith<T>(guard: TypeGuard<T>, maybeCell: unknown): maybeCell is Cell<T>;
+}
+interface Cell<T> {
+    value: T;
+    get(): T;
+    set(value: T): void;
+    update(updater: (value: T) => T): void;
+    subscribe(subscription: ValueFN<T, void>): () => void;
+    clone(): Cell<T>;
+    map<U>(mapper: (value: T) => U): Cell<U>;
+    fold<U>(mapper: (value: T) => U): U;
+}
+
+// Cell also is default export
+function Cell<T>(initialValue: T): Cell<T>; // implements CellStatic
+
 function isCell(maybeCell: unknown): maybeCell is Cell<unknown>;
 function isCellWith<T>(guard: (v: unknown) => v is T): (maybeCell: unknown) => maybeCell is Cell<T>;
+
 function get<T>(cell: Cell<T>): T;
 function set<T>(cell: Cell<T>, value: T): void;
 function update<T>(cell: Cell<T>, updater: (value: T) => T): void;
+function subscribe<T>(cell: Cell<T>, subscription: (value: T) => void): () => void;
 function clone<T>(cell: Cell<T>): Cell<T>;
+function map<T, U>(cell: Cell<T>, mapper: (value: T) => U): Cell<U>;
 function map<T, U>(mapper: (value: T) => U): (cell: Cell<T>) => Cell<U>;
-function fold<T, U>(fld: (value: T) => U): (cell: Cell<T>) => U;
+function fold<T, U>(cell: Cell<T>, mapper: (value: T) => U): Cell<U>;
+function fold<T, U>(mapper: (value: T) => U): (cell: Cell<T>) => Cell<U>;
 ```
 
 ## Example
 
 ```typescript
-import {makeCell, update, fold} from '@lambda-fn/cell';
+import Cell from '@lambda-fn/cell';
 
-const counter = makeCell(0);
+const counter = Cell(0);
+setInterval(() => {
+    counter.update(v => v + 1);
+}, 100);
+setTimeout(() => {
+    console.log(counter.fold(v => `Result: ${v}`));
+}, 3000);
+```
+
+Or in FP style:
+
+```typescript
+import {Cell, update, fold} from '@lambda-fn/cell';
+
+const counter = Cell(0);
 const foldToString = fold((v: number) => `Result: ${v}`);
 setInterval(() => {
     update(counter, v => v + 1);
@@ -39,6 +73,18 @@ setInterval(() => {
 setTimeout(() => {
     console.log(foldToString(counter));
 }, 3000);
+```
+
+Cell also implements [writable store](https://svelte.dev/docs#writable) from [Svelte](https://www.npmjs.com/package/svelte):
+
+```svelte
+<script>
+import Cell from '@lambda-fn/cell';
+
+const counter = Cell(0);
+</script>
+
+<button on:click={() => $counter++}>Clicked {$counter} times</button>
 ```
 
 ## License
