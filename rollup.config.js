@@ -1,6 +1,7 @@
 // @ts-check
 import {promises as fs} from 'fs';
 import path from 'path';
+import babel from '@babel/core';
 import tsPlugin from '@wessberg/rollup-plugin-ts';
 import pkg from './package.json';
 
@@ -71,25 +72,12 @@ function makePackage(name) {
         },
         async renderChunk(code) {
             await fs.mkdir(outDir, {recursive: true});
-            const cjsCode = code.split('\n').map(line => {
-                const trimLine = line.trim();
-                const isImport = trimLine.startsWith('import');
-                const isExport = trimLine.startsWith('export');
-                if(isImport) {
-                    //TODO: wildcard & default import
-                    return trimLine.replace(/import (.*) from (.*);/, 'const $1 = require($2);');
-                }
-                if(isExport) {
-                    return (trimLine
-                        .replace(/export\s+default\s+(.*);/, 'Object.assign(exports,{default:$1});')
-                        .replace(/export\s+{(.*)};/, 'Object.assign(exports,{$1});')
-                    );
-                }
-                return line;
-            }).join('\n');
+            const cjsData = babel.transform(code, {
+                plugins: ['@babel/plugin-transform-modules-commonjs']
+            });
             await fs.writeFile(
                 path.join(outDir, 'index.cjs'),
-                `${cjsCode}\nObject.defineProperty(exports,"__esModule",{value:true});`
+                cjsData.code
             );
         }
     };
