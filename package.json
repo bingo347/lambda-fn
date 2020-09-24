@@ -5,6 +5,7 @@
   "description": "Typescript utilities for functional programming inspired by Rust std library",
   "scripts": {
     "build": "rollup -c",
+    "lint": "eslint --ext .ts --fix src",
     "test": "jest"
   },
   "packages": {
