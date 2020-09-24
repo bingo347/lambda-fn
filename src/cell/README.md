@@ -52,12 +52,17 @@ function fold<T, U>(mapper: (value: T) => U): (cell: Cell<T>) => Cell<U>;
 import Cell from '@lambda-fn/cell';
 
 const counter = Cell(0);
-setInterval(() => {
-    counter.update(v => v + 1);
+const unsubscribe = counter.subscribe(() => {
+    console.log(counter.fold(v => `Result: ${v}`));
+});
+const interval = setInterval(() => {
+    counter.value++;
 }, 100);
 setTimeout(() => {
-    console.log(counter.fold(v => `Result: ${v}`));
+    unsubscribe();
+    clearInterval(interval);
 }, 3000);
+
 ```
 
 Or in FP style:
@@ -67,11 +72,15 @@ import {Cell, update, fold} from '@lambda-fn/cell';
 
 const counter = Cell(0);
 const foldToString = fold((v: number) => `Result: ${v}`);
-setInterval(() => {
+const unsubscribe = subscribe(counter, () => {
+    console.log(foldToString(counter));
+});
+const interval = setInterval(() => {
     update(counter, v => v + 1);
 }, 100);
 setTimeout(() => {
-    console.log(foldToString(counter));
+    unsubscribe();
+    clearInterval(interval);
 }, 3000);
 ```
 
