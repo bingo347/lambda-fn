@@ -16,14 +16,14 @@ yarn add @lambda-fn/cell
 ```typescript
 interface CellStatic {
     isCell(maybeCell: unknown): maybeCell is Cell<unknown>;
-    isCellWith<T>(guard: TypeGuard<T>, maybeCell: unknown): maybeCell is Cell<T>;
+    isCellWith<T>(guard: (v: unknown) => v is T, maybeCell: unknown): maybeCell is Cell<T>;
 }
 interface Cell<T> {
     value: T;
     get(): T;
     set(value: T): void;
     update(updater: (value: T) => T): void;
-    subscribe(subscription: ValueFN<T, void>): () => void;
+    subscribe(subscription: (value: T) => void): () => void;
     clone(): Cell<T>;
     map<U>(mapper: (value: T) => U): Cell<U>;
     fold<U>(mapper: (value: T) => U): U;
@@ -33,7 +33,7 @@ interface Cell<T> {
 function Cell<T>(initialValue: T): Cell<T>; // implements CellStatic
 
 function isCell(maybeCell: unknown): maybeCell is Cell<unknown>;
-function isCellWith<T>(guard: (v: unknown) => v is T): (maybeCell: unknown) => maybeCell is Cell<T>;
+function isCellWith<T>(guard: (v: unknown) => v is T, maybeCell: unknown): maybeCell is Cell<T>;
 
 function get<T>(cell: Cell<T>): T;
 function set<T>(cell: Cell<T>, value: T): void;
@@ -52,8 +52,8 @@ function fold<T, U>(mapper: (value: T) => U): (cell: Cell<T>) => Cell<U>;
 import Cell from '@lambda-fn/cell';
 
 const counter = Cell(0);
-const unsubscribe = counter.subscribe(() => {
-    console.log(counter.fold(v => `Result: ${v}`));
+const unsubscribe = counter.subscribe(v => {
+    console.log(`Result: ${v}`);
 });
 const interval = setInterval(() => {
     counter.value++;
@@ -61,6 +61,7 @@ const interval = setInterval(() => {
 setTimeout(() => {
     unsubscribe();
     clearInterval(interval);
+    console.log(counter.fold(v => `Result: ${v}`));
 }, 3000);
 
 ```
@@ -81,6 +82,7 @@ const interval = setInterval(() => {
 setTimeout(() => {
     unsubscribe();
     clearInterval(interval);
+    console.log(foldToString(counter));
 }, 3000);
 ```
 
