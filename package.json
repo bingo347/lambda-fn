@@ -10,10 +10,10 @@
   },
   "packages": {
     "type-guards": {
-      "version": "1.1.0"
+      "version": "1.1.1"
     },
     "cell": {
-      "version": "1.1.0",
+      "version": "1.1.1",
       "additionalKeywords": [
         "svelte",
         "store"
