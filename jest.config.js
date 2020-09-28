@@ -1,4 +1,3 @@
 module.exports = {
-    automock: true,
-    runner: 'jest-runner-tsc'
+    preset: 'ts-jest'
 };
