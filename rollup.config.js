@@ -50,7 +50,7 @@ function makePackage(name) {
                     version,
                     keywords,
                     description: readme.split('\n', 3)[2].trim(),
-                    main: 'index.cjs',
+                    main: 'index.js',
                     module: 'index.mjs',
                     types: 'index.d.ts',
                     repository: pkg.repository,
@@ -76,7 +76,7 @@ function makePackage(name) {
                 plugins: ['@babel/plugin-transform-modules-commonjs']
             });
             await fs.writeFile(
-                path.join(outDir, 'index.cjs'),
+                path.join(outDir, 'index.js'),
                 cjsData.code
             );
         }
