@@ -9,7 +9,7 @@ type ExtendFN = <T>(
 
 const enum CellKind { Cell }
 const GUARD = Symbol();
-const extenders: [ExtendFN, boolean][] = [];
+const patchers: [ExtendFN, boolean][] = [];
 const makeDescriptor = (value: any, configurable = false, enumerable = false, writable = false): PropertyDescriptor => ({
     value,
     configurable,
@@ -50,7 +50,7 @@ export const Cell: CellStatic = Object.defineProperties(<T>(initialValue: T): Ce
             subscription(currentValue);
         }
     };
-    return upgradeCellWithExtenders(Object.defineProperties({}, {
+    return mergeCellWithPatchers(Object.defineProperties({}, {
         value: {get, set, enumerable: true},
         get: makeDescriptor(get),
         set: makeDescriptor(set),
@@ -65,9 +65,9 @@ export const Cell: CellStatic = Object.defineProperties(<T>(initialValue: T): Ce
     isCellWith: makeDescriptor(isCellWith)
 });
 
-export const extend = (cb: ExtendFN, configurable = true): void => void extenders.push([cb, configurable]);
+export const patch = (cb: ExtendFN, configurable = true): void => void patchers.push([cb, configurable]);
 
-const upgradeCellWithExtenders = <T>(cell: Partial<Cell<T>>): Cell<T> => extenders.reduce((partialCell, [cb, configurable]) => (
+const mergeCellWithPatchers = <T>(cell: Partial<Cell<T>>): Cell<T> => patchers.reduce((partialCell, [cb, configurable]) => (
     mergeCell(partialCell, cb(partialCell.get!, partialCell.set!, partialCell.subscribe!), configurable)
 ), cell) as any as Cell<T>;
 
@@ -81,7 +81,7 @@ const mergeCell = <T>(currentCell: Partial<Cell<T>>, extendedCell: Partial<Cell<
     return currentCell;
 };
 
-extend((get, set) => ({
+patch((get, set) => ({
     update: updater => set(updater(get())),
     clone: () => Cell(get()),
     map: mapper => Cell(mapper(get())),
