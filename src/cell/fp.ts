@@ -19,8 +19,8 @@ export function map<T, U>(mapperOrCell: Cell<T> | ValueFN<T, U>, _mapper?: Value
     return resolver;
 }
 
-export function fold<T, U>(cell: Cell<T>, mapper: ValueFN<T, U>): Cell<U>;
-export function fold<T, U>(mapper: ValueFN<T, U>): (cell: Cell<T>) => Cell<U>;
+export function fold<T, U>(cell: Cell<T>, mapper: ValueFN<T, U>): U;
+export function fold<T, U>(mapper: ValueFN<T, U>): (cell: Cell<T>) => U;
 export function fold<T, U>(mapperOrCell: Cell<T> | ValueFN<T, U>, _mapper?: ValueFN<T, U>) {
     const mapper = isCell(mapperOrCell) ? _mapper! : mapperOrCell;
     const resolver = (cell: Cell<T>) => cell.fold(mapper);

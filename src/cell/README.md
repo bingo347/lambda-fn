@@ -45,8 +45,8 @@ function subscribe<T>(cell: Cell<T>, subscription: (value: T) => void): () => vo
 function clone<T>(cell: Cell<T>): Cell<T>;
 function map<T, U>(cell: Cell<T>, mapper: (value: T) => U): Cell<U>;
 function map<T, U>(mapper: (value: T) => U): (cell: Cell<T>) => Cell<U>;
-function fold<T, U>(cell: Cell<T>, mapper: (value: T) => U): Cell<U>;
-function fold<T, U>(mapper: (value: T) => U): (cell: Cell<T>) => Cell<U>;
+function fold<T, U>(cell: Cell<T>, mapper: (value: T) => U): U;
+function fold<T, U>(mapper: (value: T) => U): (cell: Cell<T>) => U;
 ```
 
 ## Example
