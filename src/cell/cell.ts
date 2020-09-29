@@ -41,27 +41,13 @@ export interface Cell<T> {
 export const isCell = (maybeCell: unknown): maybeCell is Cell<unknown> => isObject(maybeCell) && maybeCell[GUARD as any] === CellKind.Cell;
 export const isCellWith = <T>(guard: TypeGuard<T>, maybeCell: unknown): maybeCell is Cell<T> => isCell(maybeCell) && maybeCell.fold(guard);
 
-// eslint-disable-next-line max-lines-per-function
 export const Cell: CellFactory = Object.defineProperties(<T>(initialValue: T): Cell<T> => {
     let currentValue = initialValue;
-    const subscriptions = new Set<ValueFN<T, void>>();
-    const get = () => currentValue;
-    const set = (value: T) => {
-        if(value === currentValue) { return; }
-        currentValue = value;
-        for(const subscription of subscriptions.values()) {
-            subscription(currentValue);
-        }
-    };
     return mergeCellWithPatchers(Object.defineProperties({}, {
-        value: {get, set, enumerable: true},
-        get: makeDescriptor(get),
-        set: makeDescriptor(set),
-        subscribe: makeDescriptor((subscription: ValueFN<T, void>) => (
-            subscriptions.add(subscription),
-            subscription(currentValue),
-            () => void subscriptions.delete(subscription)
-        ))
+        get: makeDescriptor(() => currentValue),
+        set: makeDescriptor((value: T) => {
+            currentValue = value;
+        }, true)
     }));
 }, {
     isCell: makeDescriptor(isCell),
@@ -70,9 +56,9 @@ export const Cell: CellFactory = Object.defineProperties(<T>(initialValue: T): C
 
 export const patch = (cb: ExtendFN, configurable = true): void => void patchers.push([cb, configurable]);
 
-const mergeCellWithPatchers = <T>(cell: Partial<Cell<T>>): Cell<T> => patchers.reduce((partialCell, [cb, configurable]) => (
+const mergeCellWithPatchers = <T>(cell: Partial<Cell<T>>): Cell<T> => patchCellWithValue(patchers.reduce((partialCell, [cb, configurable]) => (
     mergeCell(partialCell, cb(partialCell.get!, partialCell.set!, partialCell.subscribe!), configurable)
-), cell) as any as Cell<T>;
+), cell) as any);
 
 const mergeCell = <T>(currentCell: Partial<Cell<T>>, extendedCell: Partial<Cell<T>>, configurable: boolean) => {
     for(const key of Object.getOwnPropertyNames(extendedCell) as (keyof Cell<T>)[]) {
@@ -84,10 +70,34 @@ const mergeCell = <T>(currentCell: Partial<Cell<T>>, extendedCell: Partial<Cell<
     return currentCell;
 };
 
+const patchCellWithValue = <T>(cell: Cell<T>): Cell<T> => Object.defineProperty(cell, 'value', {
+    get: cell.get, // eslint-disable-line @typescript-eslint/unbound-method
+    set: cell.set, // eslint-disable-line @typescript-eslint/unbound-method
+    enumerable: true
+});
+
+patch(() => ({[GUARD]: CellKind.Cell}), false);
+patch((get, set) => {
+    const subscriptions = new Set<ValueFN<ReturnType<typeof get>, void>>();
+    const wrappedSet: typeof set = value => {
+        if(value === get()) { return; }
+        set(value);
+        for(const subscription of subscriptions.values()) {
+            subscription(value);
+        }
+    };
+    return {
+        set: wrappedSet,
+        subscribe: subscription => (
+            subscriptions.add(subscription),
+            subscription(get()),
+            () => void subscriptions.delete(subscription)
+        )
+    };
+}, false);
 patch((get, set) => ({
     update: updater => set(updater(get())),
     clone: () => Cell(get()),
     map: mapper => Cell(mapper(get())),
-    fold: mapper => mapper(get()),
-    [GUARD]: CellKind.Cell
+    fold: mapper => mapper(get())
 }), false);
