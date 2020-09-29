@@ -18,6 +18,9 @@ interface CellStatic {
     isCell(maybeCell: unknown): maybeCell is Cell<unknown>;
     isCellWith<T>(guard: (v: unknown) => v is T, maybeCell: unknown): maybeCell is Cell<T>;
 }
+interface CellFactory extends CellStatic {
+    <T>(initialValue: T): Cell<T>;
+}
 interface Cell<T> {
     value: T;
     get(): T;
@@ -30,7 +33,7 @@ interface Cell<T> {
 }
 
 // Cell also is default export
-function Cell<T>(initialValue: T): Cell<T>; // implements CellStatic
+function Cell<T>(initialValue: T): Cell<T>; // implements CellFactory
 
 function isCell(maybeCell: unknown): maybeCell is Cell<unknown>;
 function isCellWith<T>(guard: (v: unknown) => v is T, maybeCell: unknown): maybeCell is Cell<T>;

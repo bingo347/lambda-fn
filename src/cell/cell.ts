@@ -18,13 +18,16 @@ const makeDescriptor = (value: any, configurable = false, enumerable = false, wr
 });
 
 export interface CellStatic {
-    <T>(initialValue: T): Cell<T>;
     isCell(maybeCell: unknown): maybeCell is Cell<unknown>;
     isCellWith<T>(guard: TypeGuard<T>, maybeCell: unknown): maybeCell is Cell<T>;
 }
 
+export interface CellFactory extends CellStatic {
+    <T>(initialValue: T): Cell<T>;
+}
+
 export interface Cell<T> {
-    [GUARD]: CellKind;
+    readonly [GUARD]: CellKind.Cell;
     value: T;
     get(): T;
     set(value: T): void;
@@ -39,7 +42,7 @@ export const isCell = (maybeCell: unknown): maybeCell is Cell<unknown> => isObje
 export const isCellWith = <T>(guard: TypeGuard<T>, maybeCell: unknown): maybeCell is Cell<T> => isCell(maybeCell) && maybeCell.fold(guard);
 
 // eslint-disable-next-line max-lines-per-function
-export const Cell: CellStatic = Object.defineProperties(<T>(initialValue: T): Cell<T> => {
+export const Cell: CellFactory = Object.defineProperties(<T>(initialValue: T): Cell<T> => {
     let currentValue = initialValue;
     const subscriptions = new Set<ValueFN<T, void>>();
     const get = () => currentValue;
