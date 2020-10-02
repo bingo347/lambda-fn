@@ -42,6 +42,8 @@ export interface Some<T> extends OptionInstance<T> {
 
 export interface None extends OptionInstance<never> {
     readonly [GUARD]: OptionKind.None;
+    unwrapOr<T>(defaultValue: T): T;
+    unwrapOrElse<T>(lazy: () => T): T;
 }
 
 export type Option<T> = Some<T> | None;
