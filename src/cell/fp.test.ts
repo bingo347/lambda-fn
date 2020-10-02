@@ -51,9 +51,16 @@ test('`map` make new cell with value transformed by mapper', () => {
     const fn = jest.fn((v: number) => v + 1);
     const cell = Cell(1);
     const mappedCell = map(cell, fn);
+    const partialMap = map(fn);
 
     expect(cell.value).toBe(1);
+
     expect(mappedCell.value).toBe(2);
+    expect(fn).toBeCalledTimes(1);
+
+    fn.mockClear();
+
+    expect(partialMap(cell).value).toBe(2);
     expect(fn).toBeCalledTimes(1);
 });
 
@@ -61,8 +68,15 @@ test('`fold` returns value transformed by mapper', () => {
     const fn = jest.fn((v: number) => v + 1);
     const cell = Cell(1);
     const foldedValue = fold(cell, fn);
+    const partialFold = fold(fn);
 
     expect(cell.value).toBe(1);
+
     expect(foldedValue).toBe(2);
+    expect(fn).toBeCalledTimes(1);
+
+    fn.mockClear();
+
+    expect(partialFold(cell)).toBe(2);
     expect(fn).toBeCalledTimes(1);
 });

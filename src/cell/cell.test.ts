@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('@lambda-fn/type-guards', () => require('../type-guards'), {virtual: true});
 
-import {Cell} from './cell';
+import {Cell, patch} from './cell';
 
 test('isCell', () => {
     const guard = (v: unknown): v is 1 => v === 1;
@@ -59,4 +59,18 @@ test('cell.subscribe', () => {
 
 test('similar cells are deep equal', () => {
     expect(Cell({x: 0})).toStrictEqual(Cell({x: 0}));
+});
+
+test('patch can add new method to cell', () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    patch((get, set) => ({
+        incr: () => set((get() as any as number + 1) as any)
+    }));
+    const cell = Cell(0) as Cell<number> & {incr(): void};
+
+    expect(typeof cell.incr).toBe('function');
+
+    cell.incr();
+    expect(cell.value).toBe(1);
 });
