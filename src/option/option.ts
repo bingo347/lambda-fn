@@ -53,9 +53,11 @@ const makeOption = <T>(kind: OptionKind, value?: T): Option<T> => {
     return {} as Option<T>;
 };
 
+/* eslint-disable @typescript-eslint/no-redeclare */
 export const Some = <T>(value: T): Some<T> => makeOption(OptionKind.Some, value) as Some<T>;
 export const None = makeOption(OptionKind.None) as None;
 export const Option = {
+/* eslint-enable @typescript-eslint/no-redeclare */
     Some,
     None
 } as OptionStatic;
