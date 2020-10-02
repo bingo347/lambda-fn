@@ -1,21 +1,25 @@
-import {Some, None, Option, taggerSome, taggerNone} from './types';
+import {TypeGuard, isObject} from '@lambda-fn/type-guards';
+import {Option, Some, None} from './option';
+import {GUARD, OptionKind} from './internal';
+import {makeDescriptor, getSymbolFieldValue} from '../_util';
 
-export const isSome = (maybeSome: unknown): maybeSome is Some<unknown> => taggerSome.$(maybeSome);
-export const isNone = (maybeNone: unknown): maybeNone is None => taggerNone.$(maybeNone);
+// TODO: move to fp
+const unwrap = <T>(option: Option<T>): T => option.unwrap();
+
+const checkOption = (maybeOption: unknown, kind: OptionKind) => isObject(maybeOption) && getSymbolFieldValue(maybeOption, GUARD) === kind;
+const isSomeWithInternal = <T>(guard: TypeGuard<T>, maybeSome: unknown): maybeSome is Some<T> => isSome(maybeSome) && guard(unwrap(maybeSome));
+const isOptionWithInternal = <T>(guard: TypeGuard<T>, maybeOption: unknown): maybeOption is Option<T> => isNone(maybeOption) || isSomeWithInternal(guard, maybeOption);
+
+export const isSome = (maybeSome: unknown): maybeSome is Some<unknown> => checkOption(maybeSome, OptionKind.Some);
+export const isNone = (maybeNone: unknown): maybeNone is None => checkOption(maybeNone, OptionKind.None);
 export const isOption = (maybeOption: unknown): maybeOption is Option<unknown> => isSome(maybeOption) || isNone(maybeOption);
+export const isSomeWith = <T>(guard: TypeGuard<T>) => (maybeSome: unknown): maybeSome is Some<T> => isSomeWithInternal(guard, maybeSome);
+export const isOptionWith = <T>(guard: TypeGuard<T>) => (maybeOption: unknown): maybeOption is Option<T> => isOptionWithInternal(guard, maybeOption);
 
-export function isSomeWith<T>(guard: (v: unknown) => v is T) {
-    return (maybeSome: unknown): maybeSome is Some<T> => isSome(maybeSome) && guard(maybeSome.v);
-}
-
-export function isOptionWith<T>(guard: (v: unknown) => v is T): ((maybeOption: unknown) => maybeOption is Option<T>) {
-    const isSomeWithT = isSomeWith(guard);
-    return (maybeOption: unknown): maybeOption is Option<T> => isSomeWithT(maybeOption) || isNone(maybeOption);
-}
-
-export function assert<T>(option: Option<T>, msg?: string): asserts option is Some<T> {
-    if(isNone(option)) {
-        throw new TypeError(msg || 'Called assert for Option on a None value');
-    }
-    return true as any as void;
-}
+Object.defineProperties(Option, {
+    isSome: makeDescriptor(isSome),
+    isNone: makeDescriptor(isNone),
+    isOption: makeDescriptor(isOption),
+    isSomeWith: makeDescriptor(isSomeWithInternal),
+    isOptionWith: makeDescriptor(isOptionWithInternal)
+});
