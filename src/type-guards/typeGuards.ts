@@ -1,4 +1,4 @@
-import {getSymbolFieldValue} from '@lambda-fn/_util';
+import {getSymbolFieldValue} from '../_util';
 
 export type TypeGuard<T extends A, A = unknown> = (v: A) => v is T;
 type TypesMap = {
