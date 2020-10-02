@@ -48,7 +48,21 @@ export interface None extends OptionInstance<never> {
 
 export type Option<T> = Some<T> | None;
 
-const makeOption = <T>(kind: OptionKind, value?: T): Option<T> => {
+export const fromNullable = <T>(value: T): Option<NonNullable<T>> => (isNonNullable(value) ? Some(value as unknown as NonNullable<T>) : None);
+
+/* eslint-disable @typescript-eslint/no-redeclare */
+export const Some = <T>(value: T): Some<T> => makeOption(OptionKind.Some, value);
+export const None = makeOption(OptionKind.None);
+export const Option = Object.defineProperties({}, {
+/* eslint-enable @typescript-eslint/no-redeclare */
+    Some: makeDescriptor(Some),
+    None: makeDescriptor(None),
+    fromNullable: makeDescriptor(fromNullable)
+}) as OptionStatic;
+
+function makeOption<T>(kind: OptionKind.Some, value: T): Some<T>;
+function makeOption(kind: OptionKind.None): None;
+function makeOption<T>(kind: OptionKind, value?: T) {
     const protoOption = Object.defineProperty((kind === OptionKind.Some
         ? Object.defineProperty({}, VALUE, makeDescriptor(value, false, true))
         : {}
@@ -56,7 +70,7 @@ const makeOption = <T>(kind: OptionKind, value?: T): Option<T> => {
     return patchers.reduce((option, [patcher, configurable]) => (
         mergeOption(option, patcher(kind, value), configurable)
     ), protoOption);
-};
+}
 
 const mergeOption = <T>(option: Option<T>, patch: Partial<Option<T>>, configurable: boolean) => {
     for(const key of Object.getOwnPropertyNames(patch) as (keyof Option<T>)[]) {
@@ -67,15 +81,3 @@ const mergeOption = <T>(option: Option<T>, patch: Partial<Option<T>>, configurab
     }
     return option;
 };
-
-export const fromNullable = <T>(value: T): Option<NonNullable<T>> => (isNonNullable(value) ? Some(value as unknown as NonNullable<T>) : None);
-
-/* eslint-disable @typescript-eslint/no-redeclare */
-export const Some = <T>(value: T): Some<T> => makeOption(OptionKind.Some, value) as Some<T>;
-export const None = makeOption(OptionKind.None) as None;
-export const Option = Object.defineProperties({}, {
-/* eslint-enable @typescript-eslint/no-redeclare */
-    Some: makeDescriptor(Some),
-    None: makeDescriptor(None),
-    fromNullable: makeDescriptor(fromNullable)
-}) as OptionStatic;
