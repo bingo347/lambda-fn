@@ -1,5 +1,5 @@
 import {TypeGuard, isNonNullable} from '@lambda-fn/type-guards';
-import {GUARD, VALUE, OptionKind, patchers} from './internal';
+import {GUARD, VALUE, OptionKind, makeOption} from './internal';
 import {makeDescriptor} from '../_util';
 
 export interface OptionStatic {
@@ -59,25 +59,3 @@ export const Option = Object.defineProperties({}, {
     None: makeDescriptor(None),
     fromNullable: makeDescriptor(fromNullable)
 }) as OptionStatic;
-
-function makeOption<T>(kind: OptionKind.Some, value: T): Some<T>;
-function makeOption(kind: OptionKind.None): None;
-function makeOption<T>(kind: OptionKind, value?: T) {
-    const protoOption = Object.defineProperty((kind === OptionKind.Some
-        ? Object.defineProperty({}, VALUE, makeDescriptor(value, false, true))
-        : {}
-    ), GUARD, makeDescriptor(kind, false, true)) as Option<T>;
-    return patchers.reduce((option, [patcher, configurable]) => (
-        mergeOption(option, patcher(kind, value), configurable)
-    ), protoOption);
-}
-
-function mergeOption<T>(option: Option<T>, patch: Partial<Option<T>>, configurable: boolean) {
-    for(const key of Object.getOwnPropertyNames(patch) as (keyof Option<T>)[]) {
-        Object.defineProperty(option, key, makeDescriptor(patch[key], configurable));
-    }
-    for(const key of Object.getOwnPropertySymbols(patch) as (keyof Option<T>)[]) {
-        Object.defineProperty(option, key, makeDescriptor(patch[key], configurable));
-    }
-    return option;
-}
