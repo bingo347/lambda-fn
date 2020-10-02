@@ -1,7 +1,7 @@
 import {Some, Option} from './types';
 import {isSome, assert} from './guards';
 import {some, none, fromNullable} from './builders';
-import {get} from '../_util';
+import {get} from '../_util-old';
 
 export function expect<T>(option: Option<T>, msg: string): T {
     assert(option, msg);

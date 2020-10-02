@@ -45,3 +45,17 @@ export interface None extends OptionInstance<never> {
 }
 
 export type Option<T> = Some<T> | None;
+
+const makeOption = <T>(kind: OptionKind, value?: T): Option<T> => {
+    // TODO:
+    kind;
+    value;
+    return {} as Option<T>;
+};
+
+export const Some = <T>(value: T): Some<T> => makeOption(OptionKind.Some, value) as Some<T>;
+export const None = makeOption(OptionKind.None) as None;
+export const Option = {
+    Some,
+    None
+} as OptionStatic;

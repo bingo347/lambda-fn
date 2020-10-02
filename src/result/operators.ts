@@ -1,7 +1,7 @@
 import {Result} from './types';
 import {isOk, isErr, assert} from './guards';
 import {ok, err} from './builders';
-import {get} from '../_util';
+import {get} from '../_util-old';
 
 export function expect<T>(result: Result<T, any>, msg: string): T {
     if(isErr(result)) {

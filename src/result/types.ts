@@ -1,4 +1,4 @@
-import {makeTag, InferTag} from '../_util';
+import {makeTag, InferTag} from '../_util-old';
 
 export const taggerOk = makeTag('Ok');
 export const taggerErr = makeTag('Err');
