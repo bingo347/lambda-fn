@@ -12,7 +12,7 @@ export function isErrWith<E>(guard: (e: unknown) => e is E) {
     return (maybeErr: unknown): maybeErr is Err<E> => isErr(maybeErr) && guard(maybeErr.v);
 }
 
-export function isResultWith<T, E>(guardOk: (v: unknown) => v is T, guardErr: (e: unknown) => e is E) {
+export function isResultWith<T, E>(guardOk: (v: unknown) => v is T, guardErr: (e: unknown) => e is E): (maybeResult: unknown) => maybeResult is Result<T, E> {
     const isOkWithT = isOkWith(guardOk);
     const isErrWithE = isErrWith(guardErr);
     return (maybeResult: unknown): maybeResult is Result<T, E> => isOkWithT(maybeResult) || isErrWithE(maybeResult);

@@ -7,6 +7,7 @@ export function expect<T>(result: Result<T, any>, msg: string): T {
     if(isErr(result)) {
         assert(err(new TypeError(msg)));
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return get(result);
 }
 
@@ -38,7 +39,7 @@ export function and<T1, T2, T3, T4, T5, T6, T7, T8, T9, E>(r1: Result<T1, E>, r2
     r4: Result<T4, E>, r5: Result<T5, E>, r6: Result<T6, E>, r7: Result<T7, E>, r8: Result<T8, E>,
     r9: Result<T9, E>): Result<[T1, T2, T3, T4, T5, T6, T7, T8, T9], E>;
 export function and<TS extends any[], E>(...results: [Result<TS[number], E>, Result<TS[number], E>, ...Result<TS[number], E>[]]): Result<TS, E>;
-export function and<E>(...results: Result<any, E>[]) {
+export function and<E>(...results: Result<any, E>[]): Result<any[], E> {
     return (results.every(isOk)
         ? ok(results.map(get))
         : err(get(results.find(isErr)!))
@@ -65,7 +66,7 @@ export function or<T1, T2, T3, T4, T5, T6, T7, T8, E>(r1: Result<T1, E>, r2: Res
 export function or<T1, T2, T3, T4, T5, T6, T7, T8, T9, E>(r1: Result<T1, E>, r2: Result<T2, E>, r3: Result<T3, E>, r4: Result<T4, E>,
     r5: Result<T5, E>, r6: Result<T6, E>, r7: Result<T7, E>, r8: Result<T8, E>, r9: Result<T9, E>): Result<T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9, E>;
 export function or<TS extends any[], E>(...results: [Result<TS[number], E>, Result<TS[number], E>, ...Result<TS[number], E>[]]): Result<TS[number], E>;
-export function or<E>(...results: Result<any, E>[]) {
+export function or<E>(...results: Result<any, E>[]): Result<any, E> {
     const firstOk = results.find(isOk);
     return firstOk ? ok(get(firstOk)) : err(get(results[0]));
 }

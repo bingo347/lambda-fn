@@ -8,7 +8,7 @@ export function isSomeWith<T>(guard: (v: unknown) => v is T) {
     return (maybeSome: unknown): maybeSome is Some<T> => isSome(maybeSome) && guard(maybeSome.v);
 }
 
-export function isOptionWith<T>(guard: (v: unknown) => v is T) {
+export function isOptionWith<T>(guard: (v: unknown) => v is T): ((maybeOption: unknown) => maybeOption is Option<T>) {
     const isSomeWithT = isSomeWith(guard);
     return (maybeOption: unknown): maybeOption is Option<T> => isSomeWithT(maybeOption) || isNone(maybeOption);
 }
