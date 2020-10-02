@@ -1,5 +1,5 @@
 import {TypeGuard, isNonNullable} from '@lambda-fn/type-guards';
-import {GUARD, OptionKind, patchers} from './internal';
+import {GUARD, VALUE, OptionKind, patchers} from './internal';
 import {makeDescriptor} from '../_util';
 
 export interface OptionStatic {
@@ -37,6 +37,7 @@ export interface OptionInstance<T> {
 
 export interface Some<T> extends OptionInstance<T> {
     readonly [GUARD]: OptionKind.Some;
+    readonly [VALUE]: T;
 }
 
 export interface None extends OptionInstance<never> {
@@ -47,7 +48,7 @@ export type Option<T> = Some<T> | None;
 
 const makeOption = <T>(kind: OptionKind, value?: T): Option<T> => {
     const protoOption = Object.defineProperty((kind === OptionKind.Some
-        ? Object.defineProperty({}, '@@value', makeDescriptor(value, false, true))
+        ? Object.defineProperty({}, VALUE, makeDescriptor(value, false, true))
         : {}
     ), GUARD, makeDescriptor(kind, false, true)) as Option<T>;
     return patchers.reduce((option, [patcher, configurable]) => (
