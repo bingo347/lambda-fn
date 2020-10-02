@@ -18,11 +18,11 @@ export interface OptionInstance<T> {
     assertNone(this: Option<T>, msg?: string): asserts this is None;
     expect(msg: string): T;
     unwrap(): T;
-    unwrapOr(defaultValue: T): T;
-    unwrapOrElse(lazy: () => T): T;
+    unwrapOr<U>(defaultValue: U): T | U;
+    unwrapOrElse<U>(lazy: () => U): T | U;
     clone(): Option<T>;
     andThen<U>(f: (value: T) => Option<U>): Option<U>;
-    orElse<U>(f: () => Option<U>): Option<U | T>;
+    orElse<U>(f: () => Option<U>): Option<T | U>;
     and<U>(other: Option<U>): Option<U>;
     or<U>(other: Option<U>): Option<T | U>;
     xor<U>(other: Option<U>): Option<T | U>;
@@ -42,8 +42,6 @@ export interface Some<T> extends OptionInstance<T> {
 
 export interface None extends OptionInstance<never> {
     readonly [GUARD]: OptionKind.None;
-    unwrapOr<T>(defaultValue: T): T;
-    unwrapOrElse<T>(lazy: () => T): T;
 }
 
 export type Option<T> = Some<T> | None;
