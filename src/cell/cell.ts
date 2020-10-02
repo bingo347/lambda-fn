@@ -1,5 +1,5 @@
 import {TypeGuard, isObject} from '@lambda-fn/type-guards';
-import {makeDescriptor} from '../_util';
+import {makeDescriptor, getSymbolFieldValue} from '../_util';
 
 type ValueFN<V, R> = (value: V) => R;
 type ExtendFN = <T>(
@@ -33,10 +33,11 @@ export interface Cell<T> {
     fold<U>(mapper: ValueFN<T, U>): U;
 }
 
-export const isCell = (maybeCell: unknown): maybeCell is Cell<unknown> => isObject(maybeCell) && maybeCell[GUARD as any] === CellKind.Cell;
+export const isCell = (maybeCell: unknown): maybeCell is Cell<unknown> => isObject(maybeCell) && getSymbolFieldValue(maybeCell, GUARD) === CellKind.Cell;
 export const isCellWith = <T>(guard: TypeGuard<T>, maybeCell: unknown): maybeCell is Cell<T> => isCell(maybeCell) && maybeCell.fold(guard);
 
-export const Cell: CellFactory = Object.defineProperties(<T>(initialValue: T): Cell<T> => {
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const Cell = Object.defineProperties(<T>(initialValue: T): Cell<T> => {
     let currentValue = initialValue;
     return mergeCellWithPatchers(Object.defineProperties({}, {
         get: makeDescriptor(() => currentValue),
@@ -47,7 +48,7 @@ export const Cell: CellFactory = Object.defineProperties(<T>(initialValue: T): C
 }, {
     isCell: makeDescriptor(isCell),
     isCellWith: makeDescriptor(isCellWith)
-});
+}) as CellFactory;
 
 export const patch = (cb: ExtendFN, configurable = true): void => void patchers.push([cb, configurable]);
 
@@ -65,11 +66,11 @@ const mergeCell = <T>(currentCell: Partial<Cell<T>>, extendedCell: Partial<Cell<
     return currentCell;
 };
 
-const patchCellWithValue = <T>(cell: Cell<T>): Cell<T> => Object.defineProperty(cell, 'value', {
+const patchCellWithValue = <T>(cell: Cell<T>) => Object.defineProperty(cell, 'value', {
     get: cell.get, // eslint-disable-line @typescript-eslint/unbound-method
     set: cell.set, // eslint-disable-line @typescript-eslint/unbound-method
     enumerable: true
-});
+}) as Cell<T>;
 
 patch(() => ({[GUARD]: CellKind.Cell}), false);
 patch((get, set) => {
