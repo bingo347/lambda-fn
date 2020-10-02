@@ -1,3 +1,5 @@
+import {getSymbolFieldValue} from '@lambda-fn/_util';
+
 export type TypeGuard<T extends A, A = unknown> = (v: A) => v is T;
 type TypesMap = {
     'undefined': undefined;
@@ -67,7 +69,7 @@ export const isTypedArray = (v: unknown): v is TypedArray => (
 export const isPromiseLike = (v: unknown): v is PromiseLike<unknown> => isObject(v) && isFunction(v.then);
 export const isArray = (v: unknown): v is unknown[] => Array.isArray(v);
 export const isArrayWith = <T>(guard: TypeGuard<T>, v: unknown): v is T[] => isArray(v) && everyGuard(v, guard);
-export const isIterable = (v: unknown): v is Iterable<unknown> => isObject(v) && isFunction(v[Symbol.iterator as any]);
+export const isIterable = (v: unknown): v is Iterable<unknown> => isObject(v) && isFunction(getSymbolFieldValue(v, Symbol.iterator));
 export const isIterableWith = <T>(guard: TypeGuard<T>, v: unknown): v is Iterable<T> => isIterable(v) && everyGuard(v, guard);
 export const isSetWith = <T>(guard: TypeGuard<T>, v: unknown): v is Set<T> => isSet(v) && everyGuard(v, guard);
 export const isMapWith = <K, V>(guard: TypeGuard<[K, V]>, v: unknown): v is Map<K, V> => isMap(v) && everyGuard(v, guard);
