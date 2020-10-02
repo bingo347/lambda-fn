@@ -72,7 +72,7 @@ function makeOption<T>(kind: OptionKind, value?: T) {
     ), protoOption);
 }
 
-const mergeOption = <T>(option: Option<T>, patch: Partial<Option<T>>, configurable: boolean) => {
+function mergeOption<T>(option: Option<T>, patch: Partial<Option<T>>, configurable: boolean) {
     for(const key of Object.getOwnPropertyNames(patch) as (keyof Option<T>)[]) {
         Object.defineProperty(option, key, makeDescriptor(patch[key], configurable));
     }
@@ -80,4 +80,4 @@ const mergeOption = <T>(option: Option<T>, patch: Partial<Option<T>>, configurab
         Object.defineProperty(option, key, makeDescriptor(patch[key], configurable));
     }
     return option;
-};
+}
