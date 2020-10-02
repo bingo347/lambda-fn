@@ -10,7 +10,7 @@ type PatchFN = <T>(
 
 const enum CellKind { Cell }
 const GUARD = Symbol();
-const patchers: [PatchFN, boolean][] = [];
+const patchers: [patcher: PatchFN, configurable: boolean][] = [];
 
 export interface CellStatic {
     isCell(maybeCell: unknown): maybeCell is Cell<unknown>;
