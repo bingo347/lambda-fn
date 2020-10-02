@@ -2,7 +2,7 @@ import {TypeGuard, isObject} from '@lambda-fn/type-guards';
 import {makeDescriptor, getSymbolFieldValue} from '../_util';
 
 type ValueFN<V, R> = (value: V) => R;
-type ExtendFN = <T>(
+type PatchFN = <T>(
     get: Cell<T>['get'],
     set: Cell<T>['set'],
     subscribe: Cell<T>['subscribe']
@@ -10,7 +10,7 @@ type ExtendFN = <T>(
 
 const enum CellKind { Cell }
 const GUARD = Symbol();
-const patchers: [ExtendFN, boolean][] = [];
+const patchers: [PatchFN, boolean][] = [];
 
 export interface CellStatic {
     isCell(maybeCell: unknown): maybeCell is Cell<unknown>;
@@ -50,7 +50,7 @@ export const Cell = Object.defineProperties(<T>(initialValue: T): Cell<T> => {
     isCellWith: makeDescriptor(isCellWith)
 }) as CellFactory;
 
-export const patch = (cb: ExtendFN, configurable = true): void => void patchers.push([cb, configurable]);
+export const patch = (cb: PatchFN, configurable = true): void => void patchers.push([cb, configurable]);
 
 const mergeCellWithPatchers = <T>(cell: Partial<Cell<T>>): Cell<T> => patchCellWithValue(patchers.reduce((partialCell, [cb, configurable]) => (
     mergeCell(partialCell, cb(partialCell.get!, partialCell.set!, partialCell.subscribe!), configurable)
