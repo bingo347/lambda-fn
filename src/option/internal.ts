@@ -1,11 +1,11 @@
-import type {OptionInstance, Option, Some, None} from './option';
+import type {Option, Some, None} from './option';
 import {makeDescriptor} from '../_util';
 
 type PatchFN = <T>(
     kind: OptionKind,
     value?: T
-) => Partial<OptionInstance<T>>;
-const patchers: [patcher: PatchFN, configurable: boolean][] = [];
+) => Partial<Option<T>>;
+const patchers: Array<[patcher: PatchFN, configurable: boolean]> = [];
 let noneInstance: None;
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -16,6 +16,10 @@ export const patch = (cb: PatchFN, configurable = true): void => {
     patchers.push([cb, configurable]);
     mergeOption(noneInstance, cb(OptionKind.None), configurable);
 };
+
+export const isSomeKind = (kind: OptionKind): kind is OptionKind.Some => kind === OptionKind.Some;
+export const isNoneKind = (kind: OptionKind): kind is OptionKind.None => kind === OptionKind.None;
+export const checkPatchValue = <T>(v: T | undefined, kind: OptionKind): v is T => isSomeKind(kind);
 
 export function makeOption<T>(kind: OptionKind.Some, value: T): Some<T>;
 export function makeOption(kind: OptionKind.None): None;
@@ -28,7 +32,8 @@ export function makeOption<T>(kind: OptionKind, value?: T): Option<T> {
         noneInstance = protoOption as None;
     }
     return patchers.reduce((option, [patcher, configurable]) => (
-        mergeOption(option, patcher(kind, value), configurable)
+        mergeOption(option, patcher(kind, value), configurable),
+        option
     ), protoOption);
 }
 
@@ -39,5 +44,4 @@ function mergeOption<T>(option: Option<T>, optionPatch: Partial<Option<T>>, conf
     for(const key of Object.getOwnPropertySymbols(optionPatch) as (keyof Option<T>)[]) {
         Object.defineProperty(option, key, makeDescriptor(optionPatch[key], configurable));
     }
-    return option;
 }

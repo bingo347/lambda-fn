@@ -14,9 +14,7 @@ export interface OptionStatic {
 }
 
 export interface OptionInstance<T> {
-    assert(this: Option<T>, msg?: string): asserts this is Some<T>;
-    assertNone(this: Option<T>, msg?: string): asserts this is None;
-    expect(msg: string): T;
+    expect(message: string): T;
     unwrap(): T;
     unwrapOr<U>(defaultValue: U): T | U;
     unwrapOrElse<U>(lazy: () => U): T | U;
@@ -40,11 +38,11 @@ export interface Some<T> extends OptionInstance<T> {
     readonly [VALUE]: T;
 }
 
-export interface None extends OptionInstance<never> {
+export interface None<T = never> extends OptionInstance<T> {
     readonly [GUARD]: OptionKind.None;
 }
 
-export type Option<T> = Some<T> | None;
+export type Option<T> = Some<T> | None<T>;
 
 export const fromNullable = <T>(value: T): Option<NonNullable<T>> => (isNonNullable(value) ? Some(value as unknown as NonNullable<T>) : None);
 
