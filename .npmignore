@@ -1,7 +1,7 @@
-/src
+/src/*
 /.editorconfig
 /.eslintrc.js
 /.gitignore
-/babel.config.js
 /rollup.config.js
 /tsconfig.*
+/coverage/*
