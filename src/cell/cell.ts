@@ -1,4 +1,5 @@
 import {TypeGuard, isObject} from '@lambda-fn/type-guards';
+import {makeDescriptor} from '../_util';
 
 type ValueFN<V, R> = (value: V) => R;
 type ExtendFN = <T>(
@@ -10,12 +11,6 @@ type ExtendFN = <T>(
 const enum CellKind { Cell }
 const GUARD = Symbol();
 const patchers: [ExtendFN, boolean][] = [];
-const makeDescriptor = (value: any, configurable = false, enumerable = false, writable = false): PropertyDescriptor => ({
-    value,
-    configurable,
-    enumerable,
-    writable
-});
 
 export interface CellStatic {
     isCell(maybeCell: unknown): maybeCell is Cell<unknown>;
