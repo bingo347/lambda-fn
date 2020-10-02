@@ -1,5 +1,5 @@
 import {TypeGuard, isNonNullable} from '@lambda-fn/type-guards';
-import {GUARD, OptionKind} from './internal';
+import {GUARD, OptionKind, patchers} from './internal';
 import {makeDescriptor} from '../_util';
 
 export interface OptionStatic {
@@ -46,10 +46,23 @@ export interface None extends OptionInstance<never> {
 export type Option<T> = Some<T> | None;
 
 const makeOption = <T>(kind: OptionKind, value?: T): Option<T> => {
-    // TODO:
-    kind;
-    value;
-    return {} as Option<T>;
+    const protoOption = Object.defineProperty((kind === OptionKind.Some
+        ? Object.defineProperty({}, '@@value', makeDescriptor(value, false, true))
+        : {}
+    ), GUARD, makeDescriptor(kind, false, true)) as Option<T>;
+    return patchers.reduce((option, [patcher, configurable]) => (
+        mergeOption(option, patcher(kind, value), configurable)
+    ), protoOption);
+};
+
+const mergeOption = <T>(option: Option<T>, patch: Partial<Option<T>>, configurable: boolean) => {
+    for(const key of Object.getOwnPropertyNames(patch) as (keyof Option<T>)[]) {
+        Object.defineProperty(option, key, makeDescriptor(patch[key], configurable));
+    }
+    for(const key of Object.getOwnPropertySymbols(patch) as (keyof Option<T>)[]) {
+        Object.defineProperty(option, key, makeDescriptor(patch[key], configurable));
+    }
+    return option;
 };
 
 export const fromNullable = <T>(value: T): Option<NonNullable<T>> => (isNonNullable(value) ? Some(value as unknown as NonNullable<T>) : None);
