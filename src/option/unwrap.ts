@@ -16,6 +16,7 @@ export function assertSome<T>(option: Option<T>, message?: string): asserts opti
         TypeError
     );
 }
+
 export function assertNone(option: Option<any>, message?: string): asserts option is None {
     const kind = getSymbolFieldValue(option, GUARD);
     _assert(
@@ -24,19 +25,23 @@ export function assertNone(option: Option<any>, message?: string): asserts optio
         TypeError
     );
 }
+
 export const expect = <T>(option: Option<T>, message: string): T => option.expect(message);
 export const unwrap = <T>(option: Option<T>): T => option.unwrap();
 export const unwrapOr = <U>(defaultValue: U) => <T>(option: Option<T>): T | U => option.unwrapOr(defaultValue);
 export const unwrapOrElse = <U>(lazy: () => U) => <T>(option: Option<T>): T | U => option.unwrapOrElse(lazy);
+export const match = <T, R>(onSome: (value: T) => R, onNone: () => R) => (option: Option<T>): R => option.match(onSome, onNone);
 
 patch((kind, value) => (checkPatchValue(value, kind) ? {
     expect: always(value),
     unwrap: always(value),
     unwrapOr: always(value),
-    unwrapOrElse: always(value)
+    unwrapOrElse: always(value),
+    match: onSome => onSome(value)
 } : {
     expect: message => _assert(false, message, TypeError) as never,
     unwrap: () => _assert(false, makeAssertionErrorMessage('unwrap', OptionKind.Some), TypeError) as never,
     unwrapOr: defaultValue => defaultValue,
-    unwrapOrElse: lazy => lazy()
+    unwrapOrElse: lazy => lazy(),
+    match: (_, onNone) => onNone()
 }), false);
