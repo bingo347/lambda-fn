@@ -1,9 +1,10 @@
-import {TypeGuard, isNonNullable} from '@lambda-fn/type-guards';
+import {TypeGuard} from '@lambda-fn/type-guards';
 import {GUARD, VALUE, OptionKind, makeOption} from './internal';
+import type {FromNullableReturnType} from './fromNullable';
 import {makeDescriptor} from '../_util';
 
 export interface OptionStatic {
-    fromNullable<T>(value: T): Option<NonNullable<T>>;
+    fromNullable<T>(value: T): FromNullableReturnType<T>;
     Some<T>(value: T): Some<T>;
     None: None;
     isOption(maybeOption: unknown): maybeOption is Option<unknown>;
@@ -44,14 +45,11 @@ export interface None<T = never> extends OptionInstance<T> {
 
 export type Option<T> = Some<T> | None<T>;
 
-export const fromNullable = <T>(value: T): Option<NonNullable<T>> => (isNonNullable(value) ? Some(value as unknown as NonNullable<T>) : None);
-
 /* eslint-disable @typescript-eslint/no-redeclare */
 export const Some = <T>(value: T): Some<T> => makeOption(OptionKind.Some, value);
 export const None = makeOption(OptionKind.None);
 export const Option = Object.defineProperties({}, {
 /* eslint-enable @typescript-eslint/no-redeclare */
     Some: makeDescriptor(Some),
-    None: makeDescriptor(None),
-    fromNullable: makeDescriptor(fromNullable)
+    None: makeDescriptor(None)
 }) as OptionStatic;
