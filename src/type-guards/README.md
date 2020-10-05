@@ -14,11 +14,13 @@ yarn add @lambda-fn/type-guards
 
 ```typescript
 type TypeGuard<T extends A, A = unknown> = (v: A) => v is T;
+type CorrectNonNullable<T> = Exclude<T, null | undefined | void>; // because NonNullable from tslib don't exclude void type
 
 // for create type guards from your classes
 function makeInstanceofGuard<C extends {new (...args: any): any}>(constructor: C) => (v: unknown) => v is InstanceType<C>;
 
 function isFunction(v: unknown): v is (...args: unknown[]) => unknown;
+function isConstructor(v: unknown): v is new (...args: unknown[]) => unknown;
 function isObject(v: unknown): v is Record<string | number | symbol, unknown>;
 function isSymbol(v: unknown): v is symbol;
 function isString(v: unknown): v is string;
@@ -54,7 +56,7 @@ function isIterable(v: unknown): v is Iterable<unknown>;
 function isIterableWith<T>(guard: TypeGuard<T>, v: unknown): v is Iterable<T>;
 function isSetWith<T>(guard: TypeGuard<T>, v: unknown): v is Set<T>;
 function isMapWith<K, V>(guard: TypeGuard<[K, V]>, v: unknown): v is Map<K, V>;
-function isNonNullable<T>(v: T) => v is NonNullable<T>;
+function isNonNullable<T>(v: T) => v is CorrectNonNullable<T>;
 ```
 
 ## License
