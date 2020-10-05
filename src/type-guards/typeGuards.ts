@@ -75,3 +75,7 @@ export const isIterableWith = <T>(guard: TypeGuard<T>, v: unknown): v is Iterabl
 export const isSetWith = <T>(guard: TypeGuard<T>, v: unknown): v is Set<T> => isSet(v) && everyGuard(v, guard);
 export const isMapWith = <K, V>(guard: TypeGuard<[K, V]>, v: unknown): v is Map<K, V> => isMap(v) && everyGuard(v, guard);
 export const isNonNullable = <T>(v: T): v is CorrectNonNullable<T> => !(isNull(v) || isUndefined(v));
+export const isConstructor = (v: unknown): v is {
+    (...args: unknown[]): unknown;
+    new (...args: unknown[]): unknown;
+ } => isFunction(v) && (isFunction(v.prototype) || isObject(v.prototype)) && v === v.prototype.constructor;
