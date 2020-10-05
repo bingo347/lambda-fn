@@ -1,4 +1,5 @@
-export {Some, None, Option} from './types';
-export * from './builders';
+import {patch, checkPatchValue, isSomeKind, isNoneKind} from './internal';
+export const __internal = {patch, checkPatchValue, isSomeKind, isNoneKind};
+export * from './option';
 export * from './guards';
-export * from './operators';
+export * from './unwrapping';
