@@ -13,7 +13,7 @@ type TypesMap = {
     'object': Record<string | symbol | number, unknown>;
     'function': (...args: unknown[]) => unknown;
 };
-type AnyConstructor = {new (...args: any): any};
+type AnyConstructor = new (...args: any) => any;
 type TypedArray
     = Int8Array     | Uint8Array
     | Int16Array    | Uint16Array

@@ -17,7 +17,7 @@ type TypeGuard<T extends A, A = unknown> = (v: A) => v is T;
 type CorrectNonNullable<T> = Exclude<T, null | undefined | void>; // because NonNullable from tslib don't exclude void type
 
 // for create type guards from your classes
-function makeInstanceofGuard<C extends {new (...args: any): any}>(constructor: C) => (v: unknown) => v is InstanceType<C>;
+function makeInstanceofGuard<C extends new (...args: any) => any>(constructor: C) => (v: unknown) => v is InstanceType<C>;
 
 function isFunction(v: unknown): v is (...args: unknown[]) => unknown;
 function isConstructor(v: unknown): v is new (...args: unknown[]) => unknown;
