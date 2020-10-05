@@ -15,7 +15,7 @@ export interface OptionStatic {
 }
 
 export interface OptionInstance<T> {
-    expect(message: string): T;
+    expect(message: string | Error): T;
     unwrap(): T;
     unwrapOr<U>(defaultValue: U): T | U;
     unwrapOrElse<U>(lazy: () => U): T | U;

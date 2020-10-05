@@ -39,7 +39,7 @@ patch((kind, value) => (checkPatchValue(value, kind) ? {
     unwrapOrElse: always(value),
     match: onSome => onSome(value)
 } : {
-    expect: message => _assert(false, message, TypeError) as never,
+    expect: message => _assert(false, message as Error) as never,
     unwrap: () => _assert(false, makeAssertionErrorMessage('unwrap', OptionKind.Some), TypeError) as never,
     unwrapOr: defaultValue => defaultValue,
     unwrapOrElse: lazy => lazy(),
