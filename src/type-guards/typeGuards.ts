@@ -1,6 +1,8 @@
 import {getSymbolFieldValue} from '../_util';
 
 export type TypeGuard<T extends A, A = unknown> = (v: A) => v is T;
+export type CorrectNonNullable<T> = Exclude<T, null | undefined | void>;
+
 type TypesMap = {
     'undefined': undefined;
     'boolean': boolean;
@@ -18,7 +20,6 @@ type TypedArray
     | Int32Array    | Uint32Array
     | BigInt64Array | BigUint64Array
     | Float32Array  | Float64Array;
-type NonNullableExtended<T> = T extends null | undefined | void ? never : T
 
 const makeTypeofGuard = <T extends keyof TypesMap>(type: T) => (
     (v: unknown): v is TypesMap[T] => typeof v === type
@@ -73,4 +74,4 @@ export const isIterable = (v: unknown): v is Iterable<unknown> => isObject(v) &&
 export const isIterableWith = <T>(guard: TypeGuard<T>, v: unknown): v is Iterable<T> => isIterable(v) && everyGuard(v, guard);
 export const isSetWith = <T>(guard: TypeGuard<T>, v: unknown): v is Set<T> => isSet(v) && everyGuard(v, guard);
 export const isMapWith = <K, V>(guard: TypeGuard<[K, V]>, v: unknown): v is Map<K, V> => isMap(v) && everyGuard(v, guard);
-export const isNonNullable = <T>(v: T): v is NonNullableExtended<T> => !(isNull(v) || isUndefined(v));
+export const isNonNullable = <T>(v: T): v is CorrectNonNullable<T> => !(isNull(v) || isUndefined(v));
