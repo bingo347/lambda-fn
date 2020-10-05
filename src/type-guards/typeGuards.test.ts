@@ -217,3 +217,12 @@ test('makeInstanceofGuard', () => {
     expect(testGuard(null)).toBe(false);
     expect(testGuard(void 0)).toBe(false);
 });
+
+test('isConstructor', () => {
+    expect(tg.isConstructor(class T {})).toBe(true);
+    expect(tg.isConstructor(function T() {})).toBe(true);
+    expect(tg.isConstructor(() => {})).toBe(false);
+    expect(tg.isConstructor(Object)).toBe(true);
+    expect(tg.isConstructor(Function)).toBe(true);
+    expect(tg.isConstructor({})).toBe(false);
+});
