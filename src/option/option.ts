@@ -32,6 +32,7 @@ export interface OptionInstance<T> {
     zip<U>(other: Option<U>): Option<[T, U]>;
     zipWith<U, R>(other: Option<U>, mapper: (a: T, b: U) => R): Option<R>;
     flat<U>(this: Option<Option<U>>): Option<U>;
+    apply<U, R>(this: Option<Mapper<U, R>>, to: Option<U>): Option<R>;
 }
 
 export interface Some<T> extends OptionInstance<T> {
