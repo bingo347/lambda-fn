@@ -1,7 +1,7 @@
 import {TypeGuard} from '@lambda-fn/type-guards';
 import {GUARD, VALUE, OptionKind, makeOption} from './internal';
 import type {FromNullableReturnType} from './fromNullable';
-import {makeDescriptor} from '../_util';
+import {Mapper, makeDescriptor} from '../_util';
 
 export interface OptionStatic {
     fromNullable<T>(value: T): FromNullableReturnType<T>;
@@ -20,15 +20,15 @@ export interface OptionInstance<T> {
     unwrapOr<U>(defaultValue: U): T | U;
     unwrapOrElse<U>(lazy: () => U): T | U;
     clone(): Option<T>;
-    andThen<U>(f: (value: T) => Option<U>): Option<U>;
+    andThen<U>(f: Mapper<T, Option<U>>): Option<U>;
     orElse<U>(f: () => Option<U>): Option<T | U>;
     and<U>(other: Option<U>): Option<U>;
     or<U>(other: Option<U>): Option<T | U>;
     xor<U>(other: Option<U>): Option<T | U>;
     contains(value: T): boolean;
     filter(predicate: (value: T) => boolean): Option<T>;
-    map<R>(mapper: (value: T) => R): Option<R>;
-    match<R>(onSome: (value: T) => R, onNone: () => R): R;
+    map<R>(mapper: Mapper<T, R>): Option<R>;
+    match<R>(onSome: Mapper<T, R>, onNone: () => R): R;
     zip<U>(other: Option<U>): Option<[T, U]>;
     zipWith<U, R>(other: Option<U>, mapper: (a: T, b: U) => R): Option<R>;
     flat<U>(this: Option<Option<U>>): Option<U>;

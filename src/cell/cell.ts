@@ -1,7 +1,6 @@
 import {TypeGuard, isObject} from '@lambda-fn/type-guards';
-import {makeDescriptor, getSymbolFieldValue} from '../_util';
+import {Mapper, makeDescriptor, getSymbolFieldValue} from '../_util';
 
-type ValueFN<V, R> = (value: V) => R;
 type PatchFN = <T>(
     get: Cell<T>['get'],
     set: Cell<T>['set'],
@@ -26,11 +25,11 @@ export interface Cell<T> {
     value: T;
     get(): T;
     set(value: T): void;
-    update(updater: ValueFN<T, T>): void;
-    subscribe(subscription: ValueFN<T, void>): () => void;
+    update(updater: Mapper<T, T>): void;
+    subscribe(subscription: Mapper<T, void>): () => void;
     clone(): Cell<T>;
-    map<U>(mapper: ValueFN<T, U>): Cell<U>;
-    fold<U>(mapper: ValueFN<T, U>): U;
+    map<U>(mapper: Mapper<T, U>): Cell<U>;
+    fold<U>(mapper: Mapper<T, U>): U;
 }
 
 export const isCell = (maybeCell: unknown): maybeCell is Cell<unknown> => isObject(maybeCell) && getSymbolFieldValue(maybeCell, GUARD) === CellKind.Cell;
@@ -74,7 +73,7 @@ const patchCellWithValue = <T>(cell: Cell<T>) => Object.defineProperty(cell, 'va
 
 patch(() => ({[GUARD]: CellKind.Cell}), false);
 patch((get, set) => {
-    const subscriptions = new Set<ValueFN<ReturnType<typeof get>, void>>();
+    const subscriptions = new Set<Mapper<ReturnType<typeof get>, void>>();
     const wrappedSet: typeof set = value => {
         if(value === get()) { return; }
         set(value);
