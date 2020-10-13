@@ -1,4 +1,4 @@
-import {Option, Some, None} from './option';
+import {Option, None} from './option';
 import {patch, checkPatchValue} from './internal';
 import {isOption} from './guards';
 import {_assert} from '../_util';
