@@ -5,4 +5,5 @@ export * from './guards';
 export * from './fromNullable';
 export * from './unwrapping';
 export * from './transforming';
+export * from './flat';
 export * from './legacy';
