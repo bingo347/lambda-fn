@@ -28,6 +28,7 @@ export function makeOption<T>(kind: OptionKind, value?: T): Option<T> {
         ? Object.defineProperty({}, VALUE, makeDescriptor(value, false, true))
         : {}
     ), GUARD, makeDescriptor(kind, false, true)) as Option<T>;
+    Object.defineProperty(protoOption, Symbol.toStringTag, {get: () => 'Option'});
     if(kind === OptionKind.None) {
         noneInstance = protoOption as None;
     }
@@ -45,3 +46,9 @@ function mergeOption<T>(option: Option<T>, optionPatch: Partial<Option<T>>, conf
         Object.defineProperty(option, key, makeDescriptor(optionPatch[key], configurable));
     }
 }
+
+patch((kind, value) => (checkPatchValue(value, kind) ? {
+    toString: () => `Some( ${String(value)} )`
+} : {
+    toString: () => 'None'
+}) as Option<NonNullable<typeof value>>, false);
