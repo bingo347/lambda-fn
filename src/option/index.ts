@@ -6,4 +6,5 @@ export * from './fromNullable';
 export * from './unwrapping';
 export * from './transforming';
 export * from './flat';
+export * from './apply';
 export * from './legacy';
