@@ -30,6 +30,7 @@ export const expect = <T>(option: Option<T>, message: string): T => option.expec
 export const unwrap = <T>(option: Option<T>): T => option.unwrap();
 export const unwrapOr = <U>(defaultValue: U) => <T>(option: Option<T>): T | U => option.unwrapOr(defaultValue);
 export const unwrapOrElse = <U>(lazy: () => U) => <T>(option: Option<T>): T | U => option.unwrapOrElse(lazy);
+export const contains = <T>(value: T) => (option: Option<T>): boolean => option.contains(value);
 export const match = <T, R>(onSome: (value: T) => R, onNone: () => R) => (option: Option<T>): R => option.match(onSome, onNone);
 
 patch((kind, value) => (checkPatchValue(value, kind) ? {
@@ -37,11 +38,13 @@ patch((kind, value) => (checkPatchValue(value, kind) ? {
     unwrap: always(value),
     unwrapOr: always(value),
     unwrapOrElse: always(value),
+    contains: v => v === value,
     match: onSome => onSome(value)
 } : {
     expect: message => _assert(false, message as Error) as never,
     unwrap: () => _assert(false, makeAssertionErrorMessage('unwrap', OptionKind.Some), TypeError) as never,
     unwrapOr: defaultValue => defaultValue,
     unwrapOrElse: lazy => lazy(),
+    contains: always(false),
     match: (_, onNone) => onNone()
 }), false);
