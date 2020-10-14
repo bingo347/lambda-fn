@@ -1,5 +1,5 @@
 import {TypeGuard} from '@lambda-fn/type-guards';
-import {GUARD, VALUE, OptionKind, makeOption} from './internal';
+import {GUARD, VALUE, OptionKind, makeOption, patch, checkPatchValue} from './internal';
 import type {FromNullableReturnType} from './fromNullable';
 import {Mapper, makeDescriptor} from '../_util';
 
@@ -54,3 +54,9 @@ export const Option = Object.defineProperties({}, {
     Some: makeDescriptor(Some),
     None: makeDescriptor(None)
 }) as OptionStatic;
+
+patch((kind, value) => (checkPatchValue(value, kind) ? {
+    toString: () => `Some( ${String(value)} )`
+} : {
+    toString: () => 'None'
+}) as Option<NonNullable<typeof value>>, false);

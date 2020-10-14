@@ -46,9 +46,3 @@ function mergeOption<T>(option: Option<T>, optionPatch: Partial<Option<T>>, conf
         Object.defineProperty(option, key, makeDescriptor(optionPatch[key], configurable));
     }
 }
-
-patch((kind, value) => (checkPatchValue(value, kind) ? {
-    toString: () => `Some( ${String(value)} )`
-} : {
-    toString: () => 'None'
-}) as Option<NonNullable<typeof value>>, false);
