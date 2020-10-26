@@ -1,26 +1,32 @@
-import {Ok, Err, Result, taggerOk, taggerErr} from './types';
+import {TypeGuard, isObject} from '@lambda-fn/type-guards';
+import {Result, Ok, Err} from './result';
+import {GUARD, VALUE, ResultKind} from './internal';
+import {makeDescriptor, getSymbolFieldValue} from '../_util';
 
-export const isOk = (maybeOk: unknown): maybeOk is Ok<unknown> => taggerOk.$(maybeOk);
-export const isErr = (maybeErr: unknown): maybeErr is Err<unknown> => taggerErr.$(maybeErr);
+const checkResult = (maybeResult: unknown, kind: ResultKind) => isObject(maybeResult) && getSymbolFieldValue(maybeResult, GUARD) === kind;
+const isOkWithInternal = <T>(guard: TypeGuard<T>, maybeOk: unknown): maybeOk is Ok<T> => isOk(maybeOk) && guard(getSymbolFieldValue(maybeOk, VALUE));
+const isErrWithInternal = <E>(guard: TypeGuard<E>, maybeErr: unknown): maybeErr is Err<E> => isErr(maybeErr) && guard(getSymbolFieldValue(maybeErr, VALUE));
+const isResultWithInternal = <T, E>(
+    guardOk: TypeGuard<T>,
+    guardErr: TypeGuard<E>,
+    maybeResult: unknown
+): maybeResult is Result<T, E> => isOkWithInternal(guardOk, maybeResult) || isErrWithInternal(guardErr, maybeResult);
+
+export const isOk = (maybeOk: unknown): maybeOk is Ok<unknown> => checkResult(maybeOk, ResultKind.Ok);
+export const isErr = (maybeErr: unknown): maybeErr is Err<unknown> => checkResult(maybeErr, ResultKind.Err);
 export const isResult = (maybeResult: unknown): maybeResult is Result<unknown, unknown> => isOk(maybeResult) || isErr(maybeResult);
 
-export function isOkWith<T>(guard: (v: unknown) => v is T) {
-    return (maybeOk: unknown): maybeOk is Ok<T> => isOk(maybeOk) && guard(maybeOk.v);
-}
+export const isOkWith = <T>(guard: (v: unknown) => v is T) => (maybeOk: unknown): maybeOk is Ok<T> => isOkWithInternal(guard, maybeOk);
+export const isErrWith = <E>(guard: (e: unknown) => e is E) => (maybeErr: unknown): maybeErr is Err<E> => isErrWithInternal(guard, maybeErr);
+export const isResultWith = <T, E>(guardOk: (v: unknown) => v is T, guardErr: (e: unknown) => e is E) => (
+    (maybeResult: unknown): maybeResult is Result<T, E> => isResultWithInternal(guardOk, guardErr, maybeResult)
+);
 
-export function isErrWith<E>(guard: (e: unknown) => e is E) {
-    return (maybeErr: unknown): maybeErr is Err<E> => isErr(maybeErr) && guard(maybeErr.v);
-}
-
-export function isResultWith<T, E>(guardOk: (v: unknown) => v is T, guardErr: (e: unknown) => e is E): (maybeResult: unknown) => maybeResult is Result<T, E> {
-    const isOkWithT = isOkWith(guardOk);
-    const isErrWithE = isErrWith(guardErr);
-    return (maybeResult: unknown): maybeResult is Result<T, E> => isOkWithT(maybeResult) || isErrWithE(maybeResult);
-}
-
-export function assert<T>(result: Result<T, any>): asserts result is Ok<T> {
-    if(isErr(result)) {
-        throw result.v;
-    }
-    return true as any as void;
-}
+Object.defineProperties(Result, {
+    isOk: makeDescriptor(isOk),
+    isErr: makeDescriptor(isErr),
+    isResult: makeDescriptor(isResult),
+    isOkWith: makeDescriptor(isOkWithInternal),
+    isErrWith: makeDescriptor(isErrWithInternal),
+    isResultWith:  makeDescriptor(isResultWithInternal)
+});
