@@ -14,10 +14,10 @@ const implementors: Array<Implementor> = [];
 export const enum ResultKind { Ok, Err }
 export const GUARD = Symbol();
 export const VALUE = Symbol();
-export const impl = <M extends keyof ResultInstance<any, any>>(
+export const impl = <T, E, M extends keyof ResultInstance<T, E>>(
     method: M,
-    whenOk: <T, E>(value: T) => ResultInstance<T, E>[M],
-    whenErr: <T, E>(error: E) => ResultInstance<T, E>[M],
+    whenOk: (value: T) => ResultInstance<T, E>[M],
+    whenErr: (error: E) => ResultInstance<T, E>[M],
     configurable = true
 ): void => {
     implementors.push([method, whenOk as Implementor[1], whenErr as Implementor[2], configurable]);
