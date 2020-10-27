@@ -1,5 +1,5 @@
 import type {TypeGuard} from '@lambda-fn/type-guards';
-import {GUARD, VALUE, ResultKind, makeResult} from './internal';
+import {GUARD, VALUE, ResultKind, makeResult, impl} from './internal';
 import {Mapper, makeDescriptor} from '../_util';
 
 export interface ResultStatic {
@@ -55,3 +55,10 @@ export const Result = Object.defineProperties({}, {
     Ok: makeDescriptor(Ok),
     Err: makeDescriptor(Err)
 }) as ResultStatic;
+
+impl(
+    'toString' as any,
+    (value => () => `Ok( ${String(value)} )`),
+    (error => () => `Err( ${String(error)} )`),
+    false
+);
