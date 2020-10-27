@@ -29,10 +29,14 @@ export function assertErr<T>(result: Result<T, any>, message?: string): asserts 
 }
 
 export const expect = <T>(result: Result<T, any>, message: string): T => result.expect(message);
-impl('expect', always, (() => message => _assert(false, message as Error) as never), false);
+const expectNever = () => (message: string | Error) => _assert(false, message as Error) as never;
+impl('expect', always, expectNever, false);
+impl('expectErr', expectNever, always, false);
 
 export const unwrap = <T>(result: Result<T, any>): T => result.unwrap();
-impl('unwrap', always, (error => () => { throw error; }), false);
+const unwrapNever = (v: unknown) => () => { throw v; };
+impl('unwrap', always, unwrapNever, false);
+impl('unwrapErr', unwrapNever, always, false);
 
 export const unwrapOr = <U>(defaultValue: U) => <T, E>(result: Result<T, E>): T | U => result.unwrapOr(defaultValue);
 impl('unwrapOr', always, (() => defaultValue => defaultValue), false);

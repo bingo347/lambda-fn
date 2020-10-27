@@ -1,4 +1,4 @@
-import {TypeGuard} from '@lambda-fn/type-guards';
+import type {TypeGuard} from '@lambda-fn/type-guards';
 import {GUARD, VALUE, ResultKind, makeResult} from './internal';
 import {Mapper, makeDescriptor} from '../_util';
 
@@ -16,7 +16,9 @@ export interface ResultStatic {
 
 export interface ResultInstance<T, E> {
     expect(message: string | Error): T;
+    expectErr(message: string | Error): E;
     unwrap(): T;
+    unwrapErr(): E;
     unwrapOr<U>(defaultValue: U): T | U;
     unwrapOrElse<U>(lazy: () => U): T | U;
     clone(): Result<T, E>;
