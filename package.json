@@ -37,6 +37,9 @@
       "additionalKeywords": [
         "either",
         "monad"
+      ],
+      "dependencies": [
+        "type-guards"
       ]
     }
   },
