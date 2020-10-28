@@ -1,4 +1,4 @@
-import {getSymbolFieldValue} from '../_util';
+import {getSymbolFieldValue} from './_util';
 
 export type TypeGuard<T extends A, A = unknown> = (v: A) => v is T;
 export type CorrectNonNullable<T> = Exclude<T, null | undefined | void>;
