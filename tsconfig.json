@@ -17,6 +17,7 @@
         "strictPropertyInitialization": true
     },
     "include": [
+        "jest.config.ts",
         "packages/*/src/**/*.ts"
     ],
     "exclude": []
