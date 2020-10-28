@@ -9,6 +9,7 @@
   },
   "description": "Typescript utilities for functional programming inspired by Rust std library",
   "scripts": {
+    "link-packages": "lerna link",
     "build": "rollup -c",
     "lint": "eslint --ext .ts --fix src",
     "test": "jest"
