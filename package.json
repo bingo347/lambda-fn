@@ -2,6 +2,11 @@
   "name": "lambda-fn",
   "version": "0.0.0",
   "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
   "description": "Typescript utilities for functional programming inspired by Rust std library",
   "scripts": {
     "build": "rollup -c",
