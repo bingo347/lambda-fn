@@ -1,0 +1,35 @@
+{
+  "name": "@lambda-fn/result",
+  "version": "1.1.0",
+  "description": "Result is a type that represents either success (Ok) or failure (Err)",
+  "keywords": [
+    "fp",
+    "result",
+    "either",
+    "monad"
+  ],
+  "author": "Dmitry Belyaev <mail@d-belyaev.ru>",
+  "homepage": "https://github.com/bingo347/lambda-fn/blob/main/packages/result/README.md",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "index.mjs",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.mjs",
+    "index.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bingo347/lambda-fn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bingo347/lambda-fn/issues"
+  },
+  "dependencies": {
+    "@lambda-fn/type-guards": "^1.1.2"
+  }
+}
