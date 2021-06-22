@@ -69,7 +69,7 @@ const patchCellWithValue = <T>(cell: Cell<T>) => Object.defineProperty(cell, 'va
     get: cell.get, // eslint-disable-line @typescript-eslint/unbound-method
     set: cell.set, // eslint-disable-line @typescript-eslint/unbound-method
     enumerable: true
-}) as Cell<T>;
+}) ;
 
 patch(() => ({[GUARD]: CellKind.Cell}), false);
 patch((get, set) => {
