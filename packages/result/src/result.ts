@@ -1,6 +1,6 @@
 import type {TypeGuard} from '@lambda-fn/type-guards';
 import {GUARD, VALUE, ResultKind, makeResult, impl} from './internal';
-import {Mapper, makeDescriptor} from '../_util';
+import {Mapper, makeDescriptor} from './_util';
 
 export interface ResultStatic {
     Ok<T>(value: T): Ok<T>;

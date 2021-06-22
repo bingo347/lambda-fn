@@ -2,7 +2,7 @@ import {Result, Ok, Err} from './result';
 import {assertOk} from './unwrapping';
 import {isOk, isErr} from './guards';
 import {VALUE} from './internal';
-import {Mapper, getSymbolFieldValue} from '../_util';
+import {Mapper, getSymbolFieldValue} from './_util';
 
 /** @deprecated use Ok */
 export const ok = Ok;

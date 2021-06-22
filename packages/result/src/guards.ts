@@ -1,7 +1,7 @@
 import {TypeGuard, isObject} from '@lambda-fn/type-guards';
 import {Result, Ok, Err} from './result';
 import {GUARD, VALUE, ResultKind} from './internal';
-import {makeDescriptor, getSymbolFieldValue} from '../_util';
+import {makeDescriptor, getSymbolFieldValue} from './_util';
 
 const checkResult = (maybeResult: unknown, kind: ResultKind) => isObject(maybeResult) && getSymbolFieldValue(maybeResult, GUARD) === kind;
 const isOkWithInternal = <T>(guard: TypeGuard<T>, maybeOk: unknown): maybeOk is Ok<T> => isOk(maybeOk) && guard(getSymbolFieldValue(maybeOk, VALUE));
