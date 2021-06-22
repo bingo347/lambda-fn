@@ -10,44 +10,9 @@
   "description": "Typescript utilities for functional programming inspired by Rust std library",
   "scripts": {
     "link-packages": "lerna link",
-    "build": "rollup -c",
+    "build": "rollup -c rollup.config.js",
     "lint": "eslint --ext .ts --fix src",
     "test": "jest"
-  },
-  "packages": {
-    "type-guards": {
-      "version": "1.1.2"
-    },
-    "cell": {
-      "version": "1.1.2",
-      "additionalKeywords": [
-        "svelte",
-        "store"
-      ],
-      "dependencies": [
-        "type-guards"
-      ]
-    },
-    "option": {
-      "version": "1.1.1",
-      "additionalKeywords": [
-        "maybe",
-        "monad"
-      ],
-      "dependencies": [
-        "type-guards"
-      ]
-    },
-    "result": {
-      "version": "1.1.0",
-      "additionalKeywords": [
-        "either",
-        "monad"
-      ],
-      "dependencies": [
-        "type-guards"
-      ]
-    }
   },
   "repository": {
     "type": "git",

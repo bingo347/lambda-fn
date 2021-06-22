@@ -17,8 +17,18 @@
         "strictPropertyInitialization": true
     },
     "include": [
+        "rollup.config.ts",
         "jest.config.ts",
         "packages/*/src/**/*.ts"
     ],
-    "exclude": []
+    "exclude": [],
+    "ts-node": {
+        "compilerOptions": {
+            "module": "commonjs",
+            "allowJs": true,
+            "noImplicitAny": false,
+            "allowSyntheticDefaultImports": true,
+            "esModuleInterop": true
+        }
+    }
 }
