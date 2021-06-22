@@ -1,0 +1,35 @@
+{
+  "name": "@lambda-fn/option",
+  "version": "1.1.1",
+  "description": "Option type for represents an optional value",
+  "keywords": [
+    "fp",
+    "option",
+    "maybe",
+    "monad"
+  ],
+  "author": "Dmitry Belyaev <mail@d-belyaev.ru>",
+  "homepage": "https://github.com/bingo347/lambda-fn/blob/main/packages/option/README.md",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "index.mjs",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.mjs",
+    "index.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bingo347/lambda-fn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bingo347/lambda-fn/issues"
+  },
+  "dependencies": {
+    "@lambda-fn/type-guards": "^1.1.2"
+  }
+}

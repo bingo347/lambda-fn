@@ -1,7 +1,0 @@
-/src/*
-/.editorconfig
-/.eslintrc.js
-/.gitignore
-/rollup.config.js
-/tsconfig.*
-/coverage/*

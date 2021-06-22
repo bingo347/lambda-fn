@@ -3,10 +3,10 @@
         "module": "ESNext",
         "outDir": ".",
         "rootDir": "./",
-        "target": "ES2018",
+        "target": "ES2019",
         "declaration": true,
         "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
+        "allowSyntheticDefaultImports": false,
         "alwaysStrict": true,
         "noUnusedLocals": true,
         "removeComments": false,
@@ -14,15 +14,21 @@
         "strictBindCallApply": true,
         "strictFunctionTypes": true,
         "strictNullChecks": true,
-        "strictPropertyInitialization": true,
-        "baseUrl": "./",
-        "paths": {
-            "@lambda-fn/*": ["./src/*"]
-        }
+        "strictPropertyInitialization": true
     },
     "include": [
-        "src/**/*.ts",
-        "__mocks__/**/*.ts"
+        "rollup.config.ts",
+        "jest.config.ts",
+        "packages/*/src/**/*.ts"
     ],
-    "exclude": []
+    "exclude": [],
+    "ts-node": {
+        "compilerOptions": {
+            "module": "commonjs",
+            "allowJs": true,
+            "noImplicitAny": false,
+            "allowSyntheticDefaultImports": true,
+            "esModuleInterop": true
+        }
+    }
 }
