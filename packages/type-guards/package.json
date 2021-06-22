@@ -7,7 +7,7 @@
     "type-guards"
   ],
   "author": "Dmitry Belyaev <mail@d-belyaev.ru>",
-  "homepage": "https://github.com/bingo347/lambda-fn/blob/master/packages/type-guards/README.md",
+  "homepage": "https://github.com/bingo347/lambda-fn/blob/main/packages/type-guards/README.md",
   "license": "MIT",
   "main": "index.js",
   "module": "index.mjs",
