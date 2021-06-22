@@ -6,7 +6,7 @@
     "fp",
     "type-guards"
   ],
-  "author": "Dmitriy Belyaev <mail@d-belyaev.ru>",
+  "author": "Dmitry Belyaev <mail@d-belyaev.ru>",
   "homepage": "https://github.com/bingo347/lambda-fn/blob/master/packages/type-guards/README.md",
   "license": "MIT",
   "main": "index.js",
@@ -23,9 +23,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bingo347/lambda-fn.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/bingo347/lambda-fn/issues"

@@ -53,7 +53,7 @@
     "type": "git",
     "url": "git+https://github.com/bingo347/lambda-fn.git"
   },
-  "author": "Dmitriy Belyaev",
+  "author": "Dmitry Belyaev",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bingo347/lambda-fn/issues"
