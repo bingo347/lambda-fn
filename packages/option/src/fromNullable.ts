@@ -1,6 +1,6 @@
 import {isNonNullable} from '@lambda-fn/type-guards';
 import {Option, Some, None} from './option';
-import {makeDescriptor} from '../_util';
+import {makeDescriptor} from './_util';
 
 type MatchNullable<T, WhenNullable, WhenNonNullable>
     = T extends null | undefined | void

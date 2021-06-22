@@ -3,7 +3,7 @@ import {fromNullable} from './fromNullable';
 import {assertSome} from './unwrapping';
 import {isSome} from './guards';
 import {VALUE} from './internal';
-import {getSymbolFieldValue} from '../_util';
+import {getSymbolFieldValue} from './_util';
 
 /** @deprecated use Some */
 export const some = Some;

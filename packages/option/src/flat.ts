@@ -1,7 +1,7 @@
 import {Option, None} from './option';
 import {patch, checkPatchValue} from './internal';
 import {isOption} from './guards';
-import {_assert} from '../_util';
+import {_assert} from './_util';
 
 export const flat = <T>(option: Option<Option<T>>): Option<T> => option.flat();
 

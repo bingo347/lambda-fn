@@ -1,7 +1,7 @@
 import {TypeGuard, isObject} from '@lambda-fn/type-guards';
 import {Option, Some, None} from './option';
 import {GUARD, VALUE, OptionKind} from './internal';
-import {makeDescriptor, getSymbolFieldValue} from '../_util';
+import {makeDescriptor, getSymbolFieldValue} from './_util';
 
 const checkOption = (maybeOption: unknown, kind: OptionKind) => isObject(maybeOption) && getSymbolFieldValue(maybeOption, GUARD) === kind;
 const isSomeWithInternal = <T>(guard: TypeGuard<T>, maybeSome: unknown): maybeSome is Some<T> => isSome(maybeSome) && guard(getSymbolFieldValue(maybeSome, VALUE));

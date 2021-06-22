@@ -1,6 +1,6 @@
 import {Option, Some, None} from './option';
 import {GUARD, VALUE, patch, checkPatchValue, isSomeKind} from './internal';
-import {getSymbolFieldValue} from '../_util';
+import {getSymbolFieldValue} from './_util';
 
 type SomeFromOption<O> = O extends Option<infer T> ? Some<T> : never;
 const alwaysSome = <T>(value: T) => () => Some(value);

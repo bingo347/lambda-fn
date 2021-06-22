@@ -1,7 +1,7 @@
 import {TypeGuard} from '@lambda-fn/type-guards';
 import {GUARD, VALUE, OptionKind, makeOption, patch, checkPatchValue} from './internal';
 import type {FromNullableReturnType} from './fromNullable';
-import {Mapper, makeDescriptor} from '../_util';
+import {Mapper, makeDescriptor} from './_util';
 
 export interface OptionStatic {
     fromNullable<T>(value: T): FromNullableReturnType<T>;
