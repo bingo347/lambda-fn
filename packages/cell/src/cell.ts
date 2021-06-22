@@ -1,5 +1,5 @@
 import {TypeGuard, isObject} from '@lambda-fn/type-guards';
-import {Mapper, makeDescriptor, getSymbolFieldValue} from '../_util';
+import {Mapper, makeDescriptor, getSymbolFieldValue} from './_util';
 
 type PatchFN = <T>(
     get: Cell<T>['get'],

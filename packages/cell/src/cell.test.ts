@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('@lambda-fn/type-guards', () => require('../type-guards'), {virtual: true});
-
 import {Cell, patch} from './cell';
 
 test('isCell', () => {
