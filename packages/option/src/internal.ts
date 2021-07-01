@@ -6,6 +6,7 @@ type PatchFN = <T>(
     value?: T
 ) => Partial<Option<T>>;
 const patchers: [patcher: PatchFN, configurable: boolean][] = [];
+// eslint-disable-next-line @typescript-eslint/init-declarations
 let noneInstance: None;
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -21,7 +22,7 @@ export const isSomeKind = (kind: OptionKind): kind is OptionKind.Some =>
     kind === OptionKind.Some;
 export const isNoneKind = (kind: OptionKind): kind is OptionKind.None =>
     kind === OptionKind.None;
-export const checkPatchValue = <T>(v: T | undefined, kind: OptionKind): v is T =>
+export const checkPatchValue = <T>(_v: T | undefined, kind: OptionKind): _v is T =>
     isSomeKind(kind);
 
 export function makeOption<T>(kind: OptionKind.Some, value: T): Some<T>;
@@ -41,11 +42,10 @@ export function makeOption<T>(kind: OptionKind, value?: T): Option<T> {
     if (kind === OptionKind.None) {
         noneInstance = protoOption as None;
     }
-    return patchers.reduce((option, [patcher, configurable]) =>
-        (
-            mergeOption(option, patcher(kind, value), configurable),
-            option
-        ), protoOption);
+    return patchers.reduce((option, [patcher, configurable]) => {
+        mergeOption(option, patcher(kind, value), configurable);
+        return option;
+    }, protoOption);
 }
 
 function mergeOption<T>(option: Option<T>, optionPatch: Partial<Option<T>>, configurable: boolean) {

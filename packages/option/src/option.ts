@@ -48,12 +48,10 @@ export interface None<T = never> extends OptionInstance<T> {
 
 export type Option<T> = Some<T> | None<T>;
 
-/* eslint-disable @typescript-eslint/no-redeclare */
 export const Some = <T>(value: T): Some<T> =>
     makeOption(OptionKind.Some, value);
 export const None = makeOption(OptionKind.None);
 export const Option = Object.defineProperties({}, {
-/* eslint-enable @typescript-eslint/no-redeclare */
     Some: makeDescriptor(Some),
     None: makeDescriptor(None),
 }) as OptionStatic;

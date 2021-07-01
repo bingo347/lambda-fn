@@ -15,7 +15,7 @@ export function assertSome<T>(option: Option<T>, message?: string): asserts opti
     const kind = getSymbolFieldValue(option, GUARD);
     _assert(
         isSomeKind(kind),
-        message || makeAssertionErrorMessage('assert', kind),
+        message ?? makeAssertionErrorMessage('assert', kind),
         TypeError
     );
 }
@@ -24,7 +24,7 @@ export function assertNone(option: Option<unknown>, message?: string): asserts o
     const kind = getSymbolFieldValue(option, GUARD);
     _assert(
         isNoneKind(kind),
-        message || makeAssertionErrorMessage('assertNone', kind),
+        message ?? makeAssertionErrorMessage('assertNone', kind),
         TypeError
     );
 }
@@ -60,9 +60,9 @@ patch((kind, value) =>
         }
         : {
             expect:       message =>
-                _assert(false, message as Error) as never,
+                void _assert(false, message as Error) as never,
             unwrap:       () =>
-                _assert(false, makeAssertionErrorMessage('unwrap', OptionKind.Some), TypeError) as never,
+                void _assert(false, makeAssertionErrorMessage('unwrap', OptionKind.Some), TypeError) as never,
             unwrapOr:     defaultValue =>
                 defaultValue,
             unwrapOrElse: lazy =>
