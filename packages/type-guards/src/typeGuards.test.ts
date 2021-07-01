@@ -1,9 +1,9 @@
 import * as tg from './typeGuards';
 
 const trueGuard = (v: unknown): v is true =>
-    !!v;
-const falseGuard = (v: unknown): v is true =>
-    !v;
+    Boolean(v);
+const falseGuard = (v: unknown): v is false =>
+    !Boolean(v);
 
 test('isArray', () => {
     expect(tg.isArray([])).toBe(true);
@@ -93,7 +93,7 @@ test('isInt8Array', () => {
 
 test('isIterable', () => {
     expect(tg.isIterable([])).toBe(true);
-    expect(tg.isIterable((function* () {})())).toBe(true);
+    expect(tg.isIterable((function* iter() {})())).toBe(true);
     expect(tg.isIterable({})).toBe(false);
 });
 
@@ -109,9 +109,9 @@ test('isMap', () => {
 
 test('isMapWith', () => {
     expect(tg.isMapWith((v): v is [1, 1] =>
-        !!v, new Map([[true, true]]))).toBe(true);
+        Boolean(v), new Map([[true, true]]))).toBe(true);
     expect(tg.isMapWith((v): v is [1, 1] =>
-        !v, new Map([[true, true]]))).toBe(false);
+        !Boolean(v), new Map([[true, true]]))).toBe(false);
 });
 
 test('isNonNullable', () => {
@@ -216,6 +216,7 @@ test('isVoid', () => {
 });
 
 test('makeInstanceofGuard', () => {
+    // eslint-disable-next-line @typescript-eslint/no-extraneous-class
     class TestClass {}
 
     const testGuard = tg.makeInstanceofGuard(TestClass);
@@ -226,6 +227,7 @@ test('makeInstanceofGuard', () => {
 });
 
 test('isConstructor', () => {
+    // eslint-disable-next-line @typescript-eslint/no-extraneous-class
     expect(tg.isConstructor(class T {})).toBe(true);
     expect(tg.isConstructor(function T() {})).toBe(true);
     expect(tg.isConstructor(() => {})).toBe(false);

@@ -21,7 +21,6 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noFallthroughCasesInSwitch": true,
-        "noPropertyAccessFromIndexSignature": true,
         "noUncheckedIndexedAccess": true
     },
     "include": [

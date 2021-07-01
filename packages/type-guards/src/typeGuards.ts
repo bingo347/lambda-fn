@@ -1,6 +1,7 @@
 import {getSymbolFieldValue} from './_util';
 
 export type TypeGuard<T extends A, A = unknown> = (v: A) => v is T;
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export type CorrectNonNullable<T> = Exclude<T, null | undefined | void>;
 
 type TypesMap = {
@@ -13,7 +14,7 @@ type TypesMap = {
     'object': Record<string | symbol | number, unknown>;
     'function'(...args: unknown[]): unknown;
 };
-type AnyConstructor = new (...args: unknown) => unknown;
+type AnyConstructor = new (...args: any[]) => unknown;
 type TypedArray
     = Int8Array | Uint8Array
     | Int16Array | Uint16Array
@@ -24,6 +25,7 @@ type TypedArray
 const makeTypeofGuard = <T extends keyof TypesMap>(type: T) =>
     (
         (v: unknown): v is TypesMap[T] =>
+            // eslint-disable-next-line valid-typeof
             typeof v === type
     );
 export const makeInstanceofGuard = <C extends AnyConstructor>(constructor: C) =>
@@ -70,6 +72,7 @@ export const isBigInt64Array = makeInstanceofGuard(BigInt64Array);
 export const isBigUint64Array = makeInstanceofGuard(BigUint64Array);
 export const isFloat32Array = makeInstanceofGuard(Float32Array);
 export const isFloat64Array = makeInstanceofGuard(Float64Array);
+// eslint-disable-next-line complexity
 export const isTypedArray = (v: unknown): v is TypedArray =>
     (
         isInt8Array(v) || isUint8Array(v) || isInt16Array(v) || isUint16Array(v) ||
