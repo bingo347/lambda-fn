@@ -20,7 +20,7 @@ export function assertOk<T>(result: Result<T, unknown>, message?: string): asser
     const kind = getSymbolFieldValue(result, GUARD);
     _assert(
         isOkKind(kind),
-        message || makeAssertionErrorMessage('assertOk', kind),
+        message ?? makeAssertionErrorMessage('assertOk', kind),
         TypeError
     );
 }
@@ -29,7 +29,7 @@ export function assertErr<T>(result: Result<T, unknown>, message?: string): asse
     const kind = getSymbolFieldValue(result, GUARD);
     _assert(
         isErrKind(kind),
-        message || makeAssertionErrorMessage('assertErr', kind),
+        message ?? makeAssertionErrorMessage('assertErr', kind),
         TypeError
     );
 }
@@ -38,7 +38,7 @@ export const expect = <T>(result: Result<T, unknown>, message: string): T =>
     result.expect(message);
 const expectNever = () =>
     (message: string | Error) =>
-        _assert(false, message as Error) as never;
+        void _assert(false, message as Error) as never;
 impl('expect', always, expectNever, false);
 impl('expectErr', expectNever, always, false);
 

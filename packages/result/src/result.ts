@@ -13,7 +13,11 @@ export interface ResultStatic {
     isResult(maybeResult: unknown): maybeResult is Result<unknown, unknown>;
     isOkWith<T>(guard: TypeGuard<T>, maybeOk: unknown): maybeOk is Ok<T>;
     isErrWith<E>(guard: TypeGuard<E>, maybeErr: unknown): maybeErr is Err<E>;
-    isResultWith<T, E>(guardOk: TypeGuard<T>, guardErr: TypeGuard<E>, maybeResult: unknown): maybeResult is Result<T, E>;
+    isResultWith<T, E>(
+        guardOk: TypeGuard<T>,
+        guardErr: TypeGuard<E>,
+        maybeResult: unknown,
+    ): maybeResult is Result<T, E>;
 }
 
 export interface ResultInstance<T, E> {
@@ -49,19 +53,17 @@ export interface Err<E, T = never> extends ResultInstance<T, E> {
 
 export type Result<T, E> = Ok<T, E> | Err<E, T>;
 
-/* eslint-disable @typescript-eslint/no-redeclare */
 export const Ok = <T>(value: T): Ok<T> =>
     makeResult(ResultKind.Ok, value);
 export const Err = <E>(error: E): Err<E> =>
     makeResult(ResultKind.Err, error);
 export const Result = Object.defineProperties({}, {
-/* eslint-enable @typescript-eslint/no-redeclare */
     Ok:  makeDescriptor(Ok),
     Err: makeDescriptor(Err),
 }) as ResultStatic;
 
 impl(
-    'toString' as unknown,
+    'toString' as unknown as keyof ResultInstance<unknown, unknown>,
     (value =>
         () =>
             `Ok( ${String(value)} )`),
