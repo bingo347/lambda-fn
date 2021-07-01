@@ -1,7 +1,8 @@
 import {Cell, patch} from './cell';
 
 test('isCell', () => {
-    const guard = (v: unknown): v is 1 => v === 1;
+    const guard = (v: unknown): v is 1 =>
+        v === 1;
     const cell0 = Cell(0);
     const cell1 = Cell(1);
 
@@ -40,7 +41,8 @@ test('cell.subscribe', () => {
     cell.set(2);
     expect(fn).toBeCalledTimes(2);
 
-    cell.update(v => v + 1);
+    cell.update(v =>
+        v + 1);
     expect(fn).toBeCalledTimes(3);
     expect(fn).toBeCalledWith(3);
 
@@ -60,10 +62,12 @@ test('similar cells are deep equal', () => {
 
 test('patch can add new method to cell', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    patch((get, set) => ({
-        incr: () => set((get() as any as number + 1) as any)
-    }));
+    // @ts-expect-error
+    patch((get, set) =>
+        ({
+            incr: () =>
+                set((get() as unknown as number + 1) as unknown),
+        }));
     const cell = Cell(0) as Cell<number> & {incr(): void};
 
     expect(typeof cell.incr).toBe('function');

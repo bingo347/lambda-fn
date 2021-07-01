@@ -11,7 +11,7 @@
   "scripts": {
     "link-packages": "lerna link",
     "build": "rollup -c rollup.config.js",
-    "lint": "eslint --ext .ts --fix src",
+    "lint": "eslint --ext .ts --fix packages",
     "test": "jest"
   },
   "repository": {

@@ -1,4 +1,5 @@
-import {Option, Some, None} from './option';
+import type {Option} from './option';
+import {Some, None} from './option';
 import {fromNullable} from './fromNullable';
 import {assertSome} from './unwrapping';
 import {isSome} from './guards';
@@ -35,10 +36,11 @@ export function and<T1, T2, T3, T4, T5, T6, T7, T8>(o1: Option<T1>, o2: Option<T
 export function and<T1, T2, T3, T4, T5, T6, T7, T8, T9>(o1: Option<T1>, o2: Option<T2>, o3: Option<T3>, o4: Option<T4>,
     o5: Option<T5>, o6: Option<T6>, o7: Option<T7>, o8: Option<T8>, o9: Option<T9>): Option<[T1, T2, T3, T4, T5, T6, T7, T8, T9]>;
 /** @deprecated use chain with .and() or .zip() or .zipWith() methods */
-export function and<TS extends any[]>(...options: [Option<TS[number]>, Option<TS[number]>, ...Option<TS[number]>[]]): Option<TS>;
-export function and(...options: Option<any>[]): Option<any[]> {
+export function and<TS extends unknown[]>(...options: [Option<TS[number]>, Option<TS[number]>, ...Option<TS[number]>[]]): Option<TS>;
+export function and(...options: Option<unknown>[]): Option<unknown[]> {
     return (options.every(isSome)
-        ? Some(options.map(o => getSymbolFieldValue(o, VALUE)))
+        ? Some(options.map(o =>
+            getSymbolFieldValue(o, VALUE)))
         : None
     );
 }
@@ -64,7 +66,7 @@ export function or<T1, T2, T3, T4, T5, T6, T7, T8>(o1: Option<T1>, o2: Option<T2
 export function or<T1, T2, T3, T4, T5, T6, T7, T8, T9>(o1: Option<T1>, o2: Option<T2>, o3: Option<T3>, o4: Option<T4>,
     o5: Option<T5>, o6: Option<T6>, o7: Option<T7>, o8: Option<T8>, o9: Option<T9>): Option<T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9>;
 /** @deprecated use chain with .or() method */
-export function or<TS extends any[]>(...options: [Option<TS[number]>, Option<TS[number]>, ...Option<TS[number]>[]]): Option<TS[number]>;
-export function or(...options: Option<any>[]): Option<any> {
+export function or<TS extends unknown[]>(...options: [Option<TS[number]>, Option<TS[number]>, ...Option<TS[number]>[]]): Option<TS[number]>;
+export function or(...options: Option<unknown>[]): Option<unknown> {
     return fromNullable(options.find(isSome)).flat();
 }

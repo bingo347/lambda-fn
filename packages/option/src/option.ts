@@ -1,7 +1,9 @@
-import {TypeGuard} from '@lambda-fn/type-guards';
-import {GUARD, VALUE, OptionKind, makeOption, patch, checkPatchValue} from './internal';
+import type {TypeGuard} from '@lambda-fn/type-guards';
+import type {GUARD, VALUE} from './internal';
+import {OptionKind, makeOption, patch, checkPatchValue} from './internal';
 import type {FromNullableReturnType} from './fromNullable';
-import {Mapper, makeDescriptor} from './_util';
+import type {Mapper} from './_util';
+import {makeDescriptor} from './_util';
 
 export interface OptionStatic {
     fromNullable<T>(value: T): FromNullableReturnType<T>;
@@ -47,16 +49,22 @@ export interface None<T = never> extends OptionInstance<T> {
 export type Option<T> = Some<T> | None<T>;
 
 /* eslint-disable @typescript-eslint/no-redeclare */
-export const Some = <T>(value: T): Some<T> => makeOption(OptionKind.Some, value);
+export const Some = <T>(value: T): Some<T> =>
+    makeOption(OptionKind.Some, value);
 export const None = makeOption(OptionKind.None);
 export const Option = Object.defineProperties({}, {
 /* eslint-enable @typescript-eslint/no-redeclare */
     Some: makeDescriptor(Some),
-    None: makeDescriptor(None)
+    None: makeDescriptor(None),
 }) as OptionStatic;
 
-patch((kind, value) => (checkPatchValue(value, kind) ? {
-    toString: () => `Some( ${String(value)} )`
-} : {
-    toString: () => 'None'
-}) as Option<NonNullable<typeof value>>, false);
+patch((kind, value) =>
+    (checkPatchValue(value, kind)
+        ? {
+            toString: () =>
+                `Some( ${String(value)} )`,
+        }
+        : {
+            toString: () =>
+                'None',
+        }) as Option<NonNullable<typeof value>>, false);

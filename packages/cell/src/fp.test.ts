@@ -15,7 +15,8 @@ test('`set` sets value to cell', () => {
 test('`update` update value in cell', () => {
     const cell = Cell(5);
     expect(cell.value).toBe(5);
-    update(cell, v => v ** 2);
+    update(cell, v =>
+        v ** 2);
     expect(cell.value).toBe(25);
 });
 
@@ -45,7 +46,8 @@ test('`clone` make new cell what is deep equal to original cell', () => {
 });
 
 test('`map` make new cell with value transformed by mapper', () => {
-    const fn = jest.fn((v: number) => v + 1);
+    const fn = jest.fn((v: number) =>
+        v + 1);
     const cell = Cell(1);
     const mappedCell = map(cell, fn);
     const partialMap = map(fn);
@@ -62,7 +64,8 @@ test('`map` make new cell with value transformed by mapper', () => {
 });
 
 test('`fold` returns value transformed by mapper', () => {
-    const fn = jest.fn((v: number) => v + 1);
+    const fn = jest.fn((v: number) =>
+        v + 1);
     const cell = Cell(1);
     const foldedValue = fold(cell, fn);
     const partialFold = fold(fn);

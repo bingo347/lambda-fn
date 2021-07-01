@@ -1,8 +1,10 @@
-import {Result, Ok, Err} from './result';
+import type {Result} from './result';
+import {Ok, Err} from './result';
 import {assertOk} from './unwrapping';
 import {isOk, isErr} from './guards';
 import {VALUE} from './internal';
-import {Mapper, getSymbolFieldValue} from './_util';
+import type {Mapper} from './_util';
+import {getSymbolFieldValue} from './_util';
 
 /** @deprecated use Ok */
 export const ok = Ok;
@@ -14,7 +16,9 @@ export const err = Err;
 export const assert = assertOk;
 
 /** @deprecated use chain with .map(...).unwrapOr(...) */
-export const mapOr = <T, R>(defaultValue: R, mapper: Mapper<T, R>) => <E>(result: Result<T, E>): R => result.map(mapper).unwrapOr(defaultValue);
+export const mapOr = <T, R>(defaultValue: R, mapper: Mapper<T, R>) =>
+    <E>(result: Result<T, E>): R =>
+        result.map(mapper).unwrapOr(defaultValue);
 
 /** @deprecated */
 export function and<T1, T2, E>(r1: Result<T1, E>, r2: Result<T2, E>): Result<[T1, T2], E>;
@@ -39,10 +43,11 @@ export function and<T1, T2, T3, T4, T5, T6, T7, T8, T9, E>(r1: Result<T1, E>, r2
     r4: Result<T4, E>, r5: Result<T5, E>, r6: Result<T6, E>, r7: Result<T7, E>, r8: Result<T8, E>,
     r9: Result<T9, E>): Result<[T1, T2, T3, T4, T5, T6, T7, T8, T9], E>;
 /** @deprecated */
-export function and<TS extends any[], E>(...results: [Result<TS[number], E>, Result<TS[number], E>, ...Result<TS[number], E>[]]): Result<TS, E>;
-export function and<E>(...results: Result<any, E>[]): Result<any[], E> {
+export function and<TS extends unknown[], E>(...results: [Result<TS[number], E>, Result<TS[number], E>, ...Result<TS[number], E>[]]): Result<TS, E>;
+export function and<E>(...results: Result<unknown, E>[]): Result<unknown[], E> {
     return (results.every(isOk)
-        ? Ok(results.map(r => getSymbolFieldValue(r, VALUE)))
+        ? Ok(results.map(r =>
+            getSymbolFieldValue(r, VALUE)))
         : Err(getSymbolFieldValue(results.find(isErr)!, VALUE))
     );
 }
@@ -68,8 +73,8 @@ export function or<T1, T2, T3, T4, T5, T6, T7, T8, E>(r1: Result<T1, E>, r2: Res
 export function or<T1, T2, T3, T4, T5, T6, T7, T8, T9, E>(r1: Result<T1, E>, r2: Result<T2, E>, r3: Result<T3, E>, r4: Result<T4, E>,
     r5: Result<T5, E>, r6: Result<T6, E>, r7: Result<T7, E>, r8: Result<T8, E>, r9: Result<T9, E>): Result<T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9, E>;
 /** @deprecated */
-export function or<TS extends any[], E>(...results: [Result<TS[number], E>, Result<TS[number], E>, ...Result<TS[number], E>[]]): Result<TS[number], E>;
-export function or<E>(...results: Result<any, E>[]): Result<any, E> {
+export function or<TS extends unknown[], E>(...results: [Result<TS[number], E>, Result<TS[number], E>, ...Result<TS[number], E>[]]): Result<TS[number], E>;
+export function or<E>(...results: Result<unknown, E>[]): Result<unknown, E> {
     const firstOk = results.find(isOk);
     return firstOk ? Ok(getSymbolFieldValue(firstOk, VALUE)) : Err(getSymbolFieldValue(results[0], VALUE));
 }

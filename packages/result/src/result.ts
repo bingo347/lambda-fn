@@ -1,6 +1,8 @@
 import type {TypeGuard} from '@lambda-fn/type-guards';
-import {GUARD, VALUE, ResultKind, makeResult, impl} from './internal';
-import {Mapper, makeDescriptor} from './_util';
+import type {GUARD, VALUE} from './internal';
+import {ResultKind, makeResult, impl} from './internal';
+import type {Mapper} from './_util';
+import {makeDescriptor} from './_util';
 
 export interface ResultStatic {
     Ok<T>(value: T): Ok<T>;
@@ -31,7 +33,7 @@ export interface ResultInstance<T, E> {
     map<R>(mapper: Mapper<T, R>): Result<R, E>;
     mapErr<R>(mapper: Mapper<E, R>): Result<T, R>;
     match<R>(onOk: Mapper<T, R>, onErr: Mapper<E, R>): R;
-    flat<U, O>(this: Result<Result<U, O>, E>): Result<U, E | O>
+    flat<U, O>(this: Result<Result<U, O>, E>): Result<U, E | O>;
     apply<U, R, O>(this: Result<Mapper<U, R>, E>, target: Result<U, O>): Result<R, E | O>;
 }
 
@@ -48,17 +50,23 @@ export interface Err<E, T = never> extends ResultInstance<T, E> {
 export type Result<T, E> = Ok<T, E> | Err<E, T>;
 
 /* eslint-disable @typescript-eslint/no-redeclare */
-export const Ok = <T>(value: T): Ok<T> => makeResult(ResultKind.Ok, value);
-export const Err = <E>(error: E): Err<E> => makeResult(ResultKind.Err, error);
+export const Ok = <T>(value: T): Ok<T> =>
+    makeResult(ResultKind.Ok, value);
+export const Err = <E>(error: E): Err<E> =>
+    makeResult(ResultKind.Err, error);
 export const Result = Object.defineProperties({}, {
 /* eslint-enable @typescript-eslint/no-redeclare */
-    Ok: makeDescriptor(Ok),
-    Err: makeDescriptor(Err)
+    Ok:  makeDescriptor(Ok),
+    Err: makeDescriptor(Err),
 }) as ResultStatic;
 
 impl(
-    'toString' as any,
-    (value => () => `Ok( ${String(value)} )`),
-    (error => () => `Err( ${String(error)} )`),
+    'toString' as unknown,
+    (value =>
+        () =>
+            `Ok( ${String(value)} )`),
+    (error =>
+        () =>
+            `Err( ${String(error)} )`),
     false
 );

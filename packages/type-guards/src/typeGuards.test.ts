@@ -1,7 +1,9 @@
 import * as tg from './typeGuards';
 
-const trueGuard = (v: unknown): v is true => !!v;
-const falseGuard = (v: unknown): v is true => !v;
+const trueGuard = (v: unknown): v is true =>
+    !!v;
+const falseGuard = (v: unknown): v is true =>
+    !v;
 
 test('isArray', () => {
     expect(tg.isArray([])).toBe(true);
@@ -44,7 +46,7 @@ test('isDataView', () => {
     expect(tg.isDataView({
         buffer,
         byteLength: buffer.byteLength,
-        byteOffset: 0
+        byteOffset: 0,
     })).toBe(false);
 });
 
@@ -69,7 +71,8 @@ test('isFloat64Array', () => {
 });
 
 test('isFunction', () => {
-    expect(tg.isFunction(() => void 0)).toBe(true);
+    expect(tg.isFunction(() =>
+        void 0)).toBe(true);
     expect(tg.isFunction({})).toBe(false);
 });
 
@@ -90,7 +93,7 @@ test('isInt8Array', () => {
 
 test('isIterable', () => {
     expect(tg.isIterable([])).toBe(true);
-    expect(tg.isIterable(function*() {}())).toBe(true);
+    expect(tg.isIterable((function* () {})())).toBe(true);
     expect(tg.isIterable({})).toBe(false);
 });
 
@@ -105,8 +108,10 @@ test('isMap', () => {
 });
 
 test('isMapWith', () => {
-    expect(tg.isMapWith((v): v is [1, 1] => !!v, new Map([[true, true]]))).toBe(true);
-    expect(tg.isMapWith((v): v is [1, 1] => !v, new Map([[true, true]]))).toBe(false);
+    expect(tg.isMapWith((v): v is [1, 1] =>
+        !!v, new Map([[true, true]]))).toBe(true);
+    expect(tg.isMapWith((v): v is [1, 1] =>
+        !v, new Map([[true, true]]))).toBe(false);
 });
 
 test('isNonNullable', () => {
@@ -131,7 +136,8 @@ test('isNumber', () => {
 
 test('isObject', () => {
     expect(tg.isObject({})).toBe(true);
-    expect(tg.isObject(() => void 0)).toBe(false);
+    expect(tg.isObject(() =>
+        void 0)).toBe(false);
 });
 
 test('isPromise', () => {
@@ -211,6 +217,7 @@ test('isVoid', () => {
 
 test('makeInstanceofGuard', () => {
     class TestClass {}
+
     const testGuard = tg.makeInstanceofGuard(TestClass);
     expect(testGuard(new TestClass())).toBe(true);
     expect(testGuard({})).toBe(false);
