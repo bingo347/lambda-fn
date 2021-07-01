@@ -9,6 +9,7 @@ type PatchFN = <T>(
     subscribe: Cell<T>['subscribe']
 ) => Partial<Cell<T>>;
 
+// eslint-disable-next-line @typescript-eslint/no-shadow
 const enum CellKind { Cell }
 const GUARD = Symbol();
 const patchers: [patcher: PatchFN, configurable: boolean][] = [];
@@ -39,7 +40,6 @@ export const isCell = (maybeCell: unknown): maybeCell is Cell<unknown> =>
 export const isCellWith = <T>(guard: TypeGuard<T>, maybeCell: unknown): maybeCell is Cell<T> =>
     isCell(maybeCell) && maybeCell.fold(guard);
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Cell = Object.defineProperties(<T>(initialValue: T): Cell<T> => {
     let currentValue = initialValue;
     return mergeCellWithPatchers(Object.defineProperties({}, {
@@ -61,7 +61,7 @@ const mergeCellWithPatchers = <T>(cell: Partial<Cell<T>>): Cell<T> =>
     patchCellWithValue(patchers.reduce((partialCell, [cb, configurable]) =>
         (
             mergeCell(partialCell, cb(partialCell.get!, partialCell.set!, partialCell.subscribe!), configurable)
-        ), cell) as unknown);
+        ), cell) as unknown as Cell<T>);
 
 const mergeCell = <T>(currentCell: Partial<Cell<T>>, extendedCell: Partial<Cell<T>>, configurable: boolean) => {
     for (const key of Object.getOwnPropertyNames(extendedCell) as (keyof Cell<T>)[]) {
@@ -92,14 +92,13 @@ patch((get, set) => {
         }
     };
     return {
-        set:       wrappedSet,
-        subscribe: subscription =>
-            (
-                subscriptions.add(subscription),
-                subscription(get()),
-                () =>
-                    void subscriptions.delete(subscription)
-            ),
+        set: wrappedSet,
+        subscribe(subscription) {
+            subscriptions.add(subscription);
+            void subscription(get());
+            return () =>
+                void subscriptions.delete(subscription);
+        },
     };
 }, false);
 patch((get, set) =>

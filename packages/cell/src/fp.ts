@@ -16,7 +16,10 @@ export const clone = <T>(cell: Cell<T>): Cell<T> =>
 
 export function map<T, U>(cell: Cell<T>, mapper: ValueFN<T, U>): Cell<U>;
 export function map<T, U>(mapper: ValueFN<T, U>): (cell: Cell<T>) => Cell<U>;
-export function map<T, U>(mapperOrCell: Cell<T> | ValueFN<T, U>, _mapper?: ValueFN<T, U>): Cell<U> | ((cell: Cell<T>) => Cell<U>) {
+export function map<T, U>(
+    mapperOrCell: Cell<T> | ValueFN<T, U>,
+    _mapper?: ValueFN<T, U>,
+): Cell<U> | ((cell: Cell<T>) => Cell<U>) {
     const mapper = isCell(mapperOrCell) ? _mapper! : mapperOrCell;
     const resolver = (cell: Cell<T>) =>
         cell.map(mapper);

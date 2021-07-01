@@ -25,9 +25,8 @@ test('cell.value as get/set', () => {
     expect(cell.get()).toBe(-1);
 });
 
-// eslint-disable-next-line max-lines-per-function
 test('cell.subscribe', () => {
-    const fn = jest.fn<void, [number]>();
+    const fn = jest.fn<undefined, [number]>();
     const cell = Cell(1);
 
     const unsubscribe = cell.subscribe(fn);
@@ -41,10 +40,11 @@ test('cell.subscribe', () => {
     cell.set(2);
     expect(fn).toBeCalledTimes(2);
 
+    const t3 = 3;
     cell.update(v =>
         v + 1);
-    expect(fn).toBeCalledTimes(3);
-    expect(fn).toBeCalledWith(3);
+    expect(fn).toBeCalledTimes(t3);
+    expect(fn).toBeCalledWith(t3);
 
     cell.value++;
     expect(fn).toBeCalledTimes(4);
@@ -61,12 +61,11 @@ test('similar cells are deep equal', () => {
 });
 
 test('patch can add new method to cell', () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     patch((get, set) =>
+        // @ts-expect-error: unsafe extension
         ({
             incr: () =>
-                set((get() as unknown as number + 1) as unknown),
+                set((get() as unknown as number + 1) as unknown as ReturnType<typeof get>),
         }));
     const cell = Cell(0) as Cell<number> & {incr(): void};
 

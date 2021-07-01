@@ -13,15 +13,15 @@ test('`set` sets value to cell', () => {
 });
 
 test('`update` update value in cell', () => {
-    const cell = Cell(5);
-    expect(cell.value).toBe(5);
+    const cell = Cell(4);
+    expect(cell.value).toBe(4);
     update(cell, v =>
         v ** 2);
-    expect(cell.value).toBe(25);
+    expect(cell.value).toBe(16);
 });
 
 test('`subscribe` work correct', () => {
-    const fn = jest.fn<void, [number]>();
+    const fn = jest.fn<undefined, [number]>();
     const cell = Cell(1);
 
     const unsubscribe = subscribe(cell, fn);
