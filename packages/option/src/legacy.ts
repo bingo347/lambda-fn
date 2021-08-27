@@ -1,4 +1,3 @@
-import {getSymbolFieldValue} from './_util';
 import {fromNullable} from './fromNullable';
 import {isSome} from './guards';
 import {VALUE} from './internal';
@@ -47,7 +46,7 @@ export function and<TS extends unknown[]>(...options: [
 export function and(...options: Option<unknown>[]): Option<unknown[]> {
     return (options.every(isSome)
         ? Some(options.map(o =>
-            getSymbolFieldValue(o, VALUE)))
+            o[VALUE]))
         : None
     );
 }

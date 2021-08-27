@@ -1,4 +1,3 @@
-import {getSymbolFieldValue} from './_util';
 import {GUARD, VALUE, patch, checkPatchValue, isSomeKind} from './internal';
 import type {Option} from './option';
 import {Some, None} from './option';
@@ -38,19 +37,19 @@ const patchSome = <T>(value: T): Partial<Option<T>> =>
         and:     identity,
         or:      alwaysSome(value),
         xor:     other =>
-            (isSomeKind(getSymbolFieldValue(other, GUARD)) ? None : other),
+            (isSomeKind(other[GUARD]) ? None : other),
         filter:  predicate =>
             (predicate(value) ? Some(value) : None),
         map:     mapper =>
             Some(mapper(value)),
         zip:     other =>
-            (isSomeKind(getSymbolFieldValue(other, GUARD))
-                ? Some([value, getSymbolFieldValue(other as SomeFromOption<typeof other>, VALUE)])
+            (isSomeKind(other[GUARD])
+                ? Some([value, (other as SomeFromOption<typeof other>)[VALUE]])
                 : None
             ),
         zipWith: (other, mapper) =>
-            (isSomeKind(getSymbolFieldValue(other, GUARD))
-                ? Some(mapper(value, getSymbolFieldValue(other as SomeFromOption<typeof other>, VALUE)))
+            (isSomeKind(other[GUARD])
+                ? Some(mapper(value, (other as SomeFromOption<typeof other>)[VALUE]))
                 : None
             ),
     });
@@ -63,7 +62,7 @@ const patchNone = <T>(): Partial<Option<T>> =>
         and:     alwaysNone,
         or:      identity,
         xor:     other =>
-            (isSomeKind(getSymbolFieldValue(other, GUARD)) ? other : None),
+            (isSomeKind(other[GUARD]) ? other : None),
         filter:  alwaysNone,
         map:     alwaysNone,
         zip:     alwaysNone,

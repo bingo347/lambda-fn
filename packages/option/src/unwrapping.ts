@@ -1,4 +1,4 @@
-import {_assert, getSymbolFieldValue} from './_util';
+import {_assert} from './_util';
 import {GUARD, OptionKind, patch, checkPatchValue, isSomeKind, isNoneKind} from './internal';
 import type {Option, Some, None} from './option';
 
@@ -12,7 +12,7 @@ const always = <T>(value: T) =>
         value;
 
 export function assertSome<T>(option: Option<T>, message?: string): asserts option is Some<T> {
-    const kind = getSymbolFieldValue(option, GUARD);
+    const kind = option[GUARD];
     _assert(
         isSomeKind(kind),
         message ?? makeAssertionErrorMessage('assert', kind),
@@ -21,7 +21,7 @@ export function assertSome<T>(option: Option<T>, message?: string): asserts opti
 }
 
 export function assertNone(option: Option<unknown>, message?: string): asserts option is None {
-    const kind = getSymbolFieldValue(option, GUARD);
+    const kind = option[GUARD];
     _assert(
         isNoneKind(kind),
         message ?? makeAssertionErrorMessage('assertNone', kind),

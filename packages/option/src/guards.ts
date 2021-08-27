@@ -8,7 +8,7 @@ import {Option} from './option';
 const checkOption = (maybeOption: unknown, kind: OptionKind) =>
     isObject(maybeOption) && getSymbolFieldValue(maybeOption, GUARD) === kind;
 const isSomeWithInternal = <T>(guard: TypeGuard<T>, maybeSome: unknown): maybeSome is Some<T> =>
-    isSome(maybeSome) && guard(getSymbolFieldValue(maybeSome, VALUE));
+    isSome(maybeSome) && guard(maybeSome[VALUE]);
 const isOptionWithInternal = <T>(guard: TypeGuard<T>, maybeOption: unknown): maybeOption is Option<T> =>
     isNone(maybeOption) || isSomeWithInternal(guard, maybeOption);
 
