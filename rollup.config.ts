@@ -1,60 +1,96 @@
-import {promises as fs} from 'fs';
+import * as fs from 'fs';
 import * as path from 'path';
-import type {CompilerOptions} from 'typescript';
+import type {RollupOptions} from 'rollup';
 import ts from 'rollup-plugin-ts';
 
-type TSConfig = {
-    compilerOptions: CompilerOptions;
-    include?:        string[];
-    exclude?:        string[];
-};
 type Pkg = {
     dependencies?: Record<string, string>;
 };
+type PkgInfo = {
+    name:         string;
+    pathname:     string;
+    dependencies: string[];
+};
+type PkgInfoRecord = Record<string, PkgInfo>;
+type PkgInfoCollection = {
+    names: string[];
+    info:  PkgInfoRecord;
+};
 
-const ORDER_KEY = Symbol();
-
-export default (async () => {
-    const tsconfig = JSON.parse(await fs.readFile(path.join(__dirname, 'tsconfig.json'), 'utf8')) as TSConfig;
+const scanPackages = async () => {
     const pkgDir = path.join(__dirname, 'packages');
-    const priorityOrder: Record<string, number> = {};
-    const pkgConfigs = await Promise.all((await fs.readdir(pkgDir)).map(async name => {
-        const input = path.join(pkgDir, name, 'src/index.ts');
-        const pkg = JSON.parse(await fs.readFile(path.join(pkgDir, name, 'package.json'), 'utf8')) as Pkg;
-        const external = Object.keys(pkg.dependencies ?? {});
-        external.forEach(m => {
-            priorityOrder[m] = (priorityOrder[m] ?? 0) + 1;
-        });
-        return [{
-            input,
-            external,
-            output: {
-                format: 'es',
-                file:   path.join(pkgDir, name, 'index.mjs'),
-            },
-            plugins:     [ts()],
-            [ORDER_KEY]: `@lambda-fn/${name}`,
-        }, {
-            input,
-            external,
-            output: {
-                format:  'cjs',
-                file:    path.join(pkgDir, name, 'index.js'),
-                exports: 'named',
-            },
-            plugins: [ts({
-                tsconfig: {
-                    ...tsconfig.compilerOptions,
-                    declaration: false,
-                },
-                include:       tsconfig.include,
-                exclude:       tsconfig.exclude,
-                transpileOnly: true,
-            })],
-        }] as const;
+    const dirNames = await fs.promises.readdir(pkgDir);
+    const names = dirNames.map(name =>
+        `@lambda-fn/${name}`);
+    const pkgInfo = await Promise.all(names.map(async name => {
+        const pathname = path.join(pkgDir, path.basename(name));
+        const pkgData = await fs.promises.readFile(path.join(pathname, 'package.json'), 'utf8');
+        const pkg = JSON.parse(pkgData) as Pkg;
+        const dependencies = Object.keys(pkg.dependencies ?? {});
+        return {
+            name,
+            pathname,
+            dependencies,
+        };
     }));
-    return pkgConfigs
-        .sort(([{[ORDER_KEY]: a}], [{[ORDER_KEY]: b}]) =>
-            (priorityOrder[b] ?? 0) - (priorityOrder[a] ?? 0))
-        .flat();
-})();
+    return {
+        names,
+        info: pkgInfo.reduce<PkgInfoRecord>((acc, info) => {
+            acc[info.name] = info;
+            return acc;
+        }, {}),
+    };
+};
+
+// eslint-disable-next-line complexity
+const orderPackages = (infoCollection: PkgInfoCollection) => {
+    const {dependencies, dependents} = collectDependencies(infoCollection);
+    const notUsedNames = new Set(infoCollection.names);
+    const orderedInfo: PkgInfo[] = [];
+    while (notUsedNames.size > 0) {
+        const namesUsedInThisIteration: string[] = [];
+        for (const name of notUsedNames) {
+            if (dependencies[name]!.size > 0) { continue }
+            namesUsedInThisIteration.push(name);
+            orderedInfo.push(infoCollection.info[name]!);
+            for (const dep of dependents[name] ?? []) {
+                dependencies[dep]?.delete(name);
+            }
+        }
+        namesUsedInThisIteration.forEach(name =>
+            notUsedNames.delete(name));
+    }
+    return orderedInfo;
+};
+
+const collectDependencies = (infoCollection: PkgInfoCollection) => {
+    const dependencies: Record<string, Set<string>> = {};
+    const dependents: Record<string, Set<string>> = {};
+    for (const name of infoCollection.names) {
+        const currentInfo = infoCollection.info[name];
+        if (!currentInfo) { continue }
+        const internalDependencies = currentInfo.dependencies.filter(dep =>
+            dep.startsWith('@lambda-fn/'));
+        dependencies[name] = new Set(internalDependencies);
+        for (const dep of internalDependencies) {
+            (dependents[dep] ??= new Set()).add(name);
+        }
+    }
+    return {dependencies, dependents};
+};
+
+export default (async (): Promise<RollupOptions[]> =>
+    orderPackages(await scanPackages()).map(({pathname, dependencies}) =>
+        ({
+            input:    path.join(pathname, 'src/index.ts'),
+            external: dependencies,
+            output:   [{
+                format: 'es',
+                file:   path.join(pathname, 'index.mjs'),
+            }, {
+                format:  'cjs',
+                exports: 'named',
+                file:    path.join(pathname, 'index.js'),
+            }],
+            plugins:     [ts()],
+        })))();
