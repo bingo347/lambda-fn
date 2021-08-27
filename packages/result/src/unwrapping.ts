@@ -1,5 +1,5 @@
 import type {Mapper} from './_util';
-import {_assert, getSymbolFieldValue} from './_util';
+import {_assert} from './_util';
 import {GUARD, ResultKind, impl} from './internal';
 import type {Result, Ok, Err} from './result';
 
@@ -17,7 +17,7 @@ const always = <T>(value: T) =>
         value;
 
 export function assertOk<T>(result: Result<T, unknown>, message?: string): asserts result is Ok<T> {
-    const kind = getSymbolFieldValue(result, GUARD);
+    const kind = result[GUARD];
     _assert(
         isOkKind(kind),
         message ?? makeAssertionErrorMessage('assertOk', kind),
@@ -26,7 +26,7 @@ export function assertOk<T>(result: Result<T, unknown>, message?: string): asser
 }
 
 export function assertErr<T>(result: Result<T, unknown>, message?: string): asserts result is Err<T> {
-    const kind = getSymbolFieldValue(result, GUARD);
+    const kind = result[GUARD];
     _assert(
         isErrKind(kind),
         message ?? makeAssertionErrorMessage('assertErr', kind),

@@ -1,5 +1,4 @@
 import type {Mapper} from './_util';
-import {getSymbolFieldValue} from './_util';
 import {isOk, isErr} from './guards';
 import {VALUE} from './internal';
 import type {Result} from './result';
@@ -51,8 +50,8 @@ export function and<TS extends unknown[], E>(...results: [
 export function and<E>(...results: Result<unknown, E>[]): Result<unknown[], E> {
     return (results.every(isOk)
         ? Ok(results.map(r =>
-            getSymbolFieldValue(r, VALUE)))
-        : Err(getSymbolFieldValue(results.find(isErr)!, VALUE))
+            r[VALUE]))
+        : Err(results.find(isErr)![VALUE])
     ) as Result<unknown[], E>;
 }
 
@@ -87,6 +86,6 @@ export function or<TS extends unknown[], E>(...results: [
 export function or<E>(...results: Result<unknown, E>[]): Result<unknown, E> {
     const firstOk = results.find(isOk);
     return firstOk
-        ? Ok(getSymbolFieldValue(firstOk, VALUE))
-        : Err(getSymbolFieldValue(results[0]!, VALUE)) as Result<unknown, E>;
+        ? Ok(firstOk[VALUE])
+        : Err(results[0]![VALUE]) as Result<unknown, E>;
 }

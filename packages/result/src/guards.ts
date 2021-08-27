@@ -8,9 +8,9 @@ import {Result} from './result';
 const checkResult = (maybeResult: unknown, kind: ResultKind) =>
     isObject(maybeResult) && getSymbolFieldValue(maybeResult, GUARD) === kind;
 const isOkWithInternal = <T>(guard: TypeGuard<T>, maybeOk: unknown): maybeOk is Ok<T> =>
-    isOk(maybeOk) && guard(getSymbolFieldValue(maybeOk, VALUE));
+    isOk(maybeOk) && guard(maybeOk[VALUE]);
 const isErrWithInternal = <E>(guard: TypeGuard<E>, maybeErr: unknown): maybeErr is Err<E> =>
-    isErr(maybeErr) && guard(getSymbolFieldValue(maybeErr, VALUE));
+    isErr(maybeErr) && guard(maybeErr[VALUE]);
 const isResultWithInternal = <T, E>(
     guardOk: TypeGuard<T>,
     guardErr: TypeGuard<E>,
