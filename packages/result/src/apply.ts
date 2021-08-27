@@ -1,8 +1,8 @@
 import {isFunction} from '@lambda-fn/type-guards';
+import {_assert} from './_util';
+import {impl} from './internal';
 import type {Result} from './result';
 import {Err} from './result';
-import {impl} from './internal';
-import {_assert} from './_util';
 
 impl('apply', (mapper =>
     // @ts-expect-error: TODO:

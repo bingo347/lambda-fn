@@ -1,5 +1,5 @@
-import type {Option, Some, None} from './option';
 import {makeDescriptor} from './_util';
+import type {Option, Some, None} from './option';
 
 type PatchFN = <T>(
     kind: OptionKind,

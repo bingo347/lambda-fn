@@ -1,9 +1,9 @@
-import type {Option} from './option';
-import {None} from './option';
 import {isFunction} from '@lambda-fn/type-guards';
-import {patch, checkPatchValue} from './internal';
 import type {Mapper} from './_util';
 import {_assert} from './_util';
+import {patch, checkPatchValue} from './internal';
+import {None} from './option';
+import type {Option} from './option';
 
 patch((kind, value) =>
     (checkPatchValue(value, kind)

@@ -1,6 +1,6 @@
-import type {Option, Some, None} from './option';
-import {GUARD, OptionKind, patch, checkPatchValue, isSomeKind, isNoneKind} from './internal';
 import {_assert, getSymbolFieldValue} from './_util';
+import {GUARD, OptionKind, patch, checkPatchValue, isSomeKind, isNoneKind} from './internal';
+import type {Option, Some, None} from './option';
 
 const makeAssertionErrorMessage = (
     method: 'assert' | 'assertNone' | 'unwrap',

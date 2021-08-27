@@ -1,6 +1,6 @@
-import {Result, Ok, Err} from './result';
 import type {Mapper} from './_util';
 import {makeDescriptor} from './_util';
+import {Result, Ok, Err} from './result';
 
 const defaultOnError = <E>(e: unknown): E =>
     (e instanceof Error ? e : new Error(String(e))) as unknown as E;

@@ -1,5 +1,5 @@
-import type {Result, Ok, Err, ResultInstance} from './result';
 import {makeDescriptor} from './_util';
+import type {Result, Ok, Err, ResultInstance} from './result';
 
 type AnyMethod<T, E> = ResultInstance<T, E>[keyof ResultInstance<T, E>];
 type Implementor = [

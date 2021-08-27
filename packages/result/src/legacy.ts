@@ -1,10 +1,10 @@
+import type {Mapper} from './_util';
+import {getSymbolFieldValue} from './_util';
+import {isOk, isErr} from './guards';
+import {VALUE} from './internal';
 import type {Result} from './result';
 import {Ok, Err} from './result';
 import {assertOk} from './unwrapping';
-import {isOk, isErr} from './guards';
-import {VALUE} from './internal';
-import type {Mapper} from './_util';
-import {getSymbolFieldValue} from './_util';
 
 /** @deprecated use Ok */
 export const ok = Ok;

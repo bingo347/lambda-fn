@@ -1,6 +1,6 @@
 import {isNonNullable} from '@lambda-fn/type-guards';
-import {Option, Some, None} from './option';
 import {makeDescriptor} from './_util';
+import {Option, Some, None} from './option';
 
 type MatchNullable<T, WhenNullable, WhenNonNullable>
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type

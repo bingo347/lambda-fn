@@ -1,4 +1,5 @@
 import {impl} from './internal';
+
 export const __internal = {impl};
 export {Result as default} from './result';
 export * from './result';

@@ -25,17 +25,17 @@ test('`subscribe` work correct', () => {
     const cell = Cell(1);
 
     const unsubscribe = subscribe(cell, fn);
-    expect(fn).toBeCalledTimes(1);
-    expect(fn).toBeCalledWith(1);
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(fn).toHaveBeenCalledWith(1);
 
     set(cell, 2);
-    expect(fn).toBeCalledTimes(2);
-    expect(fn).toBeCalledWith(2);
+    expect(fn).toHaveBeenCalledTimes(2);
+    expect(fn).toHaveBeenCalledWith(2);
 
     unsubscribe();
     set(cell, 0);
-    expect(fn).toBeCalledTimes(2);
-    expect(fn).toBeCalledWith(2);
+    expect(fn).toHaveBeenCalledTimes(2);
+    expect(fn).toHaveBeenCalledWith(2);
 });
 
 test('`clone` make new cell what is deep equal to original cell', () => {
@@ -55,12 +55,12 @@ test('`map` make new cell with value transformed by mapper', () => {
     expect(cell.value).toBe(1);
 
     expect(mappedCell.value).toBe(2);
-    expect(fn).toBeCalledTimes(1);
+    expect(fn).toHaveBeenCalledTimes(1);
 
     fn.mockClear();
 
     expect(partialMap(cell).value).toBe(2);
-    expect(fn).toBeCalledTimes(1);
+    expect(fn).toHaveBeenCalledTimes(1);
 });
 
 test('`fold` returns value transformed by mapper', () => {
@@ -73,10 +73,10 @@ test('`fold` returns value transformed by mapper', () => {
     expect(cell.value).toBe(1);
 
     expect(foldedValue).toBe(2);
-    expect(fn).toBeCalledTimes(1);
+    expect(fn).toHaveBeenCalledTimes(1);
 
     fn.mockClear();
 
     expect(partialFold(cell)).toBe(2);
-    expect(fn).toBeCalledTimes(1);
+    expect(fn).toHaveBeenCalledTimes(1);
 });

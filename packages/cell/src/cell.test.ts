@@ -30,30 +30,30 @@ test('cell.subscribe', () => {
     const cell = Cell(1);
 
     const unsubscribe = cell.subscribe(fn);
-    expect(fn).toBeCalledTimes(1);
-    expect(fn).toBeCalledWith(1);
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(fn).toHaveBeenCalledWith(1);
 
     cell.set(2);
-    expect(fn).toBeCalledTimes(2);
-    expect(fn).toBeCalledWith(2);
+    expect(fn).toHaveBeenCalledTimes(2);
+    expect(fn).toHaveBeenCalledWith(2);
 
     cell.set(2);
-    expect(fn).toBeCalledTimes(2);
+    expect(fn).toHaveBeenCalledTimes(2);
 
     const t3 = 3;
     cell.update(v =>
         v + 1);
-    expect(fn).toBeCalledTimes(t3);
-    expect(fn).toBeCalledWith(t3);
+    expect(fn).toHaveBeenCalledTimes(t3);
+    expect(fn).toHaveBeenCalledWith(t3);
 
     cell.value++;
-    expect(fn).toBeCalledTimes(4);
-    expect(fn).toBeCalledWith(4);
+    expect(fn).toHaveBeenCalledTimes(4);
+    expect(fn).toHaveBeenCalledWith(4);
 
     unsubscribe();
     cell.set(0);
-    expect(fn).toBeCalledTimes(4);
-    expect(fn).toBeCalledWith(4);
+    expect(fn).toHaveBeenCalledTimes(4);
+    expect(fn).toHaveBeenCalledWith(4);
 });
 
 test('similar cells are deep equal', () => {

@@ -1,10 +1,10 @@
-import type {Option} from './option';
-import {Some, None} from './option';
+import {getSymbolFieldValue} from './_util';
 import {fromNullable} from './fromNullable';
-import {assertSome} from './unwrapping';
 import {isSome} from './guards';
 import {VALUE} from './internal';
-import {getSymbolFieldValue} from './_util';
+import type {Option} from './option';
+import {Some, None} from './option';
+import {assertSome} from './unwrapping';
 
 /** @deprecated use Some */
 export const some = Some;

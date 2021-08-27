@@ -1,7 +1,7 @@
-import type {Result, Ok, Err} from './result';
-import {GUARD, ResultKind, impl} from './internal';
 import type {Mapper} from './_util';
 import {_assert, getSymbolFieldValue} from './_util';
+import {GUARD, ResultKind, impl} from './internal';
+import type {Result, Ok, Err} from './result';
 
 const isOkKind = (kind: ResultKind) =>
     kind === ResultKind.Ok;

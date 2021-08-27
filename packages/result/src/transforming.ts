@@ -1,7 +1,7 @@
+import type {Mapper} from './_util';
+import {impl} from './internal';
 import type {Result} from './result';
 import {Ok, Err} from './result';
-import {impl} from './internal';
-import type {Mapper} from './_util';
 
 const cloneOk = <T>(value: T) =>
     () =>
