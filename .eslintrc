@@ -1,0 +1,29 @@
+{
+    "parserOptions": {
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "."
+    },
+    "extends": "@bingo347",
+    "overrides": [
+        {
+            "files": [
+                "*.test.ts"
+            ],
+            "plugins": [
+                "jest"
+            ],
+            "env": {
+                "node": true,
+                "jest": true
+            },
+            "extends": [
+                "plugin:jest/recommended",
+                "plugin:jest/style"
+            ],
+            "rules": {
+                "@typescript-eslint/no-empty-function": 0
+            }
+        }
+    ],
+    "rules": {}
+}
