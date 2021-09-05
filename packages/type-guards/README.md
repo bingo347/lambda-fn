@@ -14,14 +14,13 @@ yarn add @lambda-fn/type-guards
 
 ```typescript
 type TypeGuard<T extends A, A = unknown> = (v: A) => v is T;
-type CorrectNonNullable<T> = Exclude<T, null | undefined | void>; // because NonNullable from tslib don't exclude void type
 
 // for create type guards from your classes
-function makeInstanceofGuard<C extends new (...args: any) => any>(constructor: C) => (v: unknown) => v is InstanceType<C>;
+function makeInstanceofGuard<C extends new (...args: any) => unknown>(constructor: C): (v: unknown) => v is InstanceType<C>;
 
-function isFunction(v: unknown): v is (...args: unknown[]) => unknown;
+function isFunction(v: unknown): v is (...args: any[]) => unknown;
 function isConstructor(v: unknown): v is new (...args: unknown[]) => unknown;
-function isObject(v: unknown): v is Record<string | number | symbol, unknown>;
+function isObject(v: unknown): v is Record<PropertyKey, unknown>;
 function isSymbol(v: unknown): v is symbol;
 function isString(v: unknown): v is string;
 function isNumber(v: unknown): v is number;
@@ -56,7 +55,14 @@ function isIterable(v: unknown): v is Iterable<unknown>;
 function isIterableWith<T>(guard: TypeGuard<T>, v: unknown): v is Iterable<T>;
 function isSetWith<T>(guard: TypeGuard<T>, v: unknown): v is Set<T>;
 function isMapWith<K, V>(guard: TypeGuard<[K, V]>, v: unknown): v is Map<K, V>;
-function isNonNullable<T>(v: T) => v is CorrectNonNullable<T>;
+function isNullable(v: unknown): v is null | undefined;
+function isNonNullable<T>(v: T): v is NonNullable<T>;
+function isPropertyKey(v: unknown): v is PropertyKey;
+function isObjectWithKey<K extends PropertyKey, T>(key: K, guard?: TypeGuard<T, unknown>): (v: unknown) => v is Record<K, T>;
+function isObjectLike(v: unknown): v is Record<PropertyKey, unknown> | (...args: any[]) => unknown;
+function isPrimitive(v: unknown): v is string | number | bigint | boolean | symbol | null | undefined;
+function isEqualTo<V extends string | number | bigint | boolean | symbol | null | undefined>(value: V): TypeGuard<V, unknown>;
+function isEqualTo<V extends string | number | bigint | boolean | symbol | null | undefined>(value: V, v: unknown): v is V;
 ```
 
 ## License

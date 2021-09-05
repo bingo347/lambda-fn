@@ -1,4 +1,4 @@
-import * as tg from './typeGuards';
+import * as tg from './index';
 
 const trueGuard = (v: unknown): v is true =>
     Boolean(v);
@@ -166,16 +166,6 @@ test('isSetWith', () => {
     expect(tg.isSetWith(falseGuard, new Set([true]))).toBe(false);
 });
 
-test('isString', () => {
-    expect(tg.isString('')).toBe(true);
-    expect(tg.isString(0)).toBe(false);
-});
-
-test('isSymbol', () => {
-    expect(tg.isSymbol(Symbol())).toBe(true);
-    expect(tg.isSymbol('')).toBe(false);
-});
-
 test('isTypedArray', () => {
     expect(tg.isTypedArray(new Int8Array())).toBe(true);
     expect(tg.isTypedArray(new Uint8Array())).toBe(true);
@@ -203,11 +193,6 @@ test('isUint32Array', () => {
 test('isUint8Array', () => {
     expect(tg.isUint8Array(new Uint8Array())).toBe(true);
     expect(tg.isUint8Array([])).toBe(false);
-});
-
-test('isUndefined', () => {
-    expect(tg.isUndefined(void 0)).toBe(true);
-    expect(tg.isUndefined(null)).toBe(false);
 });
 
 test('isVoid', () => {
