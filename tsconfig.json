@@ -22,7 +22,8 @@
         "noImplicitThis": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedIndexedAccess": true,
-        "exactOptionalPropertyTypes": true
+        "exactOptionalPropertyTypes": true,
+        "stripInternal": true,
     },
     "include": [
         "rollup.config.ts",
