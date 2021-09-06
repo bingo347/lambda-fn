@@ -1,0 +1,29 @@
+{
+  "name": "@lambda-fn/basis",
+  "version": "0.1.0",
+  "description": "Basis for lambda-fn",
+  "keywords": [
+    "fp"
+  ],
+  "author": "Dmitry Belyaev <mail@d-belyaev.ru>",
+  "homepage": "https://github.com/bingo347/lambda-fn/blob/main/packages/basis/README.md",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "index.mjs",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.mjs",
+    "index.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bingo347/lambda-fn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bingo347/lambda-fn/issues"
+  }
+}
