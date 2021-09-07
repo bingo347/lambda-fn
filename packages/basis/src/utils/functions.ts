@@ -2,12 +2,19 @@ export type Fn<R, Args extends unknown[], This = unknown> = unknown extends This
     ? (...args: Args) => R
     : (this: This, ...args: Args) => R;
 
-export type UnboundFn<R, Args extends unknown[]> = (this: void, ...args: Args) => R;
+export type UnboundFn<R, Args extends unknown[]> = Fn<R, Args, void>;
+
+export type VoidFn<Args extends unknown[], This = unknown> = Fn<void, Args, This>;
+
+export type UnboundVoidFn<Args extends unknown[]> = Fn<void, Args, void>;
 
 export type AnyFn = (...args: any[]) => unknown;
 
 export const noop = (): void =>
     void 0;
+
+export const identity = <T>(value: T): T =>
+    value;
 
 export type AsFunction<T> = () => T;
 

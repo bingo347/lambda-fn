@@ -3,7 +3,8 @@ import type {Strong} from './strongTypes';
 
 export type StrongBoolean<Input> = Strong<Input, boolean, false>;
 
-export type Conditional<Condition extends boolean, TrueType, FalseType> = Condition extends true ? TrueType : FalseType;
+export type Conditional<Condition extends boolean, TrueType, FalseType = never> =
+    Condition extends true ? TrueType : FalseType;
 
 export const True = asFunction(true as const);
 

@@ -5,7 +5,9 @@ export type Constructor<I, Args extends unknown[]> = new (...args: Args) => I;
 
 export type AbstractConstructor<I, Args extends unknown[]> = abstract new (...args: Args) => I;
 
-export type AnyConstructor = abstract new (...args: any[]) => unknown;
+export type AnyConstructor = new (...args: any[]) => unknown;
+
+export type AnyAbstractConstructor = abstract new (...args: any[]) => unknown;
 
 export type AsFactory<C extends AnyConstructor> = UnboundFn<InstanceType<C>, ConstructorParameters<C>>;
 
