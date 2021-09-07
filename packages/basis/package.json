@@ -1,6 +1,6 @@
 {
   "name": "@lambda-fn/basis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Basis for lambda-fn",
   "keywords": [
     "fp"
