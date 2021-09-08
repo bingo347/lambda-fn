@@ -1,3 +1,4 @@
+export {internal} from './internal';
 export * from './utils/booleans';
 export * from './utils/constructors';
 export * from './utils/functions';
@@ -7,3 +8,5 @@ export * from './utils/primitive';
 export * from './utils/strings';
 export * from './utils/strongTypes';
 export * from './utils/transformTypes';
+export * from './InternalCell';
+export * from './categories';
