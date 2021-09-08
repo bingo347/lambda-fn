@@ -10,16 +10,14 @@ export abstract class Functor<T> extends InternalCell<T> {
         return this[internal.InternalCellContextualFactory](value);
     }
 
+    public apply<V, R>(this: Functor<Fn<R, [value: V]>>, target: Functor<V>): Functor<R> {
+        return target.map(this[internal.InternalCellUnsafeValue]);
+    }
+
     protected abstract override [internal.InternalCellContextualFactory]<V>(value: V): Functor<V>;
 }
 
-export abstract class Applicative<T> extends Functor<T> {
-    public apply<V, R>(this: Applicative<Fn<R, [value: V]>>, target: Functor<V>): Functor<R> {
-        return target.map(this[internal.InternalCellUnsafeValue]);
-    }
-}
-
-export abstract class Monad<T> extends Applicative<T> {
+export abstract class Monad<T> extends Functor<T> {
     public static of<V, M extends Monad<V>>(this: Constructor<M, [value: V]>, value: V): M {
         return create(this, value);
     }
@@ -32,13 +30,9 @@ export abstract class Monad<T> extends Applicative<T> {
         return this.map(f).unwrap();
     }
 
-    public override map<R>(f: Fn<R, [value: T]>): Monad<R> {
-        return super.map(f) as Monad<R>;
-    }
+    public abstract override map<R>(f: Fn<R, [value: T]>): Monad<R>;
 
-    public override apply<V, R>(this: Monad<Fn<R, [value: V]>>, target: Functor<V>): Monad<R> {
-        return target.map(this[internal.InternalCellUnsafeValue]) as Monad<R>;
-    }
+    public abstract override apply<V, R>(this: Monad<Fn<R, [value: V]>>, target: Functor<V>): Monad<R>;
 
     protected abstract override [internal.InternalCellContextualFactory]<V>(value: V): Monad<V>;
 }
