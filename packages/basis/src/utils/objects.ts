@@ -1,5 +1,6 @@
 import type {AnyFn} from './functions';
 import type {AsString} from './strings';
+import type {StrongPropertyDescriptor, StrongPropertyDescriptorMap} from './strongTypes';
 import type {UnionToIntersection} from './transformTypes';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -28,3 +29,13 @@ export const assign = Object.assign as (<Target, Sources extends URecord[]>(
     target: Target,
     ...sources: Sources
 ) => UnionToIntersection<Target | Sources[number]>);
+
+export const defineProperty = <T, K extends keyof T>(
+    target: T,
+    property: K,
+    descriptor: StrongPropertyDescriptor<T, K>,
+): T =>
+    Object.defineProperty(target, property, descriptor);
+
+export const defineProperties = <T>(target: T, properties: StrongPropertyDescriptorMap<T>): T =>
+    Object.defineProperties(target, properties as PropertyDescriptorMap);

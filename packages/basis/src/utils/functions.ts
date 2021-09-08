@@ -30,8 +30,21 @@ export const partial = <R, A1 extends unknown[], A2 extends unknown[], This = un
         return f.call(this, ...args1, ...args2);
     }, f);
 
+export const contextify = <R, Args extends unknown[], This>(f: UnboundFn<R, [This, ...Args]>): Fn<R, Args, This> =>
+    __fnNameLengthHint(function contextified(this: This, ...args) {
+        return f(this, ...args);
+    }, f, -1);
+
+export const bind = <R, Args extends unknown[], This>(f: Fn<R, Args, This>, thisArg: This): UnboundFn<R, Args> =>
+    __fnNameLengthHint((...args) =>
+        f.apply(thisArg, args), f);
+
 /** @internal */
-export const __fnNameLengthHint = <F>(f: F, {name, length}: {name: string; length: number}): F => {
+export const __fnNameLengthHint = <F>(
+    f: F,
+    {name, length}: {name: string; length: number},
+    lengthComplement = 0,
+): F => {
     // eslint-disable-next-line no-restricted-syntax
     try {
         Object.defineProperty(f, 'name', {
@@ -40,7 +53,7 @@ export const __fnNameLengthHint = <F>(f: F, {name, length}: {name: string; lengt
         });
         Object.defineProperty(f, 'length', {
             configurable: true,
-            value:        length,
+            value:        Math.max(0, length + lengthComplement),
         });
     } catch (_: unknown) {}
     return f;
