@@ -9,10 +9,12 @@ export type Recalculate<T> = T extends unknown ? {
     [K in keyof T]: T[K];
 } : never;
 
-export type SelectivePartial<T, K extends keyof T> =
-    & Required<Pick<T, Exclude<keyof T, K>>>
-    & Partial<Pick<T, K>>;
+export type SelectivePartial<T, K extends keyof T> = Recalculate<
+& Required<Pick<T, Exclude<keyof T, K>>>
+& Partial<Pick<T, K>>
+>;
 
-export type SelectiveRequired<T, K extends keyof T> =
-    & Required<Pick<T, K>>
-    & Partial<Pick<T, Exclude<keyof T, K>>>;
+export type SelectiveRequired<T, K extends keyof T> = Recalculate<
+& Required<Pick<T, K>>
+& Partial<Pick<T, Exclude<keyof T, K>>>
+>;
