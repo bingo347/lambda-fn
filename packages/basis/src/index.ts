@@ -10,3 +10,4 @@ export * from './utils/strongTypes';
 export * from './utils/transformTypes';
 export * from './InternalCell';
 export * from './categories';
+export * from './panic';
