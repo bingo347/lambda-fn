@@ -1,4 +1,4 @@
-export {internal} from './internal';
+export * from './internal';
 export * from './utils/booleans';
 export * from './utils/constructors';
 export * from './utils/functions';
@@ -11,3 +11,4 @@ export * from './utils/transformTypes';
 export * from './InternalCell';
 export * from './categories';
 export * from './panic';
+export * from './optional';
