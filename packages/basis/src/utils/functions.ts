@@ -9,7 +9,7 @@ export type VoidFn<Args extends unknown[], This = unknown> = Fn<void, Args, This
 export type UnboundVoidFn<Args extends unknown[]> = Fn<void, Args, void>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- bug in typescript predicates
-export type AnyFn = (...args: any[]) => any;
+export type AnyFn<R = any> = (...args: any[]) => R;
 
 export const noop = (): void =>
     void 0;

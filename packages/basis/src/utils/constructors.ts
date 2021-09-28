@@ -6,18 +6,18 @@ export type Constructor<I, Args extends unknown[]> = new (...args: Args) => I;
 export type AbstractConstructor<I, Args extends unknown[]> = abstract new (...args: Args) => I;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- bug in typescript predicates
-export type AnyConstructor = new (...args: any[]) => any;
+export type AnyConstructor<I = any> = new (...args: any[]) => I;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- bug in typescript predicates
-export type AnyAbstractConstructor = abstract new (...args: any[]) => any;
+export type AnyAbstractConstructor<I = any> = abstract new (...args: any[]) => I;
 
-export type AsFactory<C extends AnyConstructor> = UnboundFn<InstanceType<C>, ConstructorParameters<C>>;
+export type AsFactory<I, C extends AnyConstructor<I>> = UnboundFn<I, ConstructorParameters<C>>;
 
-export const asFactory = <C extends AnyConstructor>(constructor: C): AsFactory<C> =>
-    partial(create, constructor);
+export const asFactory = <I, C extends AnyConstructor<I>>(constructor: C): AsFactory<I, C> =>
+    partial<I, [C], ConstructorParameters<C>>(create, constructor);
 
-export const create = <C extends AnyConstructor>(
+export const create = <I, C extends AnyConstructor<I>>(
     constructor: C,
     ...args: ConstructorParameters<C>
-): InstanceType<C> =>
-    new constructor(...args); // eslint-disable-line @typescript-eslint/no-unsafe-return
+): I =>
+    new constructor(...args);
