@@ -12,3 +12,4 @@ export * from './InternalCell';
 export * from './categories';
 export * from './panic';
 export * from './optional';
+export * from './resulting';
