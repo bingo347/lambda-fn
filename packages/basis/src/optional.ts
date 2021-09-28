@@ -38,7 +38,7 @@ export class Optional<T> implements Monad<T> {
 
     public expect(message: string): T {
         assert(isSome(getKind(this)), message, TypeError);
-        return this.__unsafeValue;
+        return this.__unsafeSome;
     }
 
     public unwrap(): T {
@@ -47,27 +47,37 @@ export class Optional<T> implements Monad<T> {
 
     public map<R>(f: Fn<R, [value: T]>): Optional<R> {
         return isSome(getKind(this))
-            ? create(
-                this.constructor as Constructor<Optional<R>, [OptionalKind.Some, R]>,
-                OptionalKind.Some,
-                f(this.__unsafeValue),
-            )
+            ? this.__unsafeClone(f(this.__unsafeSome))
             : Optional.None;
     }
 
     public andThen<R>(f: Fn<Optional<R>, [value: T]>): Optional<R> {
         return isSome(getKind(this))
-            ? f(this.__unsafeValue)
+            ? f(this.__unsafeSome)
             : Optional.None;
     }
 
     public apply<V, R>(this: Optional<Fn<R, [value: V]>>, target: Optional<V>): Optional<R> {
         return isSome(getKind(this))
-            ? target.map(this.__unsafeValue)
+            ? target.map(this.__unsafeSome)
             : Optional.None;
     }
 
-    protected get __unsafeValue(): T {
+    protected __unsafeClone<R>(v?: R): Optional<R> {
+        type C = Constructor<Optional<R>, [OptionalKind.Some, (T | R)?]>;
+        const value = v ?? this.__cell?.unsafeValue;
+        const kind = getKind(this);
+        const {constructor} = this;
+        return isSome(kind)
+            ? create(
+                constructor as C,
+                kind,
+                value,
+            )
+            : Optional.None;
+    }
+
+    protected get __unsafeSome(): T {
         return this.__cell!.unsafeValue;
     }
 }
