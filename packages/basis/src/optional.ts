@@ -12,6 +12,12 @@ export const enum OptionalKind {
     Some,
 }
 
+const getKind = (optional: Optional<unknown>): OptionalKind =>
+    optional[internal.KIND];
+
+const isSome = (kind: OptionalKind): kind is OptionalKind.Some =>
+    kind === OptionalKind.Some;
+
 export class Optional<T> implements Monad<T> {
     protected readonly [internal.KIND]: OptionalKind;
 
@@ -81,9 +87,3 @@ export class Optional<T> implements Monad<T> {
         return this.__cell!.unsafeValue;
     }
 }
-
-const getKind = (optional: Optional<unknown>): OptionalKind =>
-    optional[internal.KIND];
-
-const isSome = (kind: OptionalKind): kind is OptionalKind.Some =>
-    kind === OptionalKind.Some;
