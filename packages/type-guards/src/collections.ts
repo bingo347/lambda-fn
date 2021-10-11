@@ -1,6 +1,10 @@
+import type {AnyFn} from '@lambda-fn/basis';
 import {makeInstanceofGuard} from './instanceof';
 import {isFunction, isObject} from './typeof';
 import type {TypeGuard} from './types';
+
+const every = (guard: AnyFn<boolean>, ...values: unknown[]) =>
+    values.every(guard);
 
 export const isArray = (v: unknown): v is unknown[] =>
     Array.isArray(v);
@@ -21,8 +25,5 @@ export const isSetWith = <T>(guard: TypeGuard<T>, v: unknown): v is Set<T> =>
 
 export const isMap = /*@__PURE__*/makeInstanceofGuard(Map);
 
-export const isMapWith = <K, V>(guard: TypeGuard<[K, V]>, v: unknown): v is Map<K, V> =>
-    isMap(v) && every(guard, ...v.values());
-
-const every = <G extends TypeGuard<unknown>>(guard: G, ...values: unknown[]) =>
-    values.every(guard);
+export const isMapWith = <K, V>(guard: TypeGuard<[K, V], [unknown, unknown]>, v: unknown): v is Map<K, V> =>
+    isMap(v) && every(guard, ...v.entries());
