@@ -1,6 +1,6 @@
-import type {AnyConstructor} from './types';
+import type {AnyAbstractConstructor} from '@lambda-fn/basis';
 
-export const makeInstanceofGuard = <C extends AnyConstructor>(constructor: C) =>
+export const makeInstanceofGuard = <C extends AnyAbstractConstructor>(constructor: C) =>
     (v: unknown): v is InstanceType<C> =>
         v instanceof constructor;
 

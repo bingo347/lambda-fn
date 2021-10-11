@@ -1,4 +1,5 @@
-import type {TypeGuard, Primitive} from './types';
+import type {Primitive} from '@lambda-fn/basis';
+import type {TypeGuard} from './types';
 
 export const isEqualTo = ((value: Primitive, ...vs: [] | [unknown]) => {
     const guard = (v: unknown) =>

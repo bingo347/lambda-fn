@@ -1,4 +1,4 @@
-import type {AnyConstructor, AnyFunction, Primitive} from './types';
+import type {AnyConstructor, AnyFn, Primitive} from '@lambda-fn/basis';
 import {isNull} from './values';
 
 type TypesMap = {
@@ -9,7 +9,7 @@ type TypesMap = {
     'bigint':    bigint;
     'symbol':    symbol;
     'object':    Record<PropertyKey, unknown>;
-    'function':  AnyFunction;
+    'function':  AnyFn<unknown>;
 };
 
 export type TypeofResult = keyof TypesMap;
@@ -47,5 +47,5 @@ export const isPrimitive = (v: unknown): v is Primitive =>
 export const isObjectLike = (v: unknown): v is TypesMap['object' | 'function'] =>
     isObject(v) || isFunction(v);
 
-export const isConstructor = (v: unknown): v is AnyConstructor & AnyFunction =>
+export const isConstructor = (v: unknown): v is AnyConstructor<unknown> & AnyFn<unknown> =>
     isFunction(v) && isObjectLike(v.prototype) && v === v.prototype.constructor;
