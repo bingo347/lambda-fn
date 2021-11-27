@@ -89,11 +89,16 @@ const docsPlugin = (pathname: string): Plugin =>
             app.options.addReader(new typedoc.TSConfigReader());
             app.options.addReader(new typedoc.TypeDocReader());
             app.bootstrap({
-                entryPoints: [path.join(pathname, 'src/index.ts')],
-                plugin: ['typedoc-plugin-markdown'],
-                readme: 'none',
-                githubPages: false,
                 out,
+                entryPoints:          [path.join(pathname, 'src/index.ts')],
+                plugin:               ['typedoc-plugin-markdown'],
+                readme:               'none',
+                githubPages:          false,
+                gitRevision:          'main',
+                excludeInternal:      true,
+                excludeNotDocumented: true,
+                excludePrivate:       true,
+                disableSources:       true,
             });
             const project = app.convert();
             if (!project) { return }
