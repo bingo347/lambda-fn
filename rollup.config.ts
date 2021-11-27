@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import type {RollupOptions} from 'rollup';
+import type {RollupOptions, Plugin} from 'rollup';
 import ts from 'rollup-plugin-ts';
+import * as typedoc from 'typedoc';
 
 type Pkg = {
     dependencies?: Record<string, string>;
@@ -79,14 +80,36 @@ const collectDependencies = (infoCollection: PkgInfoCollection) => {
     return {dependencies, dependents};
 };
 
+const docsPlugin = (pathname: string): Plugin =>
+    ({
+        name: 'docs',
+        async generateBundle() {
+            const app = new typedoc.Application();
+            const out = path.join(__dirname, 'docs', path.basename(pathname));
+            app.options.addReader(new typedoc.TSConfigReader());
+            app.options.addReader(new typedoc.TypeDocReader());
+            app.bootstrap({
+                entryPoints: [path.join(pathname, 'src/index.ts')],
+                plugin: ['typedoc-plugin-markdown'],
+                readme: 'none',
+                githubPages: false,
+                out,
+            });
+            const project = app.convert();
+            if (!project) { return }
+            await app.generateDocs(project, out);
+        },
+    });
+
 export default (async (): Promise<RollupOptions[]> =>
     orderPackages(await scanPackages()).map(({pathname, dependencies}) =>
         ({
             input:    path.join(pathname, 'src/index.ts'),
             external: dependencies,
             output:   [{
-                format: 'es',
-                file:   path.join(pathname, 'index.mjs'),
+                format:  'es',
+                file:    path.join(pathname, 'index.mjs'),
+                plugins: [docsPlugin(pathname)],
             }, {
                 format:  'cjs',
                 exports: 'named',
