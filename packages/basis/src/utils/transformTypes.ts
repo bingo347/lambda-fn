@@ -18,3 +18,7 @@ export type SelectiveRequired<T, K extends keyof T> = Recalculate<
 & Required<Pick<T, K>>
 & Partial<Pick<T, Exclude<keyof T, K>>>
 >;
+
+export type SelectByKeyValue<T, Key extends keyof T, Value extends T[Key]> = Recalculate<T & {
+    [_ in Key]: Value;
+}>;
