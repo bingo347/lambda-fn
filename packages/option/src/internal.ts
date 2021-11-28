@@ -9,7 +9,6 @@ const patchers: [patcher: PatchFN, configurable: boolean][] = [];
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let noneInstance: None;
 
-// eslint-disable-next-line @typescript-eslint/no-shadow
 export const enum OptionKind { Some, None }
 export const GUARD = Symbol();
 export const VALUE = Symbol();

@@ -10,7 +10,6 @@ type Implementor = [
 ];
 const implementors: Implementor[] = [];
 
-// eslint-disable-next-line @typescript-eslint/no-shadow
 export const enum ResultKind { Ok, Err }
 export const GUARD = Symbol();
 export const VALUE = Symbol();
