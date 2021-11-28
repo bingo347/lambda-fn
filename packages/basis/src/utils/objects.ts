@@ -1,4 +1,3 @@
-import type {AnyFn} from './functions';
 import type {AsString} from './strings';
 import type {StrongPropertyDescriptor, StrongPropertyDescriptorMap} from './strongTypes';
 import type {UnionToIntersection} from './transformTypes';
