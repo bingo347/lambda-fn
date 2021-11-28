@@ -10,11 +10,9 @@ npm install --save @lambda-fn/basis
 yarn add @lambda-fn/basis
 ```
 
-## Exports
+## Documentation
 
-```typescript
-
-```
+[See on github](https://github.com/bingo347/lambda-fn/blob/main/docs/basis/README.md)
 
 ## License
 
