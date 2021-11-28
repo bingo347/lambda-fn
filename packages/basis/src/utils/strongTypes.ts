@@ -9,9 +9,12 @@ type OpaqueFactory<T, Tag> = {
     readonly '@Type': Opaque<T, Tag>;
     (value: T): Opaque<T, Tag>;
 };
+
+/** Create wrapper for attach opaque type to value */
 export const Opaque = <T, Tag>(): OpaqueFactory<T, Tag> =>
     identity as OpaqueFactory<T, Tag>;
 
+/** Strong variant of PropertyDescriptor */
 export type StrongPropertyDescriptor<T, K extends keyof T> = {
     configurable?: boolean;
     enumerable?: boolean;
@@ -29,6 +32,7 @@ export type StrongPropertyDescriptor<T, K extends keyof T> = {
     set(this: T, value: T[K]): void;
 };
 
+/** Strong variant of PropertyDescriptorMap */
 export type StrongPropertyDescriptorMap<T> = {
     [K in keyof T]?: StrongPropertyDescriptor<T, K>;
 };
