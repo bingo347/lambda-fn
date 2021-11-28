@@ -1,6 +1,7 @@
 import type {Primitive} from '@lambda-fn/basis';
 import type {TypeGuard} from './types';
 
+/** Guard that checks two primitive values are equal */
 export const isEqualTo = ((value: Primitive, ...vs: [] | [unknown]) => {
     const guard = (v: unknown) =>
         value === v;
@@ -12,4 +13,5 @@ export const isEqualTo = ((value: Primitive, ...vs: [] | [unknown]) => {
     <V extends Primitive>(value: V, v: unknown): v is V;
 };
 
+/** Guard for null type */
 export const isNull = /*@__PURE__*/isEqualTo(null);
