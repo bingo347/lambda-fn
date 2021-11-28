@@ -19,7 +19,7 @@ export const keys = <T>(target: T, includeNonEnumerable = false): Keys<T> =>
         ? Object.getOwnPropertyNames(target)
         : Object.keys(target)) as Keys<T>;
 
-export const set = <T extends URecord | AnyFn, K extends keyof T>(target: T, key: K, value: T[K]): T => {
+export const set = <T extends EmptyObject, K extends keyof T>(target: T, key: K, value: T[K]): T => {
     // eslint-disable-next-line no-param-reassign
     target[key] = value;
     return target;
