@@ -28,6 +28,6 @@
     "url": "https://github.com/bingo347/lambda-fn/issues"
   },
   "dependencies": {
-    "@lambda-fn/basis": "^0.3.1"
+    "@lambda-fn/basis": "^1.0.0"
   }
 }
