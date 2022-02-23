@@ -7,7 +7,10 @@ import {create} from './utils/constructors';
 import type {Fn} from './utils/functions';
 import {isUndefined} from './utils/guards';
 
-/** kind variants for {@link Optional} */
+/**
+ * kind variants for {@link Optional}
+ * @ignore
+ */
 export const enum OptionalKind {
     None,
     Some,
@@ -19,7 +22,10 @@ const getKind = (optional: Optional<unknown>): OptionalKind =>
 const isSome = (kind: OptionalKind): kind is OptionalKind.Some =>
     kind === OptionalKind.Some;
 
-/** Base class for optional values */
+/**
+ * Base class for optional values
+ * @ignore
+ */
 export class Optional<T> implements Monad<T> {
     /** @ignore */
     protected readonly [internal.KIND]: OptionalKind;
@@ -48,7 +54,7 @@ export class Optional<T> implements Monad<T> {
     }
 
     constructor(kind: OptionalKind.None);
-    constructor(Kind: OptionalKind.Some, value: T);
+    constructor(kind: OptionalKind.Some, value: T);
     constructor(kind: OptionalKind, value?: T) {
         this[internal.KIND] = kind;
         this.__cell = isSome(kind)

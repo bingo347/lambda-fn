@@ -6,13 +6,19 @@ import type {Constructor} from './utils/constructors';
 import {create} from './utils/constructors';
 import type {Fn} from './utils/functions';
 
-/** kind variants for {@link Resulting} */
+/**
+ * kind variants for {@link Resulting}
+ * @ignore
+ */
 export const enum ResultingKind {
     Err,
     Ok,
 }
 
-/** Base class for resulting values */
+/**
+ * Base class for resulting values
+ * @ignore
+ */
 export class Resulting<O, E> implements Monad<O> {
     /** @ignore */
     protected readonly [internal.KIND]: ResultingKind;
@@ -28,7 +34,7 @@ export class Resulting<O, E> implements Monad<O> {
         return create(this, ResultingKind.Ok, value);
     }
 
-    constructor(Kind: ResultingKind.Err, error: E);
+    constructor(kind: ResultingKind.Err, error: E);
     constructor(kind: ResultingKind.Ok, value: O);
     constructor(kind: ResultingKind, value: O | E) {
         this[internal.KIND] = kind;

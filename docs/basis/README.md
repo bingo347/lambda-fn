@@ -4,23 +4,6 @@
 
 ## Table of contents
 
-### Enumerations
-
-- [OptionalKind](enums/OptionalKind.md)
-- [ResultingKind](enums/ResultingKind.md)
-
-### Classes
-
-- [Optional](classes/Optional.md)
-- [Resulting](classes/Resulting.md)
-
-### Interfaces
-
-- [ApplicativeFunctor](interfaces/ApplicativeFunctor.md)
-- [Functor](interfaces/Functor.md)
-- [Monad](interfaces/Monad.md)
-- [MonadOf](interfaces/MonadOf.md)
-
 ### Type aliases
 
 - [AbstractConstructor](README.md#abstractconstructor)
@@ -653,7 +636,7 @@ Helper for create function signatures that returns void
 
 ### False
 
-▸ `Const` **False**(): ``false``
+▸ **False**(): ``false``
 
 Functional representation of false
 
@@ -667,7 +650,7 @@ ___
 
 ### Opaque
 
-▸ `Const` **Opaque**<`T`, `Tag`\>(): `OpaqueFactory`<`T`, `Tag`\>
+▸ **Opaque**<`T`, `Tag`\>(): `OpaqueFactory`<`T`, `Tag`\>
 
 Create wrapper for attach opaque type to value
 
@@ -686,7 +669,7 @@ ___
 
 ### True
 
-▸ `Const` **True**(): ``true``
+▸ **True**(): ``true``
 
 Functional representation of true
 
@@ -700,7 +683,7 @@ ___
 
 ### asBoolean
 
-▸ `Const` **asBoolean**<`T`\>(`value`): [`AsBoolean`](README.md#asboolean)<`T`\>
+▸ **asBoolean**<`T`\>(`value`): [`AsBoolean`](README.md#asboolean)<`T`\>
 
 Transform any value to boolean representation with strong types \
 Notice: for NaN it returns false with type true
@@ -729,7 +712,7 @@ ___
 
 ### asFactory
 
-▸ `Const` **asFactory**<`I`, `C`\>(`constructor`): [`AsFactory`](README.md#asfactory)<`I`, `C`\>
+▸ **asFactory**<`I`, `C`\>(`constructor`): [`AsFactory`](README.md#asfactory)<`I`, `C`\>
 
 Transforms constructor to factory
 
@@ -764,7 +747,7 @@ ___
 
 ### asFunction
 
-▸ `Const` **asFunction**<`T`\>(`value`): [`AsFunction`](README.md#asfunction)<`T`\>
+▸ **asFunction**<`T`\>(`value`): [`AsFunction`](README.md#asfunction)<`T`\>
 
 Transforms any value to function that always returns this value
 
@@ -788,7 +771,7 @@ ___
 
 ### asString
 
-▸ `Const` **asString**<`T`\>(`value`): [`AsString`](README.md#asstring)<`T`, `string`\>
+▸ **asString**<`T`\>(`value`): [`AsString`](README.md#asstring)<`T`, `string`\>
 
 Convert any value to string representation with strong types
 
@@ -812,7 +795,7 @@ ___
 
 ### assert
 
-▸ `Const` **assert**(`condition`, `message`, `errorConstructor?`): asserts condition
+▸ **assert**(`condition`, `message`, `errorConstructor?`): asserts condition
 
 Asserts condition is true
 
@@ -830,7 +813,7 @@ Asserts condition is true
 
 asserts condition
 
-▸ `Const` **assert**(`condition`, `error`): asserts condition
+▸ **assert**(`condition`, `error`): asserts condition
 
 Asserts condition is true
 
@@ -851,7 +834,7 @@ ___
 
 ### assign
 
-▸ `Const` **assign**<`Target`, `Sources`\>(`target`, ...`sources`): [`UnionToIntersection`](README.md#uniontointersection)<`Target` \| `Sources`[`number`]\>
+▸ **assign**<`Target`, `Sources`\>(`target`, ...`sources`): [`UnionToIntersection`](README.md#uniontointersection)<`Target` \| `Sources`[`number`]\>
 
 `Object.assign` with strong types
 
@@ -877,7 +860,7 @@ ___
 
 ### bind
 
-▸ `Const` **bind**<`R`, `Args`, `This`\>(`f`, `thisArg`): (...`args`: `Args`) => `R`
+▸ **bind**<`R`, `Args`, `This`\>(`f`, `thisArg`): (...`args`: `Args`) => `R`
 
 Wrap function to unbounded variant
 
@@ -918,7 +901,7 @@ ___
 
 ### contextify
 
-▸ `Const` **contextify**<`R`, `Args`, `This`\>(`f`): [`Fn`](README.md#fn)<`R`, `Args`, `This`\>
+▸ **contextify**<`R`, `Args`, `This`\>(`f`): [`Fn`](README.md#fn)<`R`, `Args`, `This`\>
 
 Wrap function to bounded variant
 
@@ -955,7 +938,7 @@ ___
 
 ### create
 
-▸ `Const` **create**<`I`, `C`\>(`constructor`, ...`args`): `I`
+▸ **create**<`I`, `C`\>(`constructor`, ...`args`): `I`
 
 Helper for create instance from constructor
 
@@ -983,7 +966,7 @@ ___
 
 ### defineProperties
 
-▸ `Const` **defineProperties**<`T`\>(`target`, `properties`): `T`
+▸ **defineProperties**<`T`\>(`target`, `properties`): `T`
 
 `Object.defineProperties` with strong types
 
@@ -1008,7 +991,7 @@ ___
 
 ### defineProperty
 
-▸ `Const` **defineProperty**<`T`, `K`\>(`target`, `property`, `descriptor`): `T`
+▸ **defineProperty**<`T`, `K`\>(`target`, `property`, `descriptor`): `T`
 
 `Object.defineProperty` with strong types
 
@@ -1035,7 +1018,7 @@ ___
 
 ### identity
 
-▸ `Const` **identity**<`T`\>(`value`): `T`
+▸ **identity**<`T`\>(`value`): `T`
 
 Returns argument
 
@@ -1059,7 +1042,7 @@ ___
 
 ### keys
 
-▸ `Const` **keys**<`T`\>(`target`, `includeNonEnumerable?`): [`Keys`](README.md#keys)<`T`\>
+▸ **keys**<`T`\>(`target`, `includeNonEnumerable?`): [`Keys`](README.md#keys)<`T`\>
 
 `Object.keys` / `Object.getOwnPropertyNames` with strong types
 
@@ -1086,7 +1069,7 @@ ___
 
 ### noop
 
-▸ `Const` **noop**(): `void`
+▸ **noop**(): `void`
 
 It's doing nothing
 
@@ -1098,7 +1081,7 @@ ___
 
 ### panic
 
-▸ `Const` **panic**(`message`, `errorConstructor?`): `never`
+▸ **panic**(`message`, `errorConstructor?`): `never`
 
 Shorthand for throw error
 
@@ -1113,7 +1096,7 @@ Shorthand for throw error
 
 `never`
 
-▸ `Const` **panic**(`error`): `never`
+▸ **panic**(`error`): `never`
 
 Shorthand for throw error
 
@@ -1131,7 +1114,7 @@ ___
 
 ### partial
 
-▸ `Const` **partial**<`R`, `A1`, `A2`, `This`\>(`f`, ...`args1`): [`Fn`](README.md#fn)<`R`, `A2`, `This`\>
+▸ **partial**<`R`, `A1`, `A2`, `This`\>(`f`, ...`args1`): [`Fn`](README.md#fn)<`R`, `A2`, `This`\>
 
 Partial application
 
@@ -1161,7 +1144,7 @@ ___
 
 ### set
 
-▸ `Const` **set**<`T`, `K`\>(`target`, `key`, `value`): `T`
+▸ **set**<`T`, `K`\>(`target`, `key`, `value`): `T`
 
 Helper for set property to object
 
