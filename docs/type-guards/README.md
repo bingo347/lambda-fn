@@ -90,7 +90,7 @@ v is T
 
 ### isArray
 
-▸ `Const` **isArray**(`v`): v is unknown[]
+▸ **isArray**(`v`): v is unknown[]
 
 Guard for Array type
 
@@ -108,7 +108,7 @@ ___
 
 ### isArrayBuffer
 
-▸ `Const` **isArrayBuffer**(`v`): v is ArrayBuffer
+▸ **isArrayBuffer**(`v`): v is ArrayBuffer
 
 Guard for ArrayBuffer type
 
@@ -126,7 +126,7 @@ ___
 
 ### isArrayWith
 
-▸ `Const` **isArrayWith**<`T`\>(`guard`, `v`): v is T[]
+▸ **isArrayWith**<`T`\>(`guard`, `v`): v is T[]
 
 Guard for Array type with concrete contents
 
@@ -151,7 +151,7 @@ ___
 
 ### isBigInt
 
-▸ `Const` **isBigInt**(`v`): v is bigint
+▸ **isBigInt**(`v`): v is bigint
 
 Guard for bigint type
 
@@ -169,7 +169,7 @@ ___
 
 ### isBigInt64Array
 
-▸ `Const` **isBigInt64Array**(`v`): v is BigInt64Array
+▸ **isBigInt64Array**(`v`): v is BigInt64Array
 
 Guard for BigInt64Array type
 
@@ -187,7 +187,7 @@ ___
 
 ### isBigUint64Array
 
-▸ `Const` **isBigUint64Array**(`v`): v is BigUint64Array
+▸ **isBigUint64Array**(`v`): v is BigUint64Array
 
 Guard for BigUint64Array type
 
@@ -205,7 +205,7 @@ ___
 
 ### isBoolean
 
-▸ `Const` **isBoolean**(`v`): v is boolean
+▸ **isBoolean**(`v`): v is boolean
 
 Guard for boolean type
 
@@ -223,7 +223,7 @@ ___
 
 ### isConstructor
 
-▸ `Const` **isConstructor**(`v`): v is AnyConstructor<unknown\> & AnyFn<unknown\>
+▸ **isConstructor**(`v`): v is AnyConstructor<unknown\> & AnyFn<unknown\>
 
 Guard for Constructor type (function that possible calls with `new` operator)
 
@@ -241,7 +241,7 @@ ___
 
 ### isDataView
 
-▸ `Const` **isDataView**(`v`): v is DataView
+▸ **isDataView**(`v`): v is DataView
 
 Guard for DataView type
 
@@ -259,7 +259,7 @@ ___
 
 ### isDate
 
-▸ `Const` **isDate**(`v`): v is Date
+▸ **isDate**(`v`): v is Date
 
 Guard for Date type
 
@@ -277,7 +277,7 @@ ___
 
 ### isEqualTo
 
-▸ `Const` **isEqualTo**<`V`\>(`value`): [`TypeGuard`](README.md#typeguard)<`V`, `unknown`, []\>
+▸ **isEqualTo**<`V`\>(`value`): [`TypeGuard`](README.md#typeguard)<`V`, `unknown`, []\>
 
 Guard that checks two primitive values are equal
 
@@ -297,7 +297,7 @@ Guard that checks two primitive values are equal
 
 [`TypeGuard`](README.md#typeguard)<`V`, `unknown`, []\>
 
-▸ `Const` **isEqualTo**<`V`\>(`value`, `v`): v is V
+▸ **isEqualTo**<`V`\>(`value`, `v`): v is V
 
 Guard that checks two primitive values are equal
 
@@ -322,7 +322,7 @@ ___
 
 ### isError
 
-▸ `Const` **isError**(`v`): v is Error
+▸ **isError**(`v`): v is Error
 
 Guard for Error type
 
@@ -340,7 +340,7 @@ ___
 
 ### isFloat32Array
 
-▸ `Const` **isFloat32Array**(`v`): v is Float32Array
+▸ **isFloat32Array**(`v`): v is Float32Array
 
 Guard for Float32Array type
 
@@ -358,7 +358,7 @@ ___
 
 ### isFloat64Array
 
-▸ `Const` **isFloat64Array**(`v`): v is Float64Array
+▸ **isFloat64Array**(`v`): v is Float64Array
 
 Guard for Float64Array type
 
@@ -376,7 +376,7 @@ ___
 
 ### isFunction
 
-▸ `Const` **isFunction**(`v`): v is AnyFn<unknown\>
+▸ **isFunction**(`v`): v is AnyFn<unknown\>
 
 Guard for Function type
 
@@ -394,7 +394,7 @@ ___
 
 ### isInt16Array
 
-▸ `Const` **isInt16Array**(`v`): v is Int16Array
+▸ **isInt16Array**(`v`): v is Int16Array
 
 Guard for Int16Array type
 
@@ -412,7 +412,7 @@ ___
 
 ### isInt32Array
 
-▸ `Const` **isInt32Array**(`v`): v is Int32Array
+▸ **isInt32Array**(`v`): v is Int32Array
 
 Guard for Int32Array type
 
@@ -430,7 +430,7 @@ ___
 
 ### isInt8Array
 
-▸ `Const` **isInt8Array**(`v`): v is Int8Array
+▸ **isInt8Array**(`v`): v is Int8Array
 
 Guard for Int8Array type
 
@@ -448,7 +448,7 @@ ___
 
 ### isIterable
 
-▸ `Const` **isIterable**(`v`): v is Iterable<unknown\>
+▸ **isIterable**(`v`): v is Iterable<unknown\>
 
 Guard for Iterable type
 
@@ -466,7 +466,7 @@ ___
 
 ### isIterableWith
 
-▸ `Const` **isIterableWith**<`T`\>(`guard`, `v`): v is Iterable<T\>
+▸ **isIterableWith**<`T`\>(`guard`, `v`): v is Iterable<T\>
 
 Guard for Iterable type with concrete contents
 
@@ -491,7 +491,7 @@ ___
 
 ### isMap
 
-▸ `Const` **isMap**(`v`): v is Map<unknown, unknown\>
+▸ **isMap**(`v`): v is Map<unknown, unknown\>
 
 Guard for Map type
 
@@ -509,7 +509,7 @@ ___
 
 ### isMapWith
 
-▸ `Const` **isMapWith**<`K`, `V`\>(`guard`, `v`): v is Map<K, V\>
+▸ **isMapWith**<`K`, `V`\>(`guard`, `v`): v is Map<K, V\>
 
 Guard for Map type with concrete contents
 
@@ -535,7 +535,7 @@ ___
 
 ### isNonNullable
 
-▸ `Const` **isNonNullable**<`T`\>(`v`): v is NonNullable<T\>
+▸ **isNonNullable**<`T`\>(`v`): v is NonNullable<T\>
 
 Guard for NonNullable type
 
@@ -559,7 +559,7 @@ ___
 
 ### isNull
 
-▸ `Const` **isNull**(`v`, ...`args`): v is null
+▸ **isNull**(`v`, ...`args`): v is null
 
 Guard for null type
 
@@ -578,7 +578,7 @@ ___
 
 ### isNullable
 
-▸ `Const` **isNullable**(`v`): v is undefined \| null
+▸ **isNullable**(`v`): v is undefined \| null
 
 Guard for Nullable (`null | undefined`) type
 
@@ -596,7 +596,7 @@ ___
 
 ### isNumber
 
-▸ `Const` **isNumber**(`v`): v is number
+▸ **isNumber**(`v`): v is number
 
 Guard for number type
 
@@ -614,7 +614,7 @@ ___
 
 ### isObject
 
-▸ `Const` **isObject**(`v`): v is Record<PropertyKey, unknown\>
+▸ **isObject**(`v`): v is Record<PropertyKey, unknown\>
 
 Guard for non nullable object type
 
@@ -632,7 +632,7 @@ ___
 
 ### isObjectLike
 
-▸ `Const` **isObjectLike**(`v`): v is AnyFn<unknown\> \| Record<PropertyKey, unknown\>
+▸ **isObjectLike**(`v`): v is AnyFn<unknown\> \| Record<PropertyKey, unknown\>
 
 Guard for type represents object or function
 
@@ -650,7 +650,7 @@ ___
 
 ### isObjectWithKey
 
-▸ `Const` **isObjectWithKey**<`K`, `T`\>(`key`, `guard?`): (`v`: `unknown`) => v is Record<K, T\>
+▸ **isObjectWithKey**<`K`, `T`\>(`key`, `guard?`): (`v`: `unknown`) => v is Record<K, T\>
 
 Create guard that checks value is object with concrete key & value
 
@@ -690,7 +690,7 @@ ___
 
 ### isPrimitive
 
-▸ `Const` **isPrimitive**(`v`): v is Primitive
+▸ **isPrimitive**(`v`): v is Primitive
 
 Guard for Primitive (`string | number | bigint | boolean | symbol | null | undefined`) type
 
@@ -708,7 +708,7 @@ ___
 
 ### isPromise
 
-▸ `Const` **isPromise**(`v`): v is Promise<unknown\>
+▸ **isPromise**(`v`): v is Promise<unknown\>
 
 Guard for Promise type
 
@@ -726,7 +726,7 @@ ___
 
 ### isPromiseLike
 
-▸ `Const` **isPromiseLike**(`v`, ...`args`): v is PromiseLike<unknown\>
+▸ **isPromiseLike**(`v`, ...`args`): v is PromiseLike<unknown\>
 
 Guard for PromiseLike type
 
@@ -745,7 +745,7 @@ ___
 
 ### isPropertyKey
 
-▸ `Const` **isPropertyKey**(`v`): v is PropertyKey
+▸ **isPropertyKey**(`v`): v is PropertyKey
 
 Guard for PropertyKey (`string | number | symbol`) type
 
@@ -763,7 +763,7 @@ ___
 
 ### isRegExp
 
-▸ `Const` **isRegExp**(`v`): v is RegExp
+▸ **isRegExp**(`v`): v is RegExp
 
 Guard for RegExp type
 
@@ -781,7 +781,7 @@ ___
 
 ### isSet
 
-▸ `Const` **isSet**(`v`): v is Set<unknown\>
+▸ **isSet**(`v`): v is Set<unknown\>
 
 Guard for Set type
 
@@ -799,7 +799,7 @@ ___
 
 ### isSetWith
 
-▸ `Const` **isSetWith**<`T`\>(`guard`, `v`): v is Set<T\>
+▸ **isSetWith**<`T`\>(`guard`, `v`): v is Set<T\>
 
 Guard for Set type with concrete contents
 
@@ -824,7 +824,7 @@ ___
 
 ### isString
 
-▸ `Const` **isString**(`v`): v is string
+▸ **isString**(`v`): v is string
 
 Guard for string type
 
@@ -842,7 +842,7 @@ ___
 
 ### isSymbol
 
-▸ `Const` **isSymbol**(`v`): v is symbol
+▸ **isSymbol**(`v`): v is symbol
 
 Guard for symbol type
 
@@ -860,7 +860,7 @@ ___
 
 ### isTypedArray
 
-▸ `Const` **isTypedArray**(`v`): v is TypedArray
+▸ **isTypedArray**(`v`): v is TypedArray
 
 Guard for TypedArray type
 
@@ -878,7 +878,7 @@ ___
 
 ### isUint16Array
 
-▸ `Const` **isUint16Array**(`v`): v is Uint16Array
+▸ **isUint16Array**(`v`): v is Uint16Array
 
 Guard for Uint16Array type
 
@@ -896,7 +896,7 @@ ___
 
 ### isUint32Array
 
-▸ `Const` **isUint32Array**(`v`): v is Uint32Array
+▸ **isUint32Array**(`v`): v is Uint32Array
 
 Guard for Uint32Array type
 
@@ -914,7 +914,7 @@ ___
 
 ### isUint8Array
 
-▸ `Const` **isUint8Array**(`v`): v is Uint8Array
+▸ **isUint8Array**(`v`): v is Uint8Array
 
 Guard for Uint8Array type
 
@@ -932,7 +932,7 @@ ___
 
 ### isUndefined
 
-▸ `Const` **isUndefined**(`v`): v is undefined
+▸ **isUndefined**(`v`): v is undefined
 
 Guard for undefined type
 
@@ -950,7 +950,7 @@ ___
 
 ### makeInstanceofGuard
 
-▸ `Const` **makeInstanceofGuard**<`C`\>(`constructor`): (`v`: `unknown`) => v is InstanceType<C\>
+▸ **makeInstanceofGuard**<`C`\>(`constructor`): (`v`: `unknown`) => v is InstanceType<C\>
 
 Creates instance guard from constructor
 
